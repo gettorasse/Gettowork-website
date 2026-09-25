@@ -26,8 +26,30 @@ a:focus-visible, button:focus-visible { outline: 2px solid white; outline-offset
 
 .mobile-scroll-spacer { display: none; }
 @media (max-width: 768px) {
+  html, body { overscroll-behavior-y: none; }
+  .video-backdrop { height: 100lvh; }
   .background-video { left: 0; object-position: center; }
   .video-gradient { background: linear-gradient(to top, rgba(8, 14, 48, 0.96) 0%, rgba(8, 14, 48, 0.9) 22%, rgba(8, 14, 48, 0.55) 42%, transparent 72%); }
-  .hero { position: sticky; top: 0; justify-content: flex-end; padding-bottom: 3rem; }
-  .mobile-scroll-spacer { display: block; height: 100vh; pointer-events: none; }
+  /* Keep the composition stable when mobile browser chrome expands or collapses. */
+  .hero {
+    position: fixed;
+    inset: 0;
+    height: 100svh;
+    justify-content: flex-end;
+    padding: 80px 20px max(18px, env(safe-area-inset-bottom));
+  }
+  .hero > div { width: 100%; }
+  .hero .intro { margin-bottom: 16px; }
+  .hero .typewriter { margin-bottom: 18px; font-size: 20px; }
+  .hero .typewriter + div { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .hero .pill { min-height: 46px; margin: 0; padding: 10px 8px; font-size: 15px; line-height: 1.25; white-space: normal; text-align: center; }
+  .hero .outline-pill { grid-column: 1 / -1; }
+  .mobile-scroll-spacer { display: block; height: 200svh; pointer-events: none; }
+}
+@media (max-width: 768px) and (max-height: 600px) {
+  .hero { padding-top: 72px; padding-bottom: max(10px, env(safe-area-inset-bottom)); }
+  .hero .intro { font-size: 16px; margin-bottom: 8px; }
+  .hero .typewriter { font-size: 18px; margin-bottom: 10px; }
+  .hero .pill { min-height: 44px; padding-block: 8px; }
+
 }
