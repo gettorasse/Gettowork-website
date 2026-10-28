@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
-import { BackgroundVideo } from './BackgroundVideo.tsx';
+import { BackgroundVideo, type Character } from './BackgroundVideo.tsx';
+import { CharacterSwitch, loadCharacter, saveCharacter } from './CharacterSwitch.tsx';
 import { SiteHeader } from './SiteHeader.tsx';
 import { HOME_PATH, isLegacyPath, routeFromPath, type Route } from './router.ts';
 import { About } from './restart-score/About.tsx';
@@ -14,6 +15,8 @@ function App() {
     return routeFromPath(window.location.pathname);
   });
   const rs = useRestartScore();
+  const [character, setCharacter] = useState<Character>(loadCharacter);
+  const chooseCharacter = (c: Character) => { setCharacter(c); saveCharacter(c); };
 
   useEffect(() => {
     if (route === 'home') rs.syncFromHistory(window.history.state, true);
@@ -44,11 +47,12 @@ function App() {
 
   return <>
     {/* Tausta pysyy samana koko ajan: etusivu, kysymykset ja tulos vaihtuvat sen päällä. */}
-    <BackgroundVideo />
+    <BackgroundVideo character={character} />
     <div className={`stage-dim${dim ? ' is-on' : ''}`} aria-hidden="true" />
     <div className={`stage-floor${route === 'home' && view === 'question' ? ' is-on' : ''}`} aria-hidden="true" />
     <div className={`stage-top${dim ? ' is-on' : ''}`} aria-hidden="true" />
     <SiteHeader route={route} />
+    <CharacterSwitch value={character} onChange={chooseCharacter} visible={route === 'home' && view === 'intro'} />
     {route === 'about' ? <About onStart={startFromAbout} /> : <RestartScore rs={rs} />}
   </>;
 }

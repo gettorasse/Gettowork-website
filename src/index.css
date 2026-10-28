@@ -6,7 +6,8 @@
 }
 body { margin: 0; background: #000; font-family: var(--font-body); }
 .video-backdrop { position: fixed; inset: 0; z-index: 0; overflow: hidden; background: #080e30; pointer-events: none; }
-.background-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; }
+.background-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; transition: opacity 450ms ease; }
+.background-video.is-hidden { opacity: 0; }
 /* Tulos- ja tietosivuilla tausta himmenee lukemisen ajaksi; hahmo pysyy näkyvissä. */
 .stage-dim { position: fixed; inset: 0; z-index: 0; pointer-events: none; background: rgb(8 14 48 / 0.7); opacity: 0; transition: opacity 400ms ease; }
 .stage-dim.is-on { opacity: 1; }
@@ -65,3 +66,19 @@ a:focus-visible, button:focus-visible { outline: 2px solid white; outline-offset
   .hero .pill { min-height: 44px; padding-block: 8px; }
 
 }
+
+/* Nainen / Mies -kytkin etusivun oikeassa alakulmassa. */
+.character-switch { position: fixed; right: 40px; bottom: 32px; z-index: 8; display: grid; grid-template-columns: 1fr 1fr; margin: 0; padding: 4px; border: 1px solid rgb(255 255 255 / 0.7); border-radius: 9999px; background: rgb(8 14 48 / 0.45); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); font-family: var(--font-heading); transition: opacity 300ms ease; }
+.character-switch.is-hidden { opacity: 0; pointer-events: none; }
+.character-switch__thumb { position: absolute; top: 4px; bottom: 4px; left: 4px; width: calc(50% - 4px); border-radius: 9999px; background: #fff; transition: transform 320ms cubic-bezier(.4, 0, .2, 1); }
+.character-switch[data-value="man"] .character-switch__thumb { transform: translateX(100%); }
+.character-switch__option { position: relative; display: flex; align-items: center; justify-content: center; min-width: 88px; min-height: 40px; padding: 0 18px; border-radius: 9999px; color: #fff; font-size: 15px; cursor: pointer; transition: color 320ms ease; }
+.character-switch__option.is-on { color: #080e30; }
+.character-switch__option input { position: absolute; inset: 0; margin: 0; opacity: 0; cursor: pointer; border-radius: 9999px; }
+.character-switch__option:has(input:focus-visible) { outline: 2px solid #fff; outline-offset: 3px; }
+@media (max-width: 768px) {
+  .character-switch { top: 72px; right: 20px; bottom: auto; }
+  .character-switch__option { min-width: 74px; min-height: 36px; padding: 0 12px; font-size: 14px; }
+}
+@media (prefers-reduced-motion: reduce) { .background-video, .character-switch__thumb, .character-switch__option { transition: none; } }
+@media print { .character-switch { display: none !important; } }
