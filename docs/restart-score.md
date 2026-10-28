@@ -22,3 +22,4 @@ Määrittely: Gettowork Restart Score – toteutusmäärittely v1.0 (28.10.2026)
 - Vanha /restart-score-osoite ohjautuu etusivulle. vercel.json ohjaa /kysely- ja /restart-score-polut index.html:ään.
 - Kyselyn tiedostot: src/restart-score/ (content, engine, storage, useRestartScore, RestartScore, About, CSS). Testit: npm test.
 - Laitetallennus: avain gettowork.restart-score.v1, vain käyttäjän tallennuspainikkeesta, vanhenee 120 päivää viimeisestä tallennuksesta.
+- Etusivun oikeassa alakulmassa (mobiilissa ylhäällä) on Nainen / Mies -kytkin. Mies-video on public/getto-video-man.mp4 (H.264, avainkuva 12 framen välein kuten alkuperäinen). Video ladataan vasta, kun se valitaan, ja valinta muistetaan selaimessa (gettowork.character).
