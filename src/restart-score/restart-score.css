@@ -47,6 +47,7 @@
 .rs-label { display: block; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--rs-muted); margin-bottom: 4px !important; }
 .rs-done { color: var(--rs-muted); font-size: 15px; margin-top: 4px !important; }
 
+.rs-stage .rs-btn, .rs-home .rs-start { gap: 0.45em; }
 .rs-stage .rs-btn { min-height: 46px; margin: 0; padding: 10px 22px; font-size: 16px; line-height: 1.2; text-decoration: none; white-space: normal; text-align: center; text-shadow: none; }
 .rs-stage .rs-btn--big { font-size: 19px; padding: 12px 30px; font-family: var(--font-heading); }
 .rs-stage .rs-btn[disabled] { opacity: 0.45; cursor: not-allowed; }

@@ -44,7 +44,8 @@ export function BackgroundVideo() {
     const onGaze = (event: Event) => {
       const fraction = (event as CustomEvent<number>).detail;
       if (!Number.isFinite(video.duration) || !Number.isFinite(fraction)) return;
-      targetTime = Math.max(0, Math.min(1, fraction)) * video.duration;
+      // Videon alussa hahmo katsoo oikealle, lopussa vasemmalle: käännetään, jotta katse osuu kohteeseen.
+      targetTime = (1 - Math.max(0, Math.min(1, fraction))) * video.duration;
       scheduleSeek();
     };
     const syncViewport = () => { prevX = null; onScroll(); };
