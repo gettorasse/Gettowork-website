@@ -1,19 +1,11 @@
 import { useEffect, useRef } from 'react';
 
-const GAZE_EVENT = 'gtw:gaze';
-
-/** Kääntää A.R.I.An katseen: 0 = vasen reuna, 1 = oikea reuna. */
-export function lookAt(fraction: number) {
-  window.dispatchEvent(new CustomEvent<number>(GAZE_EVENT, { detail: fraction }));
-}
-
-/** Taustavideo, jota hiiri (työpöytä), vieritys (mobiili) tai lookAt() kelaa. */
+/** Taustavideo: työpöydällä kursorin vaakasijainti koko näytön leveydeltä kelaa videota, mobiilissa vieritys. */
 export function BackgroundVideo() {
   const ref = useRef<HTMLVideoElement>(null);
   useEffect(() => {
     const video = ref.current!;
     const mobile = window.matchMedia('(max-width: 768px)');
-    let prevX: number | null = null;
     let targetTime = video.currentTime;
     let frame = 0;
     let seeking = false;
@@ -33,24 +25,14 @@ export function BackgroundVideo() {
       scheduleSeek();
     };
     const onMove = (event: MouseEvent) => {
-      if (mobile.matches) return;
-      if (prevX === null) { prevX = event.clientX; return; }
-      const delta = event.clientX - prevX;
-      prevX = event.clientX;
-      if (!Number.isFinite(video.duration)) return;
-      targetTime = Math.max(0, Math.min(video.duration, targetTime + (delta / window.innerWidth) * 0.8 * video.duration));
+      if (mobile.matches || !Number.isFinite(video.duration) || window.innerWidth <= 0) return;
+      // Koko näytön leveys on seuranta-alue: vasen reuna = videon alku, oikea reuna = loppu.
+      const fraction = Math.max(0, Math.min(1, event.clientX / window.innerWidth));
+      targetTime = fraction * video.duration;
       scheduleSeek();
     };
-    const onGaze = (event: Event) => {
-      const fraction = (event as CustomEvent<number>).detail;
-      if (!Number.isFinite(video.duration) || !Number.isFinite(fraction)) return;
-      // Sama suunta kuin vapaassa hiiren liikkeessä: oikealle = videossa eteenpäin.
-      targetTime = Math.max(0, Math.min(1, fraction)) * video.duration;
-      scheduleSeek();
-    };
-    const syncViewport = () => { prevX = null; onScroll(); };
+    const syncViewport = () => { onScroll(); };
     window.addEventListener('mousemove', onMove);
-    window.addEventListener(GAZE_EVENT, onGaze);
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', syncViewport);
     mobile.addEventListener('change', syncViewport);
@@ -61,7 +43,6 @@ export function BackgroundVideo() {
     return () => {
       cancelAnimationFrame(frame);
       window.removeEventListener('mousemove', onMove);
-      window.removeEventListener(GAZE_EVENT, onGaze);
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', syncViewport);
       mobile.removeEventListener('change', syncViewport);

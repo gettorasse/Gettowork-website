@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState, type CSSProperties, type RefObject } from 'react';
-import { lookAt } from '../BackgroundVideo.tsx';
 import { useTypewriter } from '../useTypewriter.ts';
 import {
   BANDS, CONTACT_BODY, CONTACT_EMAIL, CONTACT_SUBJECT, OWNER_TYPES, PHASES, QUESTIONS, QUESTION_BY_ID,
@@ -103,9 +102,8 @@ function QuestionView({ rs, focusRef, fromReview }: ViewProps & { fromReview: bo
   const [errorTick, setErrorTick] = useState(0);
   const errorRef = useRef<HTMLParagraphElement>(null);
   useEffect(() => { if (errorTick > 0) errorRef.current?.focus(); }, [errorTick]);
-  useEffect(() => { if (value !== null) lookAt(value / 10); }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const select = (n: number) => { rs.setScore(q.id, n as Score); setError(false); lookAt(n / 10); };
+  const select = (n: number) => { rs.setScore(q.id, n as Score); setError(false); };
   const submit = () => {
     if (value === null) { setError(true); setErrorTick(t => t + 1); return; }
     if (fromReview) { rs.go('review'); return; }
@@ -128,9 +126,9 @@ function QuestionView({ rs, focusRef, fromReview }: ViewProps & { fromReview: bo
         <div className="rs-balls">
           {Array.from({ length: 11 }, (_, n) => (
             <label key={n} className={`rs-ball${value !== null && n <= value ? ' is-lit' : ''}${value === n ? ' is-selected' : ''}`}
-              style={{ '--i': n } as CSSProperties} onMouseEnter={() => lookAt(n / 10)}>
+              style={{ '--i': n } as CSSProperties}>
               <input type="radio" className="rs-ball__input" name={`rs-score-${q.id}`} value={n} checked={value === n}
-                onChange={() => select(n)} onFocus={() => lookAt(n / 10)} />
+                onChange={() => select(n)} />
               <span className="rs-ball__face" aria-hidden="true">{n}</span>
               <span className="sr-only">{n} pistettä 10:stä</span>
             </label>
