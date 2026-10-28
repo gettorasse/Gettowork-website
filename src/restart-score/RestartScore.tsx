@@ -124,7 +124,7 @@ function QuestionView({ rs, focusRef, fromReview }: ViewProps & { fromReview: bo
       </div>
       <fieldset className="rs-q__field" aria-describedby={endsId}>
         <legend ref={focusRef as RefObject<HTMLLegendElement | null>} tabIndex={-1} className="rs-q__title">{q.question}</legend>
-        {step === 0 && <p className="rs-q__hint">Arvioi viimeisen 90 päivän toteutunutta arkea.</p>}
+        <p className="rs-q__hint">{q.help}{step === 0 && <><br />Arvioi viimeisen 90 päivän toteutunutta arkea.</>}</p>
         <div className="rs-answer">
         <div className="rs-balls">
           {Array.from({ length: 11 }, (_, n) => (

@@ -39,7 +39,7 @@ export function About({ onStart }: { onStart: () => void }) {
 
       <section className="rs-section" aria-labelledby="about-how">
         <h2 id="about-how" className="rs-h2">Näin vastaat</h2>
-        <p>Arvioi viimeisen 90 päivän toteutunutta arkea, älä suunnitelmia. 0 tarkoittaa, että toimintatapa puuttuu, ja 10, että se toimii joka kerta. Hyvä tulos ei edellytä työntekijöitä: kumppanit, rajattu tarjooma ja automaatio käyvät yhtä hyvin.</p>
+        <p>Arvioi viimeisen 90 päivän toteutunutta arkea, älä suunnitelmia. 0 tarkoittaa, että toimintatapa puuttuu, ja 10, että se toimii joka kerta. Hyvä tulos ei edellytä työntekijöitä: kumppanit, selkeä palvelupaketti ja automaatio käyvät yhtä hyvin.</p>
         <p>Kaksi pienintä pistettä nousevat kehityskohteiksi. Voit vaihtaa ne itse, ja niistä muodostuu 90 päivän ohjelma, jonka voit tulostaa tai tallentaa PDF:nä.</p>
       </section>
 

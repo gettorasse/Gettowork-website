@@ -79,7 +79,7 @@
 .rs-q__progress > span { display: block; height: 100%; background: #fff; transition: width 300ms ease; }
 .rs-q__field { border: 0; margin: 18px 0 0; padding: 0; min-width: 0; }
 .rs-q__title { display: block; max-width: 640px; padding: 0; font-size: clamp(24px, 3vw, 38px); line-height: 1.16; }
-.rs-q__hint { margin-top: 10px !important; font-size: 15px; color: var(--rs-muted); }
+.rs-q__hint { max-width: 640px; margin-top: 10px !important; font-size: 16px; line-height: 1.4; color: var(--rs-muted); }
 
 /* Vastausalue kasvaa vain ylärajaan asti, jotta pallojen välit pysyvät siisteinä isollakin näytöllä. */
 .rs-answer { width: 100%; max-width: 920px; margin-top: clamp(26px, 6vh, 60px); }

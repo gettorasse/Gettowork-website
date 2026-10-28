@@ -24,39 +24,39 @@ export const QUESTIONS: readonly Question[] = [
   {
     id: 'pricing', p: 'Pricing', name: 'Hinnoittelu',
     question: 'Jääkö hinnoistasi se kate, jota tavoittelet?',
-    help: 'Huomioi myös oma työaikasi, toimituksen kulut ja toteutuneet alennukset.',
+    help: 'Laske mukaan myös oma työaikasi, materiaalit ja annetut alennukset.',
     anchors: {
-      0: 'En tiedä katettani.',
+      0: 'En tiedä, paljonko minulle jää käteen.',
       5: 'Tavoite tunnetaan, mutta toteutuminen vaihtelee eikä poikkeamiin aina puututa.',
       10: 'Tiedän katteeni ja hinnoittelen sen mukaan.',
     },
   },
   {
     id: 'persona', p: 'Persona', name: 'Oikeat asiakkaat',
-    question: 'Valitsetko asiakkaat, joiden kanssa työ kannattaa?',
-    help: 'Arvioi valintaperusteita ja toteutunutta asiakaskantaa.',
+    question: 'Valitsetko asiakkaat, joiden kanssa työ on kannattavaa ja sujuvaa?',
+    help: 'Mieti, otatko vastaan kaikki työt vai sanotko välillä ei.',
     anchors: {
       0: 'Otan kaikki, jotka tulevat.',
       5: 'Kohdeasiakas on määritelty, mutta päätökset poikkeavat usein siitä.',
-      10: 'Valitsen asiakkaat selvin perustein.',
+      10: 'Tiedän, kuka on minulle sopiva asiakas, ja valitsen sen mukaan.',
     },
   },
   {
     id: 'problem', p: 'Problem', name: 'Asiakkaan ongelma',
-    question: 'Tiedätkö, miksi asiakkaat oikeasti ostavat sinulta?',
-    help: 'Erota kiinnostus toteutuneesta ostosta ja ongelman poistumista koskevasta palautteesta.',
+    question: 'Tiedätkö, minkä ongelman takia asiakkaat ostavat sinulta?',
+    help: 'Perustuuko tietosi asiakkaiden omiin sanoihin vai omaan arvaukseesi?',
     anchors: {
       0: 'Arvaan.',
       5: 'Asiakkaat tunnistavat ongelman, mutta ostamisen syy tai saavutettu hyöty jää osin epäselväksi.',
-      10: 'Asiakkaat kertovat sen ja ostavat uudelleen.',
+      10: 'Asiakkaat kertovat sen, ja he ostavat uudelleen.',
     },
   },
   {
-    id: 'product', p: 'Product', name: 'Tarjooma',
-    question: 'Hoituuko toimitus joka kerta samalla tavalla?',
-    help: 'Arvioi yhtä keskeistä tarjoomaa: sisältöä, rajauksia ja toimitustapaa.',
+    id: 'product', p: 'Product', name: 'Tarjonta ja toimitus',
+    question: 'Toimitatko palvelusi tai tuotteesi joka kerta samalla tavalla?',
+    help: 'Onko sinulla selkeä paketti, vai rakennetaanko jokainen työ alusta?',
     anchors: {
-      0: 'Keksin sen joka kerta uudestaan.',
+      0: 'Jokainen työ tehdään eri tavalla.',
       5: 'Peruspaketti on olemassa, mutta poikkeukset tekevät toimituksesta usein vaikean.',
       10: 'Sama malli ja sama laatu joka kerta.',
     },
@@ -64,7 +64,7 @@ export const QUESTIONS: readonly Question[] = [
   {
     id: 'profit', p: 'Profit', name: 'Kannattavuuden johtaminen',
     question: 'Näetkö luvuista ajoissa, miten rahat riittävät?',
-    help: 'Arvioi tiedon saatavuutta, ymmärrettävyyttä ja käyttöä päätöksissä.',
+    help: 'Tiedätkö kassatilanteen ja kannattavuuden ennen kuin ongelma on edessä?',
     anchors: {
       0: 'Huomaan ongelmat vasta jälkikäteen.',
       5: 'Luvut tarkistetaan ajoittain, mutta ennakointi ja toimenpiteet ovat epäsäännöllisiä.',
@@ -73,60 +73,60 @@ export const QUESTIONS: readonly Question[] = [
   },
   {
     id: 'pitch', p: 'Pitch', name: 'Myynti',
-    question: 'Eteneekö myynti sovitulla tavalla?',
-    help: 'Arvioi tarvekartoitusta, tarjouksia, seurantaa ja sitä, tarvitseeko omistajan pelastaa kaupat.',
+    question: 'Eteneekö myyntisi samalla tavalla kaupasta toiseen?',
+    help: 'Onko tarjouksille ja niiden seurannalle selkeä tapa, vai hoidetaanko jokainen kauppa fiiliksellä?',
     anchors: {
       0: 'Jokainen kauppa on improvisaatiota.',
       5: 'Yhteinen malli on olemassa, mutta käyttö ja seuranta vaihtelevat.',
-      10: 'Myynnillä on malli, joka toimii.',
+      10: 'Myynnillä on toimiva malli, jota kaikki käyttävät.',
     },
   },
   {
     id: 'people', p: 'People', name: 'Ihmiset ja vastuut',
-    question: 'Tekevätkö muut arjen päätökset itse?',
-    help: 'Tiimi voi sisältää työntekijöitä, kumppaneita tai ulkoistettuja palveluja.',
+    question: 'Tekeekö henkilökuntasi omaan työhönsä liittyvät päätökset itsenäisesti?',
+    help: 'Kumppanit ja alihankkijat lasketaan mukaan. Mieti, kuinka moni asia odottaa sinun hyväksyntääsi.',
     anchors: {
-      0: 'Kaikki odottaa minun päätöstäni.',
+      0: 'Lähes kaikki odottaa minun päätöstäni.',
       5: 'Vastuut on nimetty, mutta päätösvalta tai varahenkilöt jäävät epäselviksi.',
-      10: 'Vastuut ovat selvät ja toimivat.',
+      10: 'Jokainen tietää vastuunsa ja päättää omista asioistaan.',
     },
   },
   {
     id: 'promote', p: 'Promote', name: 'Asiakashankinta',
     question: 'Tuleeko uusia asiakkaita tasaisesti?',
-    help: 'Arvioi sopivien yhteydenottojen ja kauppojen syntyä, älä seuraajamääriä.',
+    help: 'Tulevatko asiakkaat sovituista kanavista vai sattumalta ja oman juoksemisesi varassa?',
     anchors: {
       0: 'Sattumalta tai oman juoksemisen varassa.',
       5: 'Toimivia kanavia on, mutta rytmi ja tulokset vaihtelevat eikä syitä tunneta.',
-      10: 'Toimivat kanavat tuovat asiakkaita jatkuvasti.',
+      10: 'Toimivat kanavat tuovat sopivia asiakkaita jatkuvasti.',
     },
   },
   {
     id: 'process', p: 'Process', name: 'Prosessit',
-    question: 'Valmistuvatko rutiinityöt ilman jatkuvaa neuvomista?',
-    help: 'Arvioi esimerkiksi tilausta, toimitusta, laskutusta tai asiakaspalvelua.',
+    question: 'Valmistuvatko toistuvat työt ilman, että sinun pitää neuvoa?',
+    help: 'Esimerkiksi tilaukset, laskutus tai asiakaspalvelu.',
     anchors: {
       0: 'Kaikki on minun päässäni.',
       5: 'Osa työstä on kuvattu, mutta poikkeukset ja laatu vaativat usein omistajaa.',
-      10: 'Ohjeet toimivat ja työ valmistuu.',
+      10: 'Ohjeet toimivat ja työ valmistuu sovitusti.',
     },
   },
   {
     id: 'predicament', p: 'Predicament', name: 'Todellinen pullonkaula',
-    question: 'Tiedätkö, mikä yritystäsi eniten hidastaa?',
-    help: 'Arvioi eroa oireiden korjailun ja yhden todennetun juurisyyn ratkaisemisen välillä.',
+    question: 'Tiedätkö, mikä yritystäsi eniten hidastaa – ja korjaatko sitä?',
+    help: 'Erota yksittäiset tulipalot siitä yhdestä asiasta, joka toistuu viikosta toiseen.',
     anchors: {
       0: 'Sammutan vain tulipaloja.',
       5: 'Este on tunnistettu, mutta sen ratkaiseminen jää muiden töiden alle.',
-      10: 'Tiedän sen ja korjaan sitä.',
+      10: 'Tiedän pullonkaulan ja korjaan sitä suunnitellusti.',
     },
   },
   {
     id: 'path', p: 'Path', name: 'Omistajan suunta',
     question: 'Tiedätkö, mihin olet yritystäsi viemässä?',
-    help: 'Tavoite voi olla esimerkiksi vakaa toimeentulo ja vapaa aika, kasvu tai myöhempi omistajanvaihdos.',
+    help: 'Tavoite voi olla kasvu, vakaa toimeentulo, enemmän vapaa-aikaa tai yrityksen myynti.',
     anchors: {
-      0: 'Suuntaa ei ole.',
+      0: 'Selvää suuntaa ei ole.',
       5: 'Tavoite on sanoitettu, mutta resurssit ja arjen valinnat tukevat sitä vain osittain.',
       10: 'Tavoite ohjaa päätöksiäni ja kalenteriani.',
     },
@@ -134,11 +134,11 @@ export const QUESTIONS: readonly Question[] = [
   {
     id: 'protect', p: 'Protect', name: 'Omistajan aika ja jatkuvuus',
     question: 'Pystytkö pitämään lomaa ilman, että työ pysähtyy?',
-    help: 'Arvioi toteutuneita vapaita, yhteydenottorajoja ja sovittuja sijaisjärjestelyjä.',
+    help: 'Mieti viimeisintä lomaasi: jatkuiko arki, vai jouduitko vastaamaan puhelimeen?',
     anchors: {
       0: 'Minun pitää olla aina tavoitettavissa.',
       5: 'Vapaat onnistuvat osittain, mutta keskeytykset tai varajärjestelyjen puute toistuvat.',
-      10: 'Loma onnistuu ja arki jatkuu.',
+      10: 'Loma onnistuu, ja arki jatkuu ilman minua.',
     },
   },
 ];
@@ -187,7 +187,7 @@ export const AREA_STATUS: Record<AreaLevel, string> = {
 };
 
 export const AREA_GUIDANCE: Record<AreaLevel, string> = {
-  build: 'Rakenna ensin pienin toimiva käytäntö. Valitse vain yksi tarjooma, työ tai päätöstilanne kokeiluun.',
+  build: 'Rakenna ensin pienin toimiva käytäntö. Valitse vain yksi palvelu, työ tai päätöstilanne kokeiluun.',
   stabilise: 'Hyödynnä nykyistä käytäntöä ja keskity siihen, että se toteutuu joka kerta. Nimeä vastuu ja seuraa poikkeamia.',
   strengthen: 'Vahvista nykyistä käytäntöä testaamalla sitä tilanteessa, jossa omistaja ei ohjaa toteutusta.',
   maintain: 'Varmista nykyisen käytännön toimivuus näytöllä. Käytä ensimmäinen vaihe tarkistamiseen, toinen poikkeustilanteen testiin ja kolmas ylläpidon sopimiseen.',
@@ -219,10 +219,10 @@ export const PLAN_LIBRARY: Record<PId, PlanEntry> = {
     goal: 'Hinnoittelupäätökset perustuvat toteutuneisiin kustannuksiin ja sovittuun katetavoitteeseen.',
     steps: [
       { task: 'Laske kolmen tavallisen toimituksen kustannukset myös omalle työlle.', done: 'kustannukset ja tavoitekate on kirjattu.' },
-      { task: 'Testaa yhdessä tarjoomassa kustannus- ja arvoperusteista hintaa uusissa tarjouksissa.', done: 'tarjoukset ja asiakkaiden päätökset on kirjattu.' },
+      { task: 'Testaa yhdessä palvelussa tai tuotteessa kustannus- ja arvoperusteista hintaa uusissa tarjouksissa.', done: 'tarjoukset ja asiakkaiden päätökset on kirjattu.' },
       { task: 'Vertaa toteutunutta katetta ja sovi hinnan sekä alennusten tarkistusrytmi.', done: 'seuraavan tarkistuksen aika ja vastuuhenkilö on sovittu.' },
     ],
-    metric: 'Tarkastellun tarjooman toteutunut kate euroina ja prosentteina samalla laskentatavalla.',
+    metric: 'Tarkastellun palvelun toteutunut kate euroina ja prosentteina samalla laskentatavalla.',
   },
   persona: {
     goal: 'Asiakasvalinta tukee kannattavaa ja sujuvaa työtä.',
@@ -234,18 +234,18 @@ export const PLAN_LIBRARY: Record<PId, PlanEntry> = {
     metric: 'Sopivuuskriteerit täyttävien uusien asiakkaiden osuus.',
   },
   problem: {
-    goal: 'Keskeisen tarjooman ostoperuste perustuu asiakkaiden osoittamaan tarpeeseen.',
+    goal: 'Tärkeimmän palvelun ostoperuste perustuu asiakkaiden osoittamaan tarpeeseen.',
     steps: [
       { task: 'Keskustele viiden asiakkaan kanssa ostoon johtaneesta tilanteesta ja ratkaisemattoman ongelman vaikutuksista.', done: 'havainnot ja tärkein yhteinen ongelma on kirjattu.' },
       { task: 'Testaa ongelman kuvausta oikeissa myyntikeskusteluissa.', done: 'asiakkaiden perustelut ja päätökset on kirjattu.' },
-      { task: 'Varmista toimituksen jälkeen, ratkesiko luvattu ongelma.', done: 'palaute on koottu ja tarjooman kuvaus tarkistettu.' },
+      { task: 'Varmista toimituksen jälkeen, ratkesiko luvattu ongelma.', done: 'palaute on koottu ja palvelun kuvaus tarkistettu.' },
     ],
     metric: 'Niiden palautetta antaneiden asiakkaiden osuus, jotka vahvistavat sovitun ongelman ratkenneen.',
   },
   product: {
-    goal: 'Yksi keskeinen tarjooma voidaan toimittaa sovitulla sisällöllä ja laadulla.',
+    goal: 'Yksi tärkeä palvelu tai tuote toimitetaan sovitulla sisällöllä ja laadulla.',
     steps: [
-      { task: 'Kuvaa lupaus, sisältö, rajaukset ja toimituksen vaiheet.', done: 'tarjooma mahtuu yhteen selkeään kuvaukseen.' },
+      { task: 'Kuvaa lupaus, sisältö, rajaukset ja toimituksen vaiheet.', done: 'palvelu mahtuu yhteen selkeään kuvaukseen.' },
       { task: 'Toimita rajatulla mallilla vähintään kaksi kertaa, tai yksi kokonainen pilotti pitkissä toimituksissa.', done: 'poikkeamat on kirjattu.' },
       { task: 'Korjaa toistuvat poikkeamat ja sovi mallin vastuuhenkilö.', done: 'seuraava toimitus voidaan käynnistää samoilla ohjeilla.' },
     ],
@@ -263,7 +263,7 @@ export const PLAN_LIBRARY: Record<PId, PlanEntry> = {
   pitch: {
     goal: 'Myyntitilanteet etenevät sovitun mallin mukaan.',
     steps: [
-      { task: 'Kuvaa tarvekartoitus, tarjouksen sisältö, päätösvaihe ja seuranta.', done: 'yhdelle tarjoomalle on yhteinen myyntirunko.' },
+      { task: 'Kuvaa tarvekartoitus, tarjouksen sisältö, päätösvaihe ja seuranta.', done: 'yhdelle palvelulle on yhteinen myyntirunko.' },
       { task: 'Testaa runkoa viidessä myyntitilanteessa, tai kaikissa jakson tilanteissa jos niitä on vähemmän.', done: 'eteneminen ja keskeytymisen syyt on kirjattu.' },
       { task: 'Korjaa yksi toistuva este ja varmista, että sovittu vastuuhenkilö pystyy jatkamaan prosessia.', done: 'malli on päivitetty ja vastuut sovittu.' },
     ],
