@@ -70,20 +70,27 @@ function Intro({ rs, focusRef }: ViewProps) {
           <span aria-hidden="true">{displayed}{!done && <span className="cursor ml-[2px] inline-block h-[1.1em] w-[2px] bg-white align-middle" />}</span>
         </h1>
         <div className="rs-home-actions" style={{ opacity: pillsVisible ? 1 : 0, transform: `translateY(${pillsVisible ? 0 : 8}px)`, transition: 'opacity 0.4s ease, transform 0.4s ease' }}>
+          <ul className="rs-checks">
+            {QUESTION_PILLS.map(q => <li key={q}><CheckIcon />{q}</li>)}
+          </ul>
           <div className="rs-home-main">
             <button type="button" className="pill white-pill rs-start" onClick={start}>Aloita testi <span aria-hidden="true">→</span></button>
             {canResume && <button type="button" className="pill outline-pill rs-resume" onClick={rs.resume}>Jatka testiä</button>}
           </div>
-          <div className="rs-home-pills">
-            {QUESTION_PILLS.map(q => <button key={q} type="button" className="pill white-pill" onClick={start}>{q}</button>)}
-            <a className="pill outline-pill rs-contact-pill gap-2 sm:gap-3" href={`mailto:${CONTACT_EMAIL}`}><span>Tavoita minut: <span className="underline underline-offset-1">{CONTACT_EMAIL}</span></span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2" /><path d="m2 5 10 8 10-8" /></svg></a>
-          </div>
           <Notices rs={rs} />
         </div>
       </div>
+      <a className="pill outline-pill rs-contact-corner gap-2 sm:gap-3" href={`mailto:${CONTACT_EMAIL}`} style={{ opacity: pillsVisible ? 1 : 0, transition: 'opacity 0.4s ease' }}><span>Tavoita minut: <span className="underline underline-offset-1">{CONTACT_EMAIL}</span></span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2" /><path d="m2 5 10 8 10-8" /></svg></a>
     </main>
     <div className="mobile-scroll-spacer" aria-hidden="true" />
   </>;
+}
+
+function CheckIcon() {
+  return <svg className="rs-checks__icon" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+    <circle cx="12" cy="12" r="11" fill="#1480ff" />
+    <path d="m7 12.5 3.2 3.2L17 9" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>;
 }
 
 // --- Kysymys -----------------------------------------------------------------
