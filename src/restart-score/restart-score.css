@@ -13,7 +13,7 @@
 .rs-stage [tabindex="-1"]:focus-visible { outline: 2px solid #fff; outline-offset: 6px; }
 
 /* --- Etusivu --- */
-.rs-checks { list-style: none; margin: 0 0 26px; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+.rs-checks { list-style: none; margin: 0 0 26px; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, max-content)); gap: 12px 28px; }
 .rs-checks li { display: flex; align-items: center; gap: 12px; color: #fff; font-size: clamp(17px, 1.8vw, 20px); line-height: 1.3; }
 .rs-checks__icon { flex: none; }
 .rs-home-main { display: flex; flex-wrap: wrap; gap: 12px; }
@@ -24,7 +24,9 @@
 .rs-home .rs-contact-corner { position: absolute; left: 40px; bottom: 32px; z-index: 10; margin: 0; }
 @media (min-width: 640px) { .rs-home .rs-start { font-size: 22px; } }
 @media (max-width: 768px) {
-  .hero .rs-checks { margin-bottom: 18px; gap: 9px; }
+  .hero .rs-checks { margin-bottom: 18px; gap: 10px 14px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hero .rs-checks li { font-size: 15px; gap: 8px; align-items: flex-start; }
+  .hero .rs-checks__icon { width: 18px; height: 18px; margin-top: 1px; }
   .hero .rs-home-main { display: grid; grid-template-columns: 1fr; gap: 8px; }
   .hero .rs-start { min-height: 56px; font-size: 19px; }
   .hero .rs-contact-corner { position: static; margin-top: 14px; width: 100%; }
