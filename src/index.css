@@ -43,7 +43,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid white; outline-offset
   html, body { overscroll-behavior-y: none; }
   .video-backdrop { height: 100lvh; }
   .background-video { left: 0; object-position: center; }
-  .video-gradient { background: linear-gradient(to top, rgba(8, 14, 48, 0.96) 0%, rgba(8, 14, 48, 0.9) 22%, rgba(8, 14, 48, 0.55) 42%, transparent 72%); }
+  .video-gradient { background: linear-gradient(to top, rgba(8, 14, 48, 0.95) 0%, rgba(8, 14, 48, 0.85) 14%, rgba(8, 14, 48, 0.45) 28%, transparent 45%); }
   /* Testin aikana gradientti nousee yli puolen näytön, jotta keskellä olevat tekstit erottuvat. */
   .stage-floor { height: 85vh; background: linear-gradient(to top, rgb(8 14 48 / 0.92) 0%, rgb(8 14 48 / 0.82) 40%, rgb(8 14 48 / 0.5) 65%, rgb(8 14 48 / 0) 100%); }
   /* Keep the composition stable when mobile browser chrome expands or collapses. */
