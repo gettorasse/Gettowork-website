@@ -11,7 +11,7 @@ import './restart-score.css';
 type FocusRef = RefObject<HTMLElement | null>;
 type ViewProps = { rs: RestartScoreState; focusRef: FocusRef };
 
-const TITLE = 'Minkälainen yrittäjä sinä olet?';
+const TITLE = 'Minkälainen yrittäjä olet?';
 const SUBTITLE = 'Tee testi ja selvitä, kuinka hyvin yrityksesi toimii.';
 const TYPED = `${TITLE} ${SUBTITLE}`;
 const QUESTION_PILLS = ['Miksi kiire ei lopu?', 'Onko hinnoittelu kohdallaan?', 'Mistä seuraavat asiakkaat?', 'Mihin aikani oikeasti menee?'];
@@ -64,7 +64,7 @@ function Intro({ rs, focusRef }: ViewProps) {
 
   return <>
     <main lang="fi" className="hero rs-home relative z-[1] flex h-screen flex-col justify-end overflow-hidden px-5 pb-12 sm:px-8 md:justify-center md:px-10 md:pb-0">
-      <div className="relative z-10 max-w-2xl">
+      <div className="relative z-10 max-w-[820px]">
         <h1 ref={focusRef as RefObject<HTMLHeadingElement | null>} tabIndex={-1} className="rs-home-title">
           <span className="sr-only">{TYPED}</span>
           {/* Näkymätön kopio varaa tilan, jottei sivu hypi kirjoituksen aikana. */}
