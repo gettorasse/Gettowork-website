@@ -4,15 +4,16 @@ import type { MouseEvent } from 'react';
 // testi etenee samalla sivulla. /kysely on testin tietosivu. Vercel ohjaa
 // polut index.html-tiedostoon (vercel.json), joten suora avaus ja päivitys toimivat.
 
-export type Route = 'home' | 'about';
+export type Route = 'home' | 'about' | 'privacy';
 export const HOME_PATH = '/';
 export const ABOUT_PATH = '/kysely';
+export const PRIVACY_PATH = '/tietosuoja';
 /** Aiempi esikatseluosoite ohjataan etusivulle. */
 const LEGACY_QUIZ_PATH = '/restart-score';
 
 export function routeFromPath(pathname: string): Route {
   const clean = pathname.replace(/\/+$/, '');
-  return clean === ABOUT_PATH ? 'about' : 'home';
+  return clean === ABOUT_PATH ? 'about' : clean === PRIVACY_PATH ? 'privacy' : 'home';
 }
 
 export function isLegacyPath(pathname: string) {

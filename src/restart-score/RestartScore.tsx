@@ -217,7 +217,7 @@ function Result({ rs, focusRef }: ViewProps) {
     if (window.confirm('Tallennettu tulos poistuu tältä laitteelta. Haluatko poistaa sen?')) rs.deleteFromDevice();
   };
   const unlocked = Boolean(a.leadSubmittedAt);
-  const payload: Omit<LeadPayload, keyof Lead> = { total: ev.total, ownerType: type.name, scores, priorities: selected, completedAt: a.completedAt };
+  const payload: Omit<LeadPayload, keyof Lead | 'website'> = { total: ev.total, ownerType: type.name, scores, priorities: selected, completedAt: a.completedAt };
 
   return <main lang="fi" className="rs-stage rs-stage--panel">
     <article className="rs-panel rs-result">
@@ -308,8 +308,9 @@ function ResultLoader({ focusRef, onDone }: { focusRef: FocusRef; onDone: () => 
   </main>;
 }
 
-function LeadGate({ payload, onUnlocked }: { payload: Omit<LeadPayload, keyof Lead>; onUnlocked: () => void }) {
+function LeadGate({ payload, onUnlocked }: { payload: Omit<LeadPayload, keyof Lead | 'website'>; onUnlocked: () => void }) {
   const [lead, setLead] = useState<Lead>({ name: '', email: '', phone: '' });
+  const [website, setWebsite] = useState('');
   const [errors, setErrors] = useState<LeadErrors>({});
   const [sending, setSending] = useState(false);
   const [failed, setFailed] = useState(false);
@@ -325,7 +326,7 @@ function LeadGate({ payload, onUnlocked }: { payload: Omit<LeadPayload, keyof Le
     const first = (['name', 'email', 'phone'] as const).find(k => found[k]);
     if (first) { refs[first].current?.focus(); return; }
     setSending(true); setFailed(false);
-    const res = await submitLead({ ...payload, name: lead.name.trim(), email: lead.email.trim(), phone: lead.phone.trim() });
+    const res = await submitLead({ ...payload, name: lead.name.trim(), email: lead.email.trim(), phone: lead.phone.trim(), website });
     setSending(false);
     if (res.ok) onUnlocked(); else setFailed(true);
   };
@@ -344,11 +345,13 @@ function LeadGate({ payload, onUnlocked }: { payload: Omit<LeadPayload, keyof Le
       {field('name', 'Nimi', 'text', 'name', true)}
       {field('email', 'Sähköposti', 'email', 'email', true)}
       {field('phone', 'Puhelin', 'tel', 'tel', false)}
+      {/* Roskapostiansa: piilossa ihmisiltä ja ruudunlukijoilta. */}
+      <input className="rs-hp" type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" value={website} onChange={e => setWebsite(e.target.value)} />
       <div className="rs-gate__actions">
         <button type="submit" className="pill white-pill rs-btn rs-btn--big" disabled={sending}>{sending ? 'Raporttia kootaan…' : 'Avaa raporttini'} <span aria-hidden="true">→</span></button>
       </div>
       {failed && <p role="alert" className="rs-error">Lähetys ei onnistunut. Yritä hetken päästä uudelleen.</p>}
-      <p className="rs-muted rs-small">Käytämme tietoja ollaksemme sinuun yhteydessä tuloksesi tiimoilta. Emme luovuta niitä eteenpäin.</p>
+      <p className="rs-muted rs-small">Lähettämällä tiedot hyväksyt, että olemme sinuun yhteydessä tuloksesi tiimoilta. Emme luovuta tietoja eteenpäin. <a className="rs-inline-link" href="/tietosuoja" target="_blank" rel="noopener">Tietosuojaseloste</a></p>
     </form>
   </section>;
 }

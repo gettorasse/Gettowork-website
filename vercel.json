@@ -19,6 +19,14 @@
     {
       "source": "/restart-score/",
       "destination": "/index.html"
+    },
+    {
+      "source": "/tietosuoja",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/tietosuoja/",
+      "destination": "/index.html"
     }
   ]
 }

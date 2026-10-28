@@ -217,6 +217,9 @@
 .rs-field__error { font-size: 14px; }
 .rs-field__error::before { content: "! "; color: var(--rs-accent); }
 .rs-gate__actions { margin-top: 6px; }
+.rs-inline-link { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+.rs-inline-link:hover { color: var(--rs-accent); }
+.rs-hp { position: absolute; left: -10000px; width: 1px; height: 1px; opacity: 0; }
 
 /* --- Kysely-sivu --- */
 .rs-about .rs-lead { margin-top: 14px !important; max-width: 640px; }

@@ -201,3 +201,40 @@ test('Yhteystiedot: nimi ja sähköposti pakollisia, puhelin valinnainen', () =>
   const bad = validateLead({ name: ' ', email: 'ei-osoite', phone: 'abc' });
   assert.ok(bad.name && bad.email && bad.phone);
 });
+
+// --- Lähetys Notioniin (api/lead.ts) ---
+import { POST } from '../api/lead.ts';
+import { toRequestBody } from '../src/restart-score/lead.ts';
+
+function leadBody(over: Record<string, unknown> = {}) {
+  const scores = Object.fromEntries(ORDER.map(id => [id, 5])) as Record<PId, Score>;
+  return { ...toRequestBody({ name: 'Testi Yrittäjä', email: 'testi@example.com', phone: '', total: 60, ownerType: 'Pyörittäjä', scores, priorities: ['pricing', 'persona'], completedAt: '2026-10-28T18:00:00.000Z' }), ...over };
+}
+const req = (body: unknown) => new Request('https://x/api/lead', { method: 'POST', body: JSON.stringify(body) });
+
+test('Lähetys: rivi Notioniin oikeilla sarakkeilla', async () => {
+  process.env.NOTION_TOKEN = 'test-token'; process.env.NOTION_DATABASE_ID = 'db123';
+  let sent: { url: string; body: { parent: { database_id: string }; properties: Record<string, any> } } | null = null;
+  globalThis.fetch = (async (url: string, init: RequestInit) => { sent = { url, body: JSON.parse(String(init.body)) }; return new Response('{}', { status: 200 }); }) as typeof fetch;
+  const res = await POST(req(leadBody()));
+  assert.equal(res.status, 200);
+  assert.ok(sent);
+  const s = sent as NonNullable<typeof sent>;
+  assert.equal(s.url, 'https://api.notion.com/v1/pages');
+  assert.equal(s.body.parent.database_id, 'db123');
+  assert.equal(s.body.properties['Nimi'].title[0].text.content, 'Testi Yrittäjä');
+  assert.equal(s.body.properties['Pisteet'].number, 60);
+  assert.deepEqual(s.body.properties['Kehityskohteet'].multi_select.map((m: { name: string }) => m.name), ['Hinnoittelu', 'Oikeat asiakkaat']);
+  assert.match(s.body.properties['Osa-alueet'].rich_text[0].text.content, /^Hinnoittelu 5, Oikeat asiakkaat 5/);
+});
+
+test('Lähetys: virheelliset tiedot ja botit hylätään, puuttuva asetus näkyy virheenä', async () => {
+  let calls = 0;
+  globalThis.fetch = (async () => { calls++; return new Response('{}', { status: 200 }); }) as typeof fetch;
+  assert.equal((await POST(req(leadBody({ email: 'ei' })))).status, 400);
+  assert.equal((await POST(req(leadBody({ total: 121 })))).status, 400);
+  assert.equal((await POST(req(leadBody({ website: 'spam.example' })))).status, 200);
+  assert.equal(calls, 0);
+  delete process.env.NOTION_TOKEN;
+  assert.equal((await POST(req(leadBody()))).status, 500);
+});
