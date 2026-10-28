@@ -55,6 +55,8 @@ function Intro({ rs, focusRef }: ViewProps) {
   useEffect(() => { if (done) typedOnce = true; }, [done]);
   useEffect(() => { if (skip) return; const t = setTimeout(() => setPillsVisible(true), 400); return () => clearTimeout(t); }, [skip]);
 
+  const onSub = displayed.length > TITLE.length;
+  const caret = <span className="cursor ml-[3px] inline-block h-[0.9em] w-[2px] bg-white align-[-0.08em]" />;
   const canResume = Boolean(rs.deviceDraft) || rs.hasMemoryProgress;
   const storedOnDevice = Boolean(rs.deviceDraft) || rs.persist;
   const start = () => {
@@ -70,9 +72,9 @@ function Intro({ rs, focusRef }: ViewProps) {
           {/* Näkymätön kopio varaa tilan, jottei sivu hypi kirjoituksen aikana. */}
           <span className="rs-home-title__ghost" aria-hidden="true"><span className="rs-home-title__big">{TITLE}</span> <span className="rs-home-title__sub">{SUBTITLE}</span></span>
           <span className="rs-home-title__typed" aria-hidden="true">
-            <span className="rs-home-title__big">{displayed.slice(0, TITLE.length)}</span>
-            {displayed.length > TITLE.length && <> <span className="rs-home-title__sub">{displayed.slice(TITLE.length + 1)}</span></>}
-            {!done && <span className="cursor ml-[2px] inline-block h-[1em] w-[2px] bg-white align-middle" />}
+            {/* Kursori kulkee aina kirjoitettavan rivin lopussa, joten se ei hyppää omalle rivilleen. */}
+            <span className="rs-home-title__big">{displayed.slice(0, TITLE.length)}{!done && !onSub && caret}</span>
+            {onSub && <span className="rs-home-title__sub">{displayed.slice(TITLE.length + 1)}{!done && caret}</span>}
           </span>
         </h1>
         <div className="rs-home-actions" style={{ opacity: pillsVisible ? 1 : 0, transform: `translateY(${pillsVisible ? 0 : 8}px)`, transition: 'opacity 0.4s ease, transform 0.4s ease' }}>
