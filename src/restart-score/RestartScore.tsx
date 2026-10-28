@@ -11,7 +11,9 @@ import './restart-score.css';
 type FocusRef = RefObject<HTMLElement | null>;
 type ViewProps = { rs: RestartScoreState; focusRef: FocusRef };
 
-const TYPED = 'Minkälainen yrittäjä sinä olet? Tee testi ja selvitä, kuinka hyvin yrityksesi toimii.';
+const TITLE = 'Minkälainen yrittäjä sinä olet?';
+const SUBTITLE = 'Tee testi ja selvitä, kuinka hyvin yrityksesi toimii.';
+const TYPED = `${TITLE} ${SUBTITLE}`;
 const QUESTION_PILLS = ['Miksi kiire ei lopu?', 'Onko hinnoittelu kohdallaan?', 'Mistä seuraavat asiakkaat?', 'Mihin aikani oikeasti menee?'];
 let typedOnce = false;
 
@@ -62,10 +64,16 @@ function Intro({ rs, focusRef }: ViewProps) {
 
   return <>
     <main lang="fi" className="hero rs-home relative z-[1] flex h-screen flex-col justify-end overflow-hidden px-5 pb-12 sm:px-8 md:justify-center md:px-10 md:pb-0">
-      <div className="relative z-10 max-w-xl">
-        <h1 ref={focusRef as RefObject<HTMLHeadingElement | null>} tabIndex={-1} className="typewriter mb-5 min-h-[54px] text-white sm:mb-6">
+      <div className="relative z-10 max-w-2xl">
+        <h1 ref={focusRef as RefObject<HTMLHeadingElement | null>} tabIndex={-1} className="rs-home-title">
           <span className="sr-only">{TYPED}</span>
-          <span aria-hidden="true">{displayed}{!done && <span className="cursor ml-[2px] inline-block h-[1.1em] w-[2px] bg-white align-middle" />}</span>
+          {/* Näkymätön kopio varaa tilan, jottei sivu hypi kirjoituksen aikana. */}
+          <span className="rs-home-title__ghost" aria-hidden="true"><span className="rs-home-title__big">{TITLE}</span> <span className="rs-home-title__sub">{SUBTITLE}</span></span>
+          <span className="rs-home-title__typed" aria-hidden="true">
+            <span className="rs-home-title__big">{displayed.slice(0, TITLE.length)}</span>
+            {displayed.length > TITLE.length && <> <span className="rs-home-title__sub">{displayed.slice(TITLE.length + 1)}</span></>}
+            {!done && <span className="cursor ml-[2px] inline-block h-[1em] w-[2px] bg-white align-middle" />}
+          </span>
         </h1>
         <div className="rs-home-actions" style={{ opacity: pillsVisible ? 1 : 0, transform: `translateY(${pillsVisible ? 0 : 8}px)`, transition: 'opacity 0.4s ease, transform 0.4s ease' }}>
           <ul className="rs-checks">
