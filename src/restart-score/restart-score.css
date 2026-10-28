@@ -81,11 +81,13 @@
 .rs-q__title { display: block; max-width: 640px; padding: 0; font-size: clamp(24px, 3vw, 38px); line-height: 1.16; }
 .rs-q__hint { margin-top: 10px !important; font-size: 15px; color: var(--rs-muted); }
 
-.rs-balls { display: grid; grid-template-columns: repeat(11, minmax(0, 1fr)); gap: clamp(6px, 1.1vw, 16px); margin-top: clamp(26px, 6vh, 64px); }
+/* Vastausalue kasvaa vain ylärajaan asti, jotta pallojen välit pysyvät siisteinä isollakin näytöllä. */
+.rs-answer { width: 100%; max-width: 920px; margin-top: clamp(26px, 6vh, 60px); }
+.rs-balls { display: grid; grid-template-columns: repeat(11, minmax(0, 1fr)); gap: clamp(8px, 1.1vw, 14px); }
 @media (max-width: 699px) { .rs-balls { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; } }
 @media (max-width: 353px) { .rs-balls { grid-template-columns: repeat(4, minmax(0, 1fr)); } .rs-ball { width: min(100%, 58px); } }
 
-.rs-ball { position: relative; display: block; justify-self: center; width: min(100%, 88px); aspect-ratio: 1 / 1; min-width: 44px; cursor: pointer; }
+.rs-ball { position: relative; display: block; justify-self: center; width: min(100%, 72px); aspect-ratio: 1 / 1; min-width: 44px; cursor: pointer; }
 .rs-ball__input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; border-radius: 50%; cursor: pointer; }
 .rs-ball__face {
   position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
@@ -108,8 +110,17 @@
 }
 .rs-ball__input:focus-visible + .rs-ball__face { outline: 2px solid #fff; outline-offset: 6px; }
 
-.rs-ends { display: flex; flex-direction: column; gap: 4px; max-width: 560px; margin-top: 18px; font-size: 15px; line-height: 1.35; color: var(--rs-muted); }
-.rs-ends__n { display: inline-block; min-width: 2.2em; font-family: var(--font-heading); color: #fff; }
+.rs-ends { display: flex; justify-content: space-between; align-items: flex-start; gap: 32px; margin-top: 20px; font-size: clamp(17px, 1.4vw, 20px); line-height: 1.3; color: #fff; }
+.rs-ends p { max-width: 46%; }
+.rs-ends p:last-child { text-align: right; }
+.rs-ends__n { display: block; font-family: var(--font-heading); font-size: 1.25em; margin-bottom: 2px; }
+/* Puhelimessa pallot ovat kahdella rivillä, joten ohjeet ovat allekkain vasemmalla. */
+@media (max-width: 699px) {
+  .rs-ends { flex-direction: column; gap: 8px; font-size: 16px; }
+  .rs-ends p { max-width: none; }
+  .rs-ends p:last-child { text-align: left; }
+  .rs-ends__n { display: inline-block; min-width: 2em; font-size: 1em; margin: 0; }
+}
 
 .rs-error { margin-top: 16px !important; font-family: var(--font-heading); }
 .rs-error::before { content: "! "; color: var(--rs-accent); }
