@@ -47,6 +47,7 @@ function App() {
     <BackgroundVideo />
     <div className={`stage-dim${dim ? ' is-on' : ''}`} aria-hidden="true" />
     <div className={`stage-floor${route === 'home' && view === 'question' ? ' is-on' : ''}`} aria-hidden="true" />
+    <div className={`stage-top${dim ? ' is-on' : ''}`} aria-hidden="true" />
     <SiteHeader route={route} />
     {route === 'about' ? <About onStart={startFromAbout} /> : <RestartScore rs={rs} />}
   </>;

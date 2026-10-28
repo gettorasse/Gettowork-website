@@ -14,7 +14,12 @@ body { margin: 0; background: #000; font-family: var(--font-body); }
 .stage-floor { position: fixed; inset: auto 0 0 0; height: 58vh; z-index: 0; pointer-events: none; opacity: 0; transition: opacity 500ms ease;
   background: linear-gradient(to top, rgb(8 14 48 / 0.9) 0%, rgb(8 14 48 / 0.72) 28%, rgb(8 14 48 / 0.35) 60%, rgb(8 14 48 / 0) 100%); }
 .stage-floor.is-on { opacity: 1; }
-@media (prefers-reduced-motion: reduce) { .stage-dim, .stage-floor { transition: none; } }
+/* Tulossivun yläreunan vahva gradientti: vieritetty sisältö häipyy ennen navigaatiota. */
+.stage-top { position: fixed; inset: 0 0 auto 0; height: 150px; z-index: 5; pointer-events: none; opacity: 0; transition: opacity 400ms ease;
+  background: linear-gradient(to bottom, rgb(8 14 48) 0%, rgb(8 14 48 / 0.97) 45%, rgb(8 14 48 / 0.7) 72%, rgb(8 14 48 / 0) 100%); }
+.stage-top.is-on { opacity: 1; }
+@media (max-width: 640px) { .stage-top { height: 120px; } }
+@media (prefers-reduced-motion: reduce) { .stage-dim, .stage-floor, .stage-top { transition: none; } }
 .video-gradient { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(8, 14, 48, 0.35), transparent 65%); }
 @media (min-width: 768px) {
   .background-video { left: 22%; object-position: center; }
