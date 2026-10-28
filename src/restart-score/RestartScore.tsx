@@ -64,7 +64,6 @@ function Intro({ rs, focusRef }: ViewProps) {
   return <>
     <main lang="fi" className="hero rs-home relative z-[1] flex h-screen flex-col justify-end overflow-hidden px-5 pb-12 sm:px-8 md:justify-center md:px-10 md:pb-0">
       <div className="relative z-10 max-w-xl">
-        <div className="intro pointer-events-none mb-5 select-none sm:mb-6" aria-hidden="true">Moi, täällä A.R.I.A.<br />Get to Workin restart-avustaja</div>
         <h1 ref={focusRef as RefObject<HTMLHeadingElement | null>} tabIndex={-1} className="typewriter mb-5 min-h-[54px] text-white sm:mb-6">
           <span className="sr-only">{TYPED}</span>
           <span aria-hidden="true">{displayed}{!done && <span className="cursor ml-[2px] inline-block h-[1.1em] w-[2px] bg-white align-middle" />}</span>
