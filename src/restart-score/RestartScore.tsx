@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type CSSProperties, type RefObject } from 'react';
+import React, { useEffect, useRef, useState, type CSSProperties, type RefObject } from 'react';
 import { useTypewriter } from '../useTypewriter.ts';
 import {
   BANDS, CONTACT_BODY, CONTACT_EMAIL, CONTACT_SUBJECT, OWNER_TYPES, PHASES, QUESTIONS, QUESTION_BY_ID,
@@ -6,6 +6,7 @@ import {
 } from './content.ts';
 import { buildAreaPlan, formatFi, localDateString, planDay, type AreaPlan } from './engine.ts';
 import type { RestartScoreState } from './useRestartScore.ts';
+import { submitLead, validateLead, type Lead, type LeadErrors, type LeadPayload } from './lead.ts';
 import './restart-score.css';
 
 type FocusRef = RefObject<HTMLElement | null>;
@@ -197,7 +198,12 @@ function Result({ rs, focusRef }: ViewProps) {
   const a = rs.assessment;
   const [picking, setPicking] = useState(false);
   const [planOpen, setPlanOpen] = useState(false);
+  // Juuri valmistunut tulos näyttää ensin lyhyen latauksen.
+  const [loading, setLoading] = useState(() => Boolean(a.completedAt) && Date.now() - Date.parse(a.completedAt!) < 3000);
+  const [revealTick, setRevealTick] = useState(0);
+  useEffect(() => { if (!loading && revealTick > 0) focusRef.current?.focus({ preventScroll: true }); }, [loading, revealTick, focusRef]);
   if (!ev.ok) return null;
+  if (loading) return <ResultLoader focusRef={focusRef} onDone={() => { setLoading(false); setRevealTick(t => t + 1); }} />;
 
   const selected = a.selectedPriorities ?? ev.recommendedPriorities;
   const userChoice = a.prioritySource === 'user';
@@ -210,6 +216,8 @@ function Result({ rs, focusRef }: ViewProps) {
   const remove = () => {
     if (window.confirm('Tallennettu tulos poistuu tältä laitteelta. Haluatko poistaa sen?')) rs.deleteFromDevice();
   };
+  const unlocked = Boolean(a.leadSubmittedAt);
+  const payload: Omit<LeadPayload, keyof Lead> = { total: ev.total, ownerType: type.name, scores, priorities: selected, completedAt: a.completedAt };
 
   return <main lang="fi" className="rs-stage rs-stage--panel">
     <article className="rs-panel rs-result">
@@ -224,7 +232,7 @@ function Result({ rs, focusRef }: ViewProps) {
         <ul className="rs-areas">
           {QUESTIONS.map(q => {
             const s = scores[q.id];
-            const prio = selected.includes(q.id);
+            const prio = unlocked && selected.includes(q.id);
             return <li key={q.id} className={prio ? 'is-priority' : undefined}>
               <span className="rs-areas__name">{q.name}{prio && <span className="sr-only"> (kehityskohde)</span>}</span>
               <span className="rs-areas__dots" aria-hidden="true">{Array.from({ length: 10 }, (_, i) => <i key={i} className={i < s ? 'on' : undefined} />)}</span>
@@ -234,6 +242,7 @@ function Result({ rs, focusRef }: ViewProps) {
         </ul>
       </section>
 
+      {unlocked ? <>
       <section className="rs-section" aria-labelledby="rs-prio-title">
         <h2 id="rs-prio-title" className="rs-h2">{ev.maintenanceOnly ? 'Kaksi vahvuutta varmistettavaksi' : 'Kaksi kehityskohdetta'}</h2>
         <p className="rs-muted">{userChoice ? 'Oma valintasi.' : ev.maintenanceOnly ? 'Heikkoa osa-aluetta ei löytynyt – varmista, että vahvuudet kestävät myös muutoksia.' : 'Pienimmät pisteesi.'}
@@ -276,8 +285,72 @@ function Result({ rs, focusRef }: ViewProps) {
       </section>
 
       <Contact />
+      </> : <LeadGate payload={payload} onUnlocked={rs.unlockReport} />}
     </article>
   </main>;
+}
+
+const LOADING_STEPS = ['Lasketaan pisteitä', 'Etsitään kehityskohteita', 'Kootaan 90 päivän ohjelmaa'];
+
+function ResultLoader({ focusRef, onDone }: { focusRef: FocusRef; onDone: () => void }) {
+  const [step, setStep] = useState(0);
+  useEffect(() => {
+    const t = setInterval(() => setStep(s => Math.min(s + 1, LOADING_STEPS.length)), 700);
+    return () => clearInterval(t);
+  }, []);
+  useEffect(() => { if (step >= LOADING_STEPS.length) { const t = setTimeout(onDone, 250); return () => clearTimeout(t); } }, [step, onDone]);
+  return <main lang="fi" className="rs-stage rs-stage--loading">
+    <div className="rs-loader">
+      <div className="rs-loader__balls" aria-hidden="true">{Array.from({ length: 11 }, (_, i) => <span key={i} style={{ '--i': i } as CSSProperties} />)}</div>
+      <h1 ref={focusRef as RefObject<HTMLHeadingElement | null>} tabIndex={-1} className="rs-h1">Tulos valmistuu…</h1>
+      <p className="rs-loader__step" role="status" aria-live="polite">{LOADING_STEPS[Math.min(step, LOADING_STEPS.length - 1)]}</p>
+    </div>
+  </main>;
+}
+
+function LeadGate({ payload, onUnlocked }: { payload: Omit<LeadPayload, keyof Lead>; onUnlocked: () => void }) {
+  const [lead, setLead] = useState<Lead>({ name: '', email: '', phone: '' });
+  const [errors, setErrors] = useState<LeadErrors>({});
+  const [sending, setSending] = useState(false);
+  const [failed, setFailed] = useState(false);
+  const refs = { name: useRef<HTMLInputElement>(null), email: useRef<HTMLInputElement>(null), phone: useRef<HTMLInputElement>(null) };
+  const set = (key: keyof Lead) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLead(l => ({ ...l, [key]: e.target.value }));
+    if (errors[key]) setErrors(er => ({ ...er, [key]: undefined }));
+  };
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const found = validateLead(lead);
+    setErrors(found);
+    const first = (['name', 'email', 'phone'] as const).find(k => found[k]);
+    if (first) { refs[first].current?.focus(); return; }
+    setSending(true); setFailed(false);
+    const res = await submitLead({ ...payload, name: lead.name.trim(), email: lead.email.trim(), phone: lead.phone.trim() });
+    setSending(false);
+    if (res.ok) onUnlocked(); else setFailed(true);
+  };
+  const field = (key: keyof Lead, label: string, type: string, autoComplete: string, required: boolean) => (
+    <label className="rs-field">
+      <span className="rs-field__label">{label}{!required && <span className="rs-muted"> (valinnainen)</span>}</span>
+      <input ref={refs[key]} type={type} name={key} autoComplete={autoComplete} value={lead[key]} onChange={set(key)}
+        required={required} aria-invalid={Boolean(errors[key])} aria-describedby={errors[key] ? `rs-err-${key}` : undefined} />
+      {errors[key] && <span id={`rs-err-${key}`} className="rs-field__error">{errors[key]}</span>}
+    </label>
+  );
+  return <section className="rs-section rs-gate rs-noprint" aria-labelledby="rs-gate-title">
+    <h2 id="rs-gate-title" className="rs-h2">Saat kehityskohteesi ja 90 päivän ohjelman</h2>
+    <p className="rs-muted">Jätä yhteystietosi, niin raporttisi avautuu heti.</p>
+    <form className="rs-gate__form" noValidate onSubmit={submit}>
+      {field('name', 'Nimi', 'text', 'name', true)}
+      {field('email', 'Sähköposti', 'email', 'email', true)}
+      {field('phone', 'Puhelin', 'tel', 'tel', false)}
+      <div className="rs-gate__actions">
+        <button type="submit" className="pill white-pill rs-btn rs-btn--big" disabled={sending}>{sending ? 'Raporttia kootaan…' : 'Avaa raporttini'} <span aria-hidden="true">→</span></button>
+      </div>
+      {failed && <p role="alert" className="rs-error">Lähetys ei onnistunut. Yritä hetken päästä uudelleen.</p>}
+      <p className="rs-muted rs-small">Käytämme tietoja ollaksemme sinuun yhteydessä tuloksesi tiimoilta. Emme luovuta niitä eteenpäin.</p>
+    </form>
+  </section>;
 }
 
 function PriorityPicker({ scores, initial, onApply, onCancel }: {

@@ -204,6 +204,10 @@ export function useRestartScore() {
     if (saved) setNotice(MSG.savedExit);
   }, [go, saveToDevice]);
 
+  const unlockReport = useCallback(() => {
+    setAssessment(a => (a.leadSubmittedAt ? a : { ...a, leadSubmittedAt: new Date().toISOString() }));
+  }, []);
+
   const deleteFromDevice = useCallback(() => {
     removeAssessment();
     setPersist(false);
@@ -220,7 +224,7 @@ export function useRestartScore() {
     assessment, ...derived, persist, deviceDraft, notice, storageError,
     hasMemoryProgress: hasProgress(assessment),
     go, syncFromHistory, start, resume, setScore, showResult,
-    choosePriorities, resetPriorities, saveToDevice, saveAndExit, deleteFromDevice,
+    choosePriorities, resetPriorities, saveToDevice, saveAndExit, deleteFromDevice, unlockReport,
     clearNotice: () => setNotice(null),
   };
 }

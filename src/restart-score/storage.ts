@@ -22,6 +22,8 @@ export type Assessment = {
   prioritySource: 'recommended' | 'user';
   completedAt: string | null;
   planStartDate: string | null;
+  /** Milloin yhteystiedot jätettiin raportin avaamiseksi. Itse yhteystietoja ei tallenneta laitteelle. */
+  leadSubmittedAt: string | null;
   updatedAt: string;
   expiresAt: string;
 };
@@ -39,6 +41,7 @@ export function newAssessment(now = new Date()): Assessment {
     prioritySource: 'recommended',
     completedAt: null,
     planStartDate: null,
+    leadSubmittedAt: null,
     updatedAt: now.toISOString(),
     expiresAt: new Date(now.getTime() + RETENTION_DAYS * DAY_MS).toISOString(),
   };
@@ -71,6 +74,7 @@ export function parseAssessment(raw: unknown): Assessment | null {
   if (r.completedAt !== null && !isIsoDate(r.completedAt)) return null;
   if (r.planStartDate !== null && !isDateString(r.planStartDate)) return null;
   if (!isIsoDate(r.updatedAt) || !isIsoDate(r.expiresAt)) return null;
+  const leadSubmittedAt = r.leadSubmittedAt === undefined || r.leadSubmittedAt === null ? null : (isIsoDate(r.leadSubmittedAt) ? r.leadSubmittedAt as string : null);
 
   return {
     schemaVersion: 1,
@@ -84,6 +88,7 @@ export function parseAssessment(raw: unknown): Assessment | null {
     prioritySource: r.prioritySource as 'recommended' | 'user',
     completedAt: r.completedAt as string | null,
     planStartDate: r.planStartDate as string | null,
+    leadSubmittedAt,
     updatedAt: r.updatedAt as string,
     expiresAt: r.expiresAt as string,
   };

@@ -191,3 +191,13 @@ test('Estetty tallennus palauttaa false eikä heitä', () => {
   mockStorage({ failRead: true });
   assert.equal(loadAssessment().status, 'unavailable');
 });
+
+// --- Yhteystietolomake ---
+import { validateLead } from '../src/restart-score/lead.ts';
+
+test('Yhteystiedot: nimi ja sähköposti pakollisia, puhelin valinnainen', () => {
+  assert.deepEqual(validateLead({ name: 'Rasmus', email: 'rasmus@gettowork.fi', phone: '' }), {});
+  assert.deepEqual(validateLead({ name: 'Rasmus', email: 'rasmus@gettowork.fi', phone: '+358 40 123 4567' }), {});
+  const bad = validateLead({ name: ' ', email: 'ei-osoite', phone: 'abc' });
+  assert.ok(bad.name && bad.email && bad.phone);
+});

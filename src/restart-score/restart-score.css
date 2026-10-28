@@ -189,6 +189,35 @@
 @media (max-width: 640px) { .rs-phase__tasks { grid-template-columns: 1fr; } }
 .rs-task { padding: 14px 16px; border-radius: 16px; background: rgb(255 255 255 / 0.06); border: 1px solid var(--rs-line); }
 
+/* --- Tulos valmistuu -lataus --- */
+.rs-stage--loading { justify-content: center; }
+.rs-loader { display: flex; flex-direction: column; gap: 16px; max-width: 560px; }
+.rs-loader__balls { display: flex; gap: 10px; margin-bottom: 10px; }
+.rs-loader__balls span { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid rgb(255 255 255 / 0.6); animation: rs-load 2.1s ease-in-out infinite; animation-delay: calc(var(--i) * 110ms); }
+@keyframes rs-load {
+  0%, 100% { background: transparent; box-shadow: none; }
+  35%, 60% { background: #fff; box-shadow: 0 0 14px 2px rgb(20 128 255 / 0.6); }
+}
+.rs-loader__step { font-size: 18px; color: var(--rs-muted); }
+
+/* --- Yhteystiedot ennen raporttia --- */
+.rs-gate__form { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px 16px; margin-top: 20px; }
+@media (max-width: 760px) { .rs-gate__form { grid-template-columns: 1fr; } }
+.rs-gate__form > :not(.rs-field) { grid-column: 1 / -1; }
+.rs-field { display: flex; flex-direction: column; gap: 6px; }
+.rs-field__label { font-size: 14px; font-family: var(--font-heading); }
+.rs-field input {
+  min-height: 50px; padding: 0 18px; border: 1.5px solid rgb(255 255 255 / 0.55); border-radius: 9999px;
+  background: rgb(8 14 48 / 0.45); color: #fff; font: inherit; font-size: 16px; text-shadow: none;
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); transition: border-color 200ms, box-shadow 200ms;
+}
+.rs-field input:hover { border-color: #fff; }
+.rs-field input:focus { outline: none; border-color: #fff; box-shadow: 0 0 0 3px rgb(20 128 255 / 0.55); }
+.rs-field input[aria-invalid="true"] { border-color: #fff; box-shadow: 0 0 0 2px var(--rs-accent); }
+.rs-field__error { font-size: 14px; }
+.rs-field__error::before { content: "! "; color: var(--rs-accent); }
+.rs-gate__actions { margin-top: 6px; }
+
 /* --- Kysely-sivu --- */
 .rs-about .rs-lead { margin-top: 14px !important; max-width: 640px; }
 .rs-facts { margin-top: 14px !important; font-size: 15px; color: var(--rs-muted); }
@@ -206,6 +235,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .rs-stage *, .rs-stage *::before, .rs-stage *::after { transition: none !important; animation: none !important; }
+  .rs-loader__balls span { background: #fff; }
 }
 
 /* --- Tulostus: valkoinen pohja, kaikki osa-alueet ja koko ohjelma --- */

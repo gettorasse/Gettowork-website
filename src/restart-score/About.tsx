@@ -44,8 +44,8 @@ export function About({ onStart }: { onStart: () => void }) {
       </section>
 
       <section className="rs-section" aria-labelledby="about-privacy">
-        <h2 id="about-privacy" className="rs-h2">Vastauksesi pysyvät sinulla</h2>
-        <p>Testi toimii kokonaan selaimessasi. Vastauksia ei lähetetä minnekään, eikä tulos vaadi yhteystietoja. Halutessasi voit tallentaa testin tähän selaimeen 120 päiväksi – älä tee sitä yhteiskäyttölaitteella.</p>
+        <h2 id="about-privacy" className="rs-h2">Tulos ja yhteystiedot</h2>
+        <p>Pisteet ja yrittäjätyypin näet heti. Kehityskohteet ja 90 päivän ohjelman saat, kun jätät nimesi ja sähköpostisi – käytämme niitä vain ollaksemme sinuun yhteydessä tuloksesi tiimoilta. Halutessasi voit tallentaa testin tähän selaimeen 120 päiväksi; älä tee sitä yhteiskäyttölaitteella.</p>
         <p className="rs-muted rs-small">Tulos on itsearvio ja keskustelun lähtökohta, ei mitattu diagnoosi. Testin rakenne on saanut innoituksensa omistajariippuvuutta käsittelevästä Own or Be Owned -ajattelusta, mutta kysymykset ovat Get to Workin omia.</p>
       </section>
 
