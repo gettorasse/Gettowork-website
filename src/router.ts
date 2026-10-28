@@ -1,14 +1,22 @@
 import type { MouseEvent } from 'react';
 
-// Pieni polkureititys ilman lisäkirjastoa. Vercel ohjaa /restart-score-polun
-// samaan index.html-tiedostoon (vercel.json), joten suora avaus ja päivitys toimivat.
+// Pieni polkureititys ilman lisäkirjastoa. Etusivu (/) on testin aloitus ja
+// testi etenee samalla sivulla. /kysely on testin tietosivu. Vercel ohjaa
+// polut index.html-tiedostoon (vercel.json), joten suora avaus ja päivitys toimivat.
 
-export type Route = 'home' | 'restart-score';
-export const QUIZ_PATH = '/restart-score';
+export type Route = 'home' | 'about';
+export const HOME_PATH = '/';
+export const ABOUT_PATH = '/kysely';
+/** Aiempi esikatseluosoite ohjataan etusivulle. */
+const LEGACY_QUIZ_PATH = '/restart-score';
 
 export function routeFromPath(pathname: string): Route {
   const clean = pathname.replace(/\/+$/, '');
-  return clean === QUIZ_PATH ? 'restart-score' : 'home';
+  return clean === ABOUT_PATH ? 'about' : 'home';
+}
+
+export function isLegacyPath(pathname: string) {
+  return pathname.replace(/\/+$/, '') === LEGACY_QUIZ_PATH;
 }
 
 /** Vaihtaa näkymää sovelluksen sisällä, jotta muistissa olevat vastaukset säilyvät. */

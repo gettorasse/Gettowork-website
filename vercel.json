@@ -5,6 +5,14 @@
   "outputDirectory": "dist",
   "rewrites": [
     {
+      "source": "/kysely",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/kysely/",
+      "destination": "/index.html"
+    },
+    {
       "source": "/restart-score",
       "destination": "/index.html"
     },

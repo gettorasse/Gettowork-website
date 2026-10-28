@@ -169,6 +169,14 @@ export const BANDS: Record<BandKey, { range: string; title: string; text: string
   },
 };
 
+/** Yrittäjätyyppi kokonaispisteiden mukaan. Leikillinen nimi, ei diagnoosi. */
+export const OWNER_TYPES: Record<BandKey, { name: string; tagline: string }> = {
+  foundation: { name: 'Sammuttaja', tagline: 'Päiväsi kuluvat tulipalojen sammuttamiseen.' },
+  stabilise: { name: 'Pyörittäjä', tagline: 'Yritys pyörii – niin kauan kuin sinä pyörität sitä.' },
+  independence: { name: 'Rakentaja', tagline: 'Rakennat yritystä, joka alkaa kantaa itseään.' },
+  resilience: { name: 'Omistaja', tagline: 'Johdat yritystä etkä vain tee töitä siinä.' },
+};
+
 export type AreaLevel = 'build' | 'stabilise' | 'strengthen' | 'maintain';
 
 export const AREA_STATUS: Record<AreaLevel, string> = {

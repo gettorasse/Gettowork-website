@@ -1,54 +1,41 @@
-import { useEffect, useRef, useState, type RefObject } from 'react';
-import { BackgroundVideo } from '../BackgroundVideo.tsx';
+import { useEffect, useRef, useState, type CSSProperties, type RefObject } from 'react';
+import { lookAt } from '../BackgroundVideo.tsx';
+import { useTypewriter } from '../useTypewriter.ts';
 import {
-  BANDS, CONTACT_BODY, CONTACT_EMAIL, CONTACT_SUBJECT, ORDER, PHASES, QUESTIONS, QUESTION_BY_ID,
+  BANDS, CONTACT_BODY, CONTACT_EMAIL, CONTACT_SUBJECT, OWNER_TYPES, PHASES, QUESTIONS, QUESTION_BY_ID,
   type PId, type Score,
 } from './content.ts';
-import { areaLevel, areaStatus, buildAreaPlan, formatFi, localDateString, planDay, type AreaPlan } from './engine.ts';
+import { buildAreaPlan, formatFi, localDateString, planDay, type AreaPlan } from './engine.ts';
 import type { RestartScoreState } from './useRestartScore.ts';
 import './restart-score.css';
 
-type HeadingRef = RefObject<HTMLHeadingElement | null>;
-type ViewProps = { rs: RestartScoreState; headingRef: HeadingRef };
+type FocusRef = RefObject<HTMLElement | null>;
+type ViewProps = { rs: RestartScoreState; focusRef: FocusRef };
 
-const SOLO_NOTE = 'Arvioi sinulle sopivaa toimintamallia; hyvä tulos ei edellytä työntekijöiden palkkaamista.';
-const SHARED_DEVICE_NOTE = 'Tallennus koskee tätä selainta ja laitetta. Älä käytä sitä yhteiskäyttölaitteella.';
+const TYPED = 'Minkälainen yrittäjä sinä olet? Tee testi ja selvitä, kuinka hyvin yrityksesi toimii.';
+const QUESTION_PILLS = ['Miksi kiire ei lopu?', 'Onko hinnoittelu kohdallaan?', 'Mistä seuraavat asiakkaat?', 'Mihin aikani oikeasti menee?'];
+let typedOnce = false;
 
-function useMediaQuery(query: string) {
-  const [matches, setMatches] = useState(() => window.matchMedia(query).matches);
-  useEffect(() => {
-    const mq = window.matchMedia(query);
-    const onChange = () => setMatches(mq.matches);
-    mq.addEventListener('change', onChange);
-    return () => mq.removeEventListener('change', onChange);
-  }, [query]);
-  return matches;
-}
-
+/** Testi etenee etusivulla: tausta ja hahmo pysyvät, vain sisältö vaihtuu. */
 export function RestartScore({ rs }: { rs: RestartScoreState }) {
   const { view, currentStep } = rs.assessment;
-  const headingRef = useRef<HTMLHeadingElement>(null);
+  const focusRef = useRef<HTMLElement>(null);
   const firstRender = useRef(true);
   const [fromReview, setFromReview] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
     if (firstRender.current) { firstRender.current = false; return; }
-    headingRef.current?.focus({ preventScroll: true });
+    focusRef.current?.focus({ preventScroll: true });
   }, [view, currentStep]);
-
   useEffect(() => { if (view === 'intro' || view === 'result') setFromReview(false); }, [view]);
 
-  return (
-    <main lang="fi" className={`rs-root rs-root--${view}`}>
-      {view === 'intro' && <Intro rs={rs} headingRef={headingRef} />}
-      {view === 'question' && <QuestionView key={currentStep} rs={rs} headingRef={headingRef} fromReview={fromReview} />}
-      {view === 'review' && <Review rs={rs} headingRef={headingRef} onEdit={step => { setFromReview(true); rs.go('question', step); }} />}
-      {view === 'result' && (rs.evaluation.ok
-        ? <Result rs={rs} headingRef={headingRef} />
-        : <Review rs={rs} headingRef={headingRef} onEdit={step => { setFromReview(true); rs.go('question', step); }} />)}
-    </main>
-  );
+  const edit = (step: number) => { setFromReview(true); rs.go('question', step); };
+
+  if (view === 'intro') return <Intro rs={rs} focusRef={focusRef} />;
+  if (view === 'question') return <QuestionView key={currentStep} rs={rs} focusRef={focusRef} fromReview={fromReview} />;
+  if (view === 'result' && rs.evaluation.ok) return <Result rs={rs} focusRef={focusRef} />;
+  return <Review rs={rs} focusRef={focusRef} onEdit={edit} />;
 }
 
 function Notices({ rs }: { rs: RestartScoreState }) {
@@ -58,273 +45,223 @@ function Notices({ rs }: { rs: RestartScoreState }) {
   </div>;
 }
 
-// --- Aloitus -----------------------------------------------------------------
+// --- Etusivu: testin aloitus ---------------------------------------------------
 
-function Intro({ rs, headingRef }: ViewProps) {
-  const desktop = useMediaQuery('(min-width: 769px)');
-  const draft = rs.deviceDraft;
-  const canResume = Boolean(draft) || rs.hasMemoryProgress;
-  const storedOnDevice = Boolean(draft) || rs.persist;
+function Intro({ rs, focusRef }: ViewProps) {
+  const skip = typedOnce;
+  const { displayed, done } = useTypewriter(TYPED, 38, 600, skip);
+  const [pillsVisible, setPillsVisible] = useState(skip);
+  useEffect(() => { if (done) typedOnce = true; }, [done]);
+  useEffect(() => { if (skip) return; const t = setTimeout(() => setPillsVisible(true), 400); return () => clearTimeout(t); }, [skip]);
 
-  const startNew = () => {
-    if (storedOnDevice && !window.confirm('Uusi arviointi korvaa tälle laitteelle tallennetun arvioinnin. Haluatko jatkaa?')) return;
+  const canResume = Boolean(rs.deviceDraft) || rs.hasMemoryProgress;
+  const storedOnDevice = Boolean(rs.deviceDraft) || rs.persist;
+  const start = () => {
+    if (storedOnDevice && !window.confirm('Uusi testi korvaa tälle laitteelle tallennetun testin. Jatketaanko?')) return;
     rs.start(storedOnDevice);
-  };
-  const remove = () => {
-    if (window.confirm('Tallennettu arviointi poistuu tältä laitteelta. Haluatko poistaa sen?')) rs.deleteFromDevice();
   };
 
   return <>
-    {desktop && <BackgroundVideo />}
-    <section className="rs-intro">
-      <p className="rs-eyebrow">GETTOWORK RESTART SCORE</p>
-      <h1 ref={headingRef} tabIndex={-1} className="rs-h1">Toimiiko yrityksesi myös ilman sinua?</h1>
-      <p className="rs-lead">Arvioi yrityksesi 12 osa-aluetta. Saat kokonaiskuvan tilanteestasi, kaksi kehityskohdetta ja 90 päivän ohjelman, jonka avulla rakennat toimivampaa arkea.</p>
-      <p className="rs-meta">12 kysymystä · noin 5–8 minuuttia · tulos heti</p>
-      <Notices rs={rs} />
-      {draft && <p className="rs-muted">Tälle laitteelle on tallennettu kesken jäänyt arviointi (päivitetty {formatFi(localDateString(new Date(draft.updatedAt)))}).</p>}
-      <div className="rs-actions">
-        {canResume
-          ? <>
-              <button type="button" className="pill white-pill rs-btn" onClick={rs.resume}>Jatka kesken jäänyttä</button>
-              <button type="button" className="pill outline-pill rs-btn" onClick={startNew}>Aloita uusi arviointi</button>
-            </>
-          : <button type="button" className="pill white-pill rs-btn" onClick={() => rs.start(false)}>Aloita arviointi</button>}
+    <main lang="fi" className="hero rs-home relative z-[1] flex h-screen flex-col justify-end overflow-hidden px-5 pb-12 sm:px-8 md:justify-center md:px-10 md:pb-0">
+      <div className="relative z-10 max-w-xl">
+        <div className="intro pointer-events-none mb-5 select-none sm:mb-6" aria-hidden="true">Moi, täällä A.R.I.A.<br />Get to Workin restart-avustaja</div>
+        <h1 ref={focusRef as RefObject<HTMLHeadingElement | null>} tabIndex={-1} className="typewriter mb-5 min-h-[54px] text-white sm:mb-6">
+          <span className="sr-only">{TYPED}</span>
+          <span aria-hidden="true">{displayed}{!done && <span className="cursor ml-[2px] inline-block h-[1.1em] w-[2px] bg-white align-middle" />}</span>
+        </h1>
+        <div className="rs-home-actions" style={{ opacity: pillsVisible ? 1 : 0, transform: `translateY(${pillsVisible ? 0 : 8}px)`, transition: 'opacity 0.4s ease, transform 0.4s ease' }}>
+          <div className="rs-home-main">
+            <button type="button" className="pill white-pill rs-start" onClick={start}>Aloita testi <span aria-hidden="true">→</span></button>
+            {canResume && <button type="button" className="pill outline-pill rs-resume" onClick={rs.resume}>Jatka testiä</button>}
+          </div>
+          <div className="rs-home-pills">
+            {QUESTION_PILLS.map(q => <button key={q} type="button" className="pill white-pill" onClick={start}>{q}</button>)}
+            <a className="pill outline-pill rs-contact-pill gap-2 sm:gap-3" href={`mailto:${CONTACT_EMAIL}`}><span>Tavoita minut: <span className="underline underline-offset-1">{CONTACT_EMAIL}</span></span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2" /><path d="m2 5 10 8 10-8" /></svg></a>
+          </div>
+          <Notices rs={rs} />
+        </div>
       </div>
-      <div className="rs-intro-details">
-        <p>Yrityksen omistajalle tai sen arjesta vastaavalle vetäjälle. Vastaa yhden yrityksen tai liiketoimintayksikön näkökulmasta.</p>
-        <p>Arvioi viimeisten 90 päivän toteutunutta arkea, älä suunnitelmia. Käytä kirjanpitoa, asiakaspalautetta ja muita havaintoja apuna. Jos yritys on nuorempi, arvioi sen tähänastista toimintaa. Jos et tunne tilannetta, voit merkitä vastauksen keskeneräiseksi ja palata siihen.</p>
-        <p>{SOLO_NOTE}</p>
-        <p className="rs-muted">Vastaukset käsitellään tässä selaimessa. Voit tallentaa ne tälle laitteelle jatkamista varten. Tulos ei edellytä yhteystietoja.</p>
-        {storedOnDevice && <button type="button" className="rs-link" onClick={remove}>Poista tallennettu arviointi</button>}
-      </div>
-    </section>
+    </main>
+    <div className="mobile-scroll-spacer" aria-hidden="true" />
   </>;
 }
 
 // --- Kysymys -----------------------------------------------------------------
 
-function QuestionView({ rs, headingRef, fromReview }: ViewProps & { fromReview: boolean }) {
+function QuestionView({ rs, focusRef, fromReview }: ViewProps & { fromReview: boolean }) {
   const step = rs.assessment.currentStep;
   const q = QUESTIONS[step];
   const value = rs.assessment.answers[q.id];
-  const deferred = rs.assessment.deferred.includes(q.id);
+  const last = step === QUESTIONS.length - 1;
   const [error, setError] = useState(false);
   const [errorTick, setErrorTick] = useState(0);
   const errorRef = useRef<HTMLParagraphElement>(null);
-  const last = step === QUESTIONS.length - 1;
-  const ids = { help: `rs-help-${q.id}`, anchors: `rs-anchors-${q.id}`, error: `rs-error-${q.id}` };
-
-  const ensureAnswered = () => {
-    if (value !== null || deferred) return true;
-    setError(true);
-    setErrorTick(t => t + 1);
-    return false;
-  };
   useEffect(() => { if (errorTick > 0) errorRef.current?.focus(); }, [errorTick]);
-  const next = () => { if (ensureAnswered()) rs.go(last ? 'review' : 'question', last ? step : step + 1); };
+  useEffect(() => { if (value !== null) lookAt(value / 10); }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const select = (n: number) => { rs.setScore(q.id, n as Score); setError(false); lookAt(n / 10); };
+  const submit = () => {
+    if (value === null) { setError(true); setErrorTick(t => t + 1); return; }
+    if (fromReview) { rs.go('review'); return; }
+    if (!last) { rs.go('question', step + 1); return; }
+    if (!rs.showResult()) rs.go('review');
+  };
   const prev = () => (step === 0 ? rs.go('intro') : rs.go('question', step - 1));
-  const backToReview = () => { if (ensureAnswered()) rs.go('review'); };
+  const endsId = `rs-ends-${q.id}`;
 
-  return <section className="rs-panel rs-question">
-    <div className="rs-progress">
-      <p className="rs-step">Kysymys {step + 1} / {QUESTIONS.length}</p>
-      <div className="rs-progress__track" role="progressbar" aria-label="Eteneminen" aria-valuemin={1} aria-valuemax={QUESTIONS.length} aria-valuenow={step + 1} aria-valuetext={`Kysymys ${step + 1} / ${QUESTIONS.length}`}>
-        <span style={{ width: `${((step + 1) / QUESTIONS.length) * 100}%` }} />
+  return <main lang="fi" className="rs-stage rs-stage--question">
+    <form className="rs-q" onSubmit={e => { e.preventDefault(); submit(); }} noValidate>
+      <div className="rs-q__top">
+        <p className="rs-q__meta"><span className="rs-q__count">{step + 1} / {QUESTIONS.length}</span> {q.name}</p>
+        <div className="rs-q__progress" aria-hidden="true"><span style={{ width: `${((step + 1) / QUESTIONS.length) * 100}%` }} /></div>
       </div>
-    </div>
+      <fieldset className="rs-q__field" aria-describedby={endsId}>
+        <legend ref={focusRef as RefObject<HTMLLegendElement | null>} tabIndex={-1} className="rs-q__title">{q.question}</legend>
+        {step === 0 && <p className="rs-q__hint">Arvioi viimeisen 90 päivän toteutunutta arkea.</p>}
+        <div className="rs-balls">
+          {Array.from({ length: 11 }, (_, n) => (
+            <label key={n} className={`rs-ball${value !== null && n <= value ? ' is-lit' : ''}${value === n ? ' is-selected' : ''}`}
+              style={{ '--i': n } as CSSProperties} onMouseEnter={() => lookAt(n / 10)}>
+              <input type="radio" className="rs-ball__input" name={`rs-score-${q.id}`} value={n} checked={value === n}
+                onChange={() => select(n)} onFocus={() => lookAt(n / 10)} />
+              <span className="rs-ball__face" aria-hidden="true">{n}</span>
+              <span className="sr-only">{n} pistettä 10:stä</span>
+            </label>
+          ))}
+        </div>
+        <div id={endsId} className="rs-ends">
+          <p><span className="rs-ends__n">0</span> {q.anchors[0]}</p>
+          <p><span className="rs-ends__n">10</span> {q.anchors[10]}</p>
+        </div>
+      </fieldset>
 
-    <h1 ref={headingRef} tabIndex={-1} className="rs-h2">{q.name} <span className="rs-pname" lang="en">{q.p}</span></h1>
+      {error && <p ref={errorRef} tabIndex={-1} role="alert" className="rs-error">Valitse pisteet 0–10.</p>}
 
-    <fieldset className="rs-fieldset" aria-describedby={`${ids.help} ${ids.anchors}${error ? ` ${ids.error}` : ''}`}>
-      <legend className="rs-legend">{q.question}</legend>
-      <p id={ids.help} className="rs-help">{q.help}</p>
-
-      <div className="rs-scale">
-        {Array.from({ length: 11 }, (_, n) => (
-          <label key={n} className="rs-score">
-            <input type="radio" className="rs-score__input" name={`rs-score-${q.id}`} value={n} checked={value === n}
-              onChange={() => { rs.setScore(q.id, n as Score); setError(false); }} />
-            <span className="rs-score__face" aria-hidden="true">{n}</span>
-            <span className="sr-only">{n} pistettä 10:stä</span>
-          </label>
-        ))}
+      <div className="rs-q__nav">
+        <button type="button" className="pill outline-pill rs-btn" onClick={prev}><span aria-hidden="true">← </span>Edellinen</button>
+        <button type="submit" className="pill white-pill rs-btn">{fromReview ? 'Valmis' : last ? 'Näytä tulos' : 'Seuraava'} <span aria-hidden="true">→</span></button>
+        <button type="button" className="rs-link rs-q__save" onClick={rs.saveAndExit}>Tallenna ja jatka myöhemmin</button>
       </div>
-
-      <dl id={ids.anchors} className="rs-anchors">
-        {([0, 5, 10] as const).map(n => <div key={n}><dt>{n} pistettä</dt><dd>{q.anchors[n]}</dd></div>)}
-      </dl>
-
-      <p className="rs-selected" aria-hidden="true">{value !== null ? `Valintasi: ${value} / 10 · ${areaStatus(value)}` : deferred ? 'Merkitty keskeneräiseksi' : 'Ei vielä valintaa'}</p>
-
-      <label className="rs-check">
-        <input type="checkbox" checked={deferred} onChange={e => { rs.setDeferred(q.id, e.target.checked); setError(false); }} />
-        <span>En osaa vielä arvioida</span>
-      </label>
-      {(q.id === 'people' || q.id === 'protect') && <p className="rs-muted rs-small">{SOLO_NOTE}</p>}
-    </fieldset>
-
-    {error && <p ref={errorRef} id={ids.error} tabIndex={-1} role="alert" className="rs-error">Valitse pisteet tai merkitse, ettet osaa vielä arvioida.</p>}
-
-    <div className="rs-nav">
-      <button type="button" className="pill outline-pill rs-btn" onClick={prev}>Edellinen</button>
-      {fromReview && !last && <button type="button" className="pill outline-pill rs-btn" onClick={backToReview}>Palaa tarkistukseen</button>}
-      <button type="button" className="pill white-pill rs-btn" onClick={next}>{last ? 'Tarkista vastaukset' : 'Seuraava'}</button>
-    </div>
-
-    <div className="rs-save">
-      <button type="button" className="rs-link" onClick={rs.saveAndExit}>Tallenna tälle laitteelle ja poistu</button>
-      <p className="rs-muted rs-small">{SHARED_DEVICE_NOTE}</p>
-      {!rs.persist && <p className="rs-muted rs-small">Vastaukset ovat tallessa vain tässä välilehdessä. Sivun päivitys tai sulkeminen tyhjentää ne, ellet tallenna niitä tälle laitteelle.</p>}
-      <Notices rs={rs} />
-    </div>
-  </section>;
+    </form>
+  </main>;
 }
 
-// --- Tarkistus ---------------------------------------------------------------
+// --- Vastausten muokkaus -------------------------------------------------------
 
-function Review({ rs, headingRef, onEdit }: ViewProps & { onEdit: (step: number) => void }) {
-  const summaryRef = useRef<HTMLDivElement>(null);
+function Review({ rs, focusRef, onEdit }: ViewProps & { onEdit: (step: number) => void }) {
   const missing = rs.missing;
-  const firstMissing = missing.length ? ORDER.indexOf(missing[0]) : -1;
-  const show = () => {
-    if (missing.length) { summaryRef.current?.focus(); return; }
-    rs.showResult();
-  };
-
-  return <section className="rs-panel rs-review">
-    <h1 ref={headingRef} tabIndex={-1} className="rs-h2">Tarkista vastauksesi</h1>
-    {rs.assessment.completedAt && <p className="rs-muted">Vastausten muokkaaminen muodostaa kehityskohteet ja ohjelman uudelleen.</p>}
-
-    {missing.length > 0 && <div ref={summaryRef} tabIndex={-1} className="rs-summary" role="region" aria-label="Puuttuvat arviot">
-      <p>Vastaa vielä {missing.length} osa-alueeseen, jotta voimme laskea tuloksen.</p>
-      <button type="button" className="rs-link" onClick={() => onEdit(firstMissing)}>Siirry ensimmäiseen puuttuvaan: {QUESTION_BY_ID[missing[0]].name}</button>
-    </div>}
-
-    <ol className="rs-review-list">
-      {QUESTIONS.map((q, i) => {
-        const v = rs.assessment.answers[q.id];
-        return <li key={q.id}>
-          <span className="rs-review-name">{q.name} <span className="rs-pname" lang="en">{q.p}</span></span>
-          <span className={v === null ? 'rs-review-missing' : 'rs-review-score'}>{v === null ? <><span aria-hidden="true">! </span>Arvio puuttuu</> : `${v} / 10`}</span>
-          <button type="button" className="pill outline-pill rs-btn rs-btn--small" onClick={() => onEdit(i)} aria-label={`Muokkaa: ${q.name}`}>Muokkaa</button>
-        </li>;
-      })}
-    </ol>
-
-    <div className="rs-nav">
-      <button type="button" className="pill outline-pill rs-btn" onClick={() => rs.go('question', QUESTIONS.length - 1)}>Edellinen</button>
-      <button type="button" className="pill white-pill rs-btn" aria-disabled={missing.length > 0} onClick={show}>Näytä tulos</button>
-    </div>
-    <Notices rs={rs} />
-  </section>;
+  const show = () => { if (!rs.showResult()) onEdit(QUESTIONS.findIndex(q => q.id === missing[0])); };
+  return <main lang="fi" className="rs-stage rs-stage--panel">
+    <section className="rs-panel">
+      <h1 ref={focusRef as RefObject<HTMLHeadingElement | null>} tabIndex={-1} className="rs-h1">Vastauksesi</h1>
+      {rs.assessment.completedAt && <p className="rs-muted">Muutos laskee kehityskohteet ja ohjelman uudelleen.</p>}
+      {missing.length > 0 && <p className="rs-notice">Vastaa vielä {missing.length} kysymykseen, niin näet tuloksen.</p>}
+      <ol className="rs-review">
+        {QUESTIONS.map((q, i) => {
+          const v = rs.assessment.answers[q.id];
+          return <li key={q.id}>
+            <span>{q.name}</span>
+            <span className="rs-review__score">{v === null ? '–' : `${v} / 10`}</span>
+            <button type="button" className="rs-link" onClick={() => onEdit(i)} aria-label={`Muokkaa: ${q.name}`}>Muokkaa</button>
+          </li>;
+        })}
+      </ol>
+      <div className="rs-actions">
+        <button type="button" className="pill white-pill rs-btn" onClick={show}>{missing.length ? 'Jatka vastaamista' : 'Näytä tulos'} <span aria-hidden="true">→</span></button>
+      </div>
+      <Notices rs={rs} />
+    </section>
+  </main>;
 }
 
 // --- Tulos -------------------------------------------------------------------
 
-function Result({ rs, headingRef }: ViewProps) {
+function Result({ rs, focusRef }: ViewProps) {
   const ev = rs.evaluation;
   const a = rs.assessment;
   const [picking, setPicking] = useState(false);
-  const [saveStatus, setSaveStatus] = useState<string | null>(null);
+  const [planOpen, setPlanOpen] = useState(false);
   if (!ev.ok) return null;
 
   const selected = a.selectedPriorities ?? ev.recommendedPriorities;
   const userChoice = a.prioritySource === 'user';
   const scores = a.answers as Record<PId, Score>;
   const plans = selected.map(id => buildAreaPlan(id, scores[id])) as [AreaPlan, AreaPlan];
-  const band = BANDS[ev.band];
+  const type = OWNER_TYPES[ev.band];
   const start = a.planStartDate ?? localDateString(new Date());
-  const completed = a.completedAt ? formatFi(localDateString(new Date(a.completedAt))) : formatFi(start);
+  const completed = formatFi(a.completedAt ? localDateString(new Date(a.completedAt)) : start);
 
-  const save = () => setSaveStatus(rs.saveToDevice() ? 'Arviointi tallennettiin tälle laitteelle.' : null);
   const remove = () => {
-    if (!window.confirm('Tallennettu tulos poistuu tältä laitteelta. Tämän sivun tulos säilyy, kunnes suljet tai päivität sivun.')) return;
-    rs.deleteFromDevice();
-    setSaveStatus(null);
+    if (window.confirm('Tallennettu tulos poistuu tältä laitteelta. Haluatko poistaa sen?')) rs.deleteFromDevice();
   };
 
-  return <article className="rs-panel rs-panel--wide rs-result">
-    <header className="rs-result-head">
-      <p className="rs-eyebrow">GETTOWORK RESTART SCORE</p>
-      <p className="rs-muted">Valmistunut {completed}</p>
-      <h1 ref={headingRef} tabIndex={-1} className="rs-total"><span>{ev.total}</span><span className="rs-total__max"> / 120</span></h1>
-      <h2 className="rs-h2">{band.title}</h2>
-      <p className="rs-lead">{band.text}</p>
-      <p className="rs-muted">Tulos perustuu omaan arvioosi viimeisten 90 päivän arjesta. Käytä sitä keskustelun ja kehittämisen lähtökohtana.</p>
-    </header>
+  return <main lang="fi" className="rs-stage rs-stage--panel">
+    <article className="rs-panel rs-result">
+      <p className="rs-eyebrow">Restart Score · {completed}</p>
+      <h1 ref={focusRef as RefObject<HTMLHeadingElement | null>} tabIndex={-1} className="rs-total">{ev.total}<span className="rs-total__max"> / 120</span></h1>
+      <p className="rs-type">Olet <strong>{type.name}</strong></p>
+      <p className="rs-lead">{type.tagline} {BANDS[ev.band].text}</p>
+      <p className="rs-muted rs-small">Tulos perustuu omaan arvioosi viimeisten 90 päivän arjesta.</p>
 
-    <section className="rs-section" aria-labelledby="rs-areas-title">
-      <h2 id="rs-areas-title" className="rs-h3">Osa-alueet</h2>
-      <ul className="rs-areas">
-        {QUESTIONS.map(q => {
-          const s = scores[q.id];
-          const isPriority = selected.includes(q.id);
-          return <li key={q.id} className={`rs-area rs-area--${areaLevel(s)}`}>
-            <span className="rs-area__name">{q.name} <span className="rs-pname" lang="en">{q.p}</span>{isPriority && <span className="rs-tag">Prioriteetti</span>}</span>
-            <span className="rs-area__bar" aria-hidden="true"><span style={{ width: `${s * 10}%` }} /></span>
-            <span className="rs-area__score">{s} / 10</span>
-            <span className="rs-area__status">{areaStatus(s)}</span>
-          </li>;
-        })}
-      </ul>
-    </section>
+      <section className="rs-section" aria-labelledby="rs-areas-title">
+        <h2 id="rs-areas-title" className="rs-h2">Osa-alueet</h2>
+        <ul className="rs-areas">
+          {QUESTIONS.map(q => {
+            const s = scores[q.id];
+            const prio = selected.includes(q.id);
+            return <li key={q.id} className={prio ? 'is-priority' : undefined}>
+              <span className="rs-areas__name">{q.name}{prio && <span className="sr-only"> (kehityskohde)</span>}</span>
+              <span className="rs-areas__dots" aria-hidden="true">{Array.from({ length: 10 }, (_, i) => <i key={i} className={i < s ? 'on' : undefined} />)}</span>
+              <span className="rs-areas__score">{s}</span>
+            </li>;
+          })}
+        </ul>
+      </section>
 
-    <section className="rs-section" aria-labelledby="rs-prio-title">
-      <h2 id="rs-prio-title" className="rs-h3">{ev.maintenanceOnly ? 'Kaksi ylläpidettävää vahvuutta' : 'Kaksi seuraavaa kehityskohdettasi'}</h2>
-      {userChoice
-        ? <p><strong>Oma valintasi.</strong> Laskettu ehdotus: {ev.recommendedPriorities.map(id => QUESTION_BY_ID[id].name).join(' · ')}.</p>
-        : <>
-            <p>{ev.maintenanceOnly
-              ? 'Vastauksissa ei ole selvästi heikkoa osa-aluetta. Näillä kahdella varmistat, että vahva käytäntö kestää myös muutoksia.'
-              : 'Nämä osa-alueet saivat arvioinnissasi pienimmät pisteet.'}</p>
-            {ev.tieBroken && <p className="rs-muted">Tasapisteissä ehdotus käyttää kyselyn järjestystä. Se ei tarkoita, että muut saman pistemäärän osa-alueet olisivat vähemmän tärkeitä.</p>}
-          </>}
-      <p className="rs-muted rs-small">Ehdotus on itsearvioinnin pohjalta tehty aloitusehdotus, ei todennettu juurisyy tai taloudellisen vaikutuksen analyysi.</p>
+      <section className="rs-section" aria-labelledby="rs-prio-title">
+        <h2 id="rs-prio-title" className="rs-h2">{ev.maintenanceOnly ? 'Kaksi vahvuutta varmistettavaksi' : 'Kaksi kehityskohdetta'}</h2>
+        <p className="rs-muted">{userChoice ? 'Oma valintasi.' : ev.maintenanceOnly ? 'Heikkoa osa-aluetta ei löytynyt – varmista, että vahvuudet kestävät myös muutoksia.' : 'Pienimmät pisteesi.'}
+          {!userChoice && ev.tieBroken && ' Tasapisteissä järjestys seuraa kysymysten järjestystä.'}</p>
+        <div className="rs-priorities">
+          {plans.map((p, i) => <div key={p.id} className="rs-priority">
+            <p className="rs-priority__n">{i + 1}</p>
+            <h3 className="rs-h3">{QUESTION_BY_ID[p.id].name} <span className="rs-priority__score">{p.score} / 10</span></h3>
+            <p>{p.goal}</p>
+            <p className="rs-priority__first"><span className="rs-label">Aloita näin</span>{p.steps[0].task}</p>
+          </div>)}
+        </div>
+        <div className="rs-actions rs-noprint">
+          <button type="button" className="rs-link" onClick={() => setPicking(v => !v)} aria-expanded={picking}>Vaihda kehityskohteita</button>
+          {userChoice && <button type="button" className="rs-link" onClick={rs.resetPriorities}>Palauta ehdotus</button>}
+        </div>
+        {picking && <PriorityPicker scores={scores} initial={selected} onCancel={() => setPicking(false)}
+          onApply={pair => { rs.choosePriorities(pair); setPicking(false); }} />}
+      </section>
 
-      <div className="rs-priorities">
-        {plans.map((p, i) => <div key={p.id} className="rs-priority">
-          <p className="rs-priority__index">Prioriteetti {i + 1}</p>
-          <h3 className="rs-h4">{QUESTION_BY_ID[p.id].name} <span className="rs-pname" lang="en">{QUESTION_BY_ID[p.id].p}</span></h3>
-          <p className="rs-priority__score">{p.score} / 10 · {areaStatus(p.score)}</p>
-          <dl className="rs-dl">
-            <dt>Valinnan peruste</dt>
-            <dd>{userChoice ? 'Oma valintasi' : ev.maintenanceOnly ? `Ylläpidettävä vahvuus, arviosi ${p.score} / 10` : `Arvioinnin pienimpiä pisteitä, ${p.score} / 10`}</dd>
-            <dt>90 päivän tavoite</dt><dd>{p.goal}</dd>
-            <dt>Työskentelyohje</dt><dd>{p.guidance}</dd>
-            <dt>Ensimmäinen tehtävä</dt><dd>{p.steps[0].task} <span className="rs-done">Valmis, kun {p.steps[0].done}</span></dd>
-          </dl>
-        </div>)}
-      </div>
+      <section className="rs-section" aria-labelledby="rs-plan-title">
+        <div className="rs-plan-head">
+          <h2 id="rs-plan-title" className="rs-h2">90 päivän ohjelma</h2>
+          <button type="button" className="pill outline-pill rs-btn rs-noprint" aria-expanded={planOpen} aria-controls="rs-plan" onClick={() => setPlanOpen(v => !v)}>{planOpen ? 'Piilota' : 'Näytä ohjelma'}</button>
+        </div>
+        <p className="rs-muted">Alkaa {formatFi(start)} · 20 minuutin katsaus kerran viikossa · tarkistus päivinä 30, 60 ja 90.</p>
+        <Plan id="rs-plan" open={planOpen} plans={plans} start={start} />
+      </section>
 
-      <div className="rs-actions rs-noprint">
-        {!picking && <button type="button" className="pill outline-pill rs-btn" onClick={() => setPicking(true)}>Vaihda kehityskohteita</button>}
-        {userChoice && !picking && <button type="button" className="pill outline-pill rs-btn" onClick={rs.resetPriorities}>Palauta ehdotus</button>}
-      </div>
-      {picking && <PriorityPicker scores={scores} initial={selected}
-        onCancel={() => setPicking(false)}
-        onApply={pair => { rs.choosePriorities(pair); setPicking(false); }} />}
-    </section>
+      <section className="rs-section rs-noprint">
+        <div className="rs-actions">
+          <button type="button" className="pill white-pill rs-btn" onClick={() => window.print()}>Tulosta tai tallenna PDF</button>
+          <button type="button" className="pill outline-pill rs-btn" onClick={() => rs.go('review')}>Muokkaa vastauksia</button>
+          {rs.persist
+            ? <button type="button" className="pill outline-pill rs-btn" onClick={remove}>Poista tallennus</button>
+            : <button type="button" className="pill outline-pill rs-btn" onClick={rs.saveToDevice}>Tallenna tälle laitteelle</button>}
+        </div>
+        <p className="rs-muted rs-small" role="status" aria-live="polite">{rs.persist ? 'Tulos on tallennettu tähän selaimeen 120 päiväksi.' : ''}</p>
+        <Notices rs={rs} />
+      </section>
 
-    <Plan plans={plans} start={start} />
-
-    <section className="rs-section rs-noprint" aria-labelledby="rs-actions-title">
-      <h2 id="rs-actions-title" className="rs-h3">Tallenna ja jatka</h2>
-      <div className="rs-actions">
-        <button type="button" className="pill white-pill rs-btn" onClick={() => window.print()}>Tulosta tai tallenna PDF</button>
-        <button type="button" className="pill outline-pill rs-btn" onClick={() => rs.go('review')}>Muokkaa vastauksia</button>
-        {!rs.persist && <button type="button" className="pill outline-pill rs-btn" onClick={save}>Tallenna tälle laitteelle</button>}
-        {rs.persist && <button type="button" className="pill outline-pill rs-btn" onClick={remove}>Poista tallennettu arviointi</button>}
-      </div>
-      <div role="status" aria-live="polite">
-        {rs.persist && <p className="rs-muted rs-small">{saveStatus ?? 'Arviointi on tallennettu tälle laitteelle.'} Tallennus vanhenee 120 päivää viimeisestä muutoksesta.</p>}
-      </div>
-      {!rs.persist && <p className="rs-muted rs-small">{SHARED_DEVICE_NOTE}</p>}
-      <Notices rs={rs} />
-    </section>
-
-    <Contact />
-  </article>;
+      <Contact />
+    </article>
+  </main>;
 }
 
 function PriorityPicker({ scores, initial, onApply, onCancel }: {
@@ -336,17 +273,16 @@ function PriorityPicker({ scores, initial, onApply, onCancel }: {
   useEffect(() => { legendRef.current?.focus(); }, []);
   const toggle = (id: PId) => setSel(s => s.includes(id) ? s.filter(x => x !== id) : s.length < 2 ? [...s, id] : s);
 
-  return <fieldset id="rs-picker" className="rs-picker">
-    <legend ref={legendRef} tabIndex={-1} className="rs-h4">Valitse kaksi kehityskohdetta</legend>
-    <p className="rs-muted rs-small" aria-live="polite">Valittu {sel.length} / 2. Kokonaispisteet eivät muutu.</p>
+  return <fieldset className="rs-picker rs-noprint">
+    <legend ref={legendRef} tabIndex={-1}>Valitse kaksi <span className="rs-muted" aria-live="polite">({sel.length} / 2)</span></legend>
     <ul>
       {QUESTIONS.map(q => {
         const checked = sel.includes(q.id);
         return <li key={q.id}>
           <label className="rs-check">
             <input type="checkbox" checked={checked} disabled={!checked && sel.length >= 2} onChange={() => toggle(q.id)} />
-            <span>{q.name} <span className="rs-pname" lang="en">{q.p}</span></span>
-            <span className="rs-picker__score">{scores[q.id]} / 10</span>
+            <span>{q.name}</span>
+            <span className="rs-picker__score">{scores[q.id]}</span>
           </label>
         </li>;
       })}
@@ -358,71 +294,47 @@ function PriorityPicker({ scores, initial, onApply, onCancel }: {
   </fieldset>;
 }
 
-// --- 90 päivän ohjelma -------------------------------------------------------
-
-function Plan({ plans, start }: { plans: [AreaPlan, AreaPlan]; start: string }) {
-  const name = (id: PId) => QUESTION_BY_ID[id].name;
-  return <section className="rs-section rs-plan" aria-labelledby="rs-plan-title">
-    <h2 id="rs-plan-title" className="rs-h3">90 päivän ohjelma</h2>
-    <p className="rs-plan-areas">Kehityskohteet: {name(plans[0].id)} · {name(plans[1].id)}</p>
-    <dl className="rs-plan-meta">
-      <div><dt>Aloitus</dt><dd>Päivä 1 · {formatFi(start)}</dd></div>
-      <div><dt>Rytmi</dt><dd>20 minuutin katsaus kerran viikossa</dd></div>
-      <div><dt>Tarkistuspisteet</dt><dd>{[30, 60, 90].map(d => `päivä ${d} (${formatFi(planDay(start, d))})`).join(', ')}</dd></div>
-      <div><dt>Vastuuhenkilö</dt><dd>Sinä / yrityksen vetäjä <span className="rs-print-only">· muu vastuuhenkilö: ____________________</span></dd></div>
-    </dl>
-
-    {PHASES.map((phase, i) => <section key={phase.from} className="rs-phase" aria-labelledby={`rs-phase-${i}`}>
-      <div className="rs-phase__head">
-        <h3 id={`rs-phase-${i}`} className="rs-h4">Päivät {phase.from}–{phase.to}: {phase.title}</h3>
-        <p className="rs-muted rs-small">{formatFi(planDay(start, phase.from))}–{formatFi(planDay(start, phase.to))}</p>
-        <p>{phase.text}</p>
-      </div>
+function Plan({ id, open, plans, start }: { id: string; open: boolean; plans: [AreaPlan, AreaPlan]; start: string }) {
+  const name = (pid: PId) => QUESTION_BY_ID[pid].name;
+  return <div id={id} className={`rs-plan${open ? '' : ' is-collapsed'}`}>
+    {PHASES.map((phase, i) => <section key={phase.from} className="rs-phase">
+      <h3 className="rs-h3">Päivät {phase.from}–{phase.to} · {phase.title}</h3>
+      <p className="rs-muted rs-small">{formatFi(planDay(start, phase.from))}–{formatFi(planDay(start, phase.to))}</p>
       <div className="rs-phase__tasks">
         {plans.map(p => <div key={p.id} className="rs-task">
-          <p className="rs-task__area">{name(p.id)}</p>
+          <p className="rs-label">{name(p.id)}</p>
           <p>{p.steps[i].task}</p>
           <p className="rs-done">Valmis, kun {p.steps[i].done}</p>
         </div>)}
       </div>
-      {i === 2 && <p className="rs-phase__note">Päivänä 90 tee Restart Score uudelleen kaikille 12 osa-alueelle ja vertaa tulosta tallentamaasi tai tulostamaasi raporttiin.</p>}
     </section>)}
-
-    <section className="rs-phase" aria-labelledby="rs-metrics-title">
-      <h3 id="rs-metrics-title" className="rs-h4">Seurantamittarit</h3>
+    <section className="rs-phase">
+      <h3 className="rs-h3">Seurantamittarit</h3>
       <div className="rs-phase__tasks">
         {plans.map(p => <div key={p.id} className="rs-task">
-          <p className="rs-task__area">{name(p.id)}</p>
+          <p className="rs-label">{name(p.id)}</p>
           <p>{p.metric}</p>
-          <p className="rs-print-only">Lähtöarvo: ____________ · Tavoite: ____________ · Havaintoja: ______</p>
+          <p className="rs-print-only">Lähtöarvo: __________ · Tavoite: __________</p>
         </div>)}
       </div>
-      <p className="rs-muted rs-small">Kirjaa mittarin lähtöarvo, tavoite ja havaintojen lukumäärä itse, jotta pienestä aineistosta ei tehdä liian vahvoja johtopäätöksiä. Kokeilujen määrät ovat oletuksia; sovita ne toimintasi rytmiin.</p>
+      <p className="rs-muted rs-small">Vastuu: sinä tai nimeämäsi henkilö<span className="rs-print-only"> ____________________</span>. Päivänä 90 tee testi uudelleen ja vertaa tulosta.</p>
     </section>
-  </section>;
+  </div>;
 }
-
-// --- Yhteydenotto ------------------------------------------------------------
 
 function Contact() {
   const [copied, setCopied] = useState(false);
   const href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(CONTACT_SUBJECT)}&body=${encodeURIComponent(CONTACT_BODY)}`;
   const copy = async () => {
-    try {
-      await navigator.clipboard.writeText(CONTACT_EMAIL);
-      setCopied(true);
-    } catch {
-      setCopied(false);
-    }
+    try { await navigator.clipboard.writeText(CONTACT_EMAIL); setCopied(true); } catch { setCopied(false); }
   };
   return <section className="rs-section rs-contact" aria-labelledby="rs-contact-title">
-    <h2 id="rs-contact-title" className="rs-h3">Haluatko sparrata seuraavat askeleet?</h2>
-    <p>Ota tulos mukaan keskusteluun. Voimme käydä läpi, mistä muutoksesta kannattaa aloittaa.</p>
-    <div className="rs-actions rs-noprint">
-      <a className="pill white-pill rs-btn" href={href}>Keskustele tuloksesta</a>
-      <button type="button" className="pill outline-pill rs-btn" onClick={copy}>Kopioi osoite</button>
+    <h2 id="rs-contact-title" className="rs-h2">Haluatko sparrata seuraavat askeleet?</h2>
+    <p className="rs-muted">Ota tulos mukaan keskusteluun. Käydään läpi, mistä kannattaa aloittaa.</p>
+    <div className="rs-actions">
+      <a className="pill white-pill rs-btn rs-noprint" href={href}>Keskustele tuloksesta</a>
+      <button type="button" className="rs-link rs-noprint" onClick={copy}>{copied ? 'Kopioitu' : `Kopioi ${CONTACT_EMAIL}`}</button>
+      <span className="rs-print-only">{CONTACT_EMAIL}</span>
     </div>
-    <p className="rs-email"><span className="rs-muted">Sähköposti: </span><span className="rs-select">{CONTACT_EMAIL}</span></p>
-    <p role="status" aria-live="polite" className="rs-muted rs-small">{copied ? 'Osoite kopioitu.' : ''}</p>
   </section>;
 }

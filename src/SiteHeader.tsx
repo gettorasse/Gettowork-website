@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { interceptClick, type Route } from './router.ts';
+import { ABOUT_PATH, HOME_PATH, interceptClick, type Route } from './router.ts';
 
-const links = ['Labs', 'Studio', 'Openings', 'Shop'];
-const destinations = ['#labs', '#studio', '#openings', '#shop'];
+const MARKETING_URL = 'https://webshow.fi';
+const CONTACT = 'mailto:rasmus@gettowork.fi';
 
-/** Sivuston yhteinen yläosa. Etusivulla linkit toimivat täsmälleen kuten ennen. */
+/** Sivuston yläosa ilman omaa taustaa: hahmo näkyy ylhäältä alas. */
 export function SiteHeader({ route }: { route: Route }) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const onHome = route === 'home';
   useEffect(() => {
     const key = (e: KeyboardEvent) => { if (e.key === 'Escape') setMenuOpen(false); };
     window.addEventListener('keydown', key);
@@ -15,29 +14,34 @@ export function SiteHeader({ route }: { route: Route }) {
   }, []);
   useEffect(() => setMenuOpen(false), [route]);
 
-  const href = (i: number) => (onHome ? destinations[i] : `/${destinations[i]}`);
-  const onLink = (i: number) => (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const go = (url: string, state: unknown = null) => (e: React.MouseEvent<HTMLAnchorElement>) => {
     setMenuOpen(false);
-    if (!onHome) interceptClick(e, href(i));
+    interceptClick(e, url, state);
   };
-  const onLogo = (e: React.MouseEvent<HTMLAnchorElement>) => { if (!onHome) interceptClick(e, '/'); };
+  const toHome = go(HOME_PATH, { rs: { view: 'intro', step: 0 } });
+  const toAbout = go(ABOUT_PATH);
+  const current = (r: Route) => (route === r ? 'page' : undefined);
 
   return <>
-    <header className={`site-header fixed inset-x-0 top-0 z-10 flex items-center justify-between px-5 py-4 sm:px-8 sm:py-5${onHome ? '' : ' site-header--solid'}`}>
-      <a href="/" aria-label="Home" onClick={onLogo}><img src="/group-2.svg" className="h-[35px] w-auto sm:h-[44px]" alt="Agency logo" /></a>
-      <nav aria-label="Main navigation" className="hidden text-[23px] text-white md:flex">
-        {links.map((link, i) => <React.Fragment key={link}><a href={href(i)} onClick={onLink(i)} className="transition-opacity hover:opacity-60">{link}</a>{i < links.length - 1 && <span className="whitespace-pre">, </span>}</React.Fragment>)}
+    <header className="site-header fixed inset-x-0 top-0 z-10 flex items-center justify-between px-5 py-4 sm:px-8 sm:py-5" lang="fi">
+      <a href={HOME_PATH} aria-label="Etusivu" onClick={toHome}><img src="/group-2.svg" className="h-[35px] w-auto sm:h-[44px]" alt="gettowork" /></a>
+      <nav aria-label="Päävalikko" className="hidden text-[23px] text-white md:flex">
+        <a href={ABOUT_PATH} onClick={toAbout} aria-current={current('about')} className="transition-opacity hover:opacity-60">Kysely</a>
+        <span className="whitespace-pre">, </span>
+        <a href={MARKETING_URL} target="_blank" rel="noopener" className="transition-opacity hover:opacity-60">Aloita markkinointi</a>
       </nav>
-      <a href="mailto:rasmus@gettowork.fi" className="hidden text-[23px] text-white underline underline-offset-2 transition-opacity hover:opacity-60 md:block">Get in touch</a>
-      <button aria-label={menuOpen ? 'Close menu' : 'Open menu'} aria-expanded={menuOpen} aria-controls="mobile-menu" onClick={() => setMenuOpen(!menuOpen)} className="flex min-h-11 min-w-11 flex-col items-center justify-center gap-[5px] md:hidden">
+      <a href={CONTACT} className="hidden text-[23px] text-white underline underline-offset-2 transition-opacity hover:opacity-60 md:block">Tavoita minut</a>
+      <button aria-label={menuOpen ? 'Sulje valikko' : 'Avaa valikko'} aria-expanded={menuOpen} aria-controls="mobile-menu" onClick={() => setMenuOpen(!menuOpen)} className="flex min-h-11 min-w-11 flex-col items-center justify-center gap-[5px] md:hidden">
         <span className={`h-[2px] w-6 bg-white transition-all duration-300 ${menuOpen ? 'translate-y-[7px] rotate-45' : ''}`} />
         <span className={`h-[2px] w-6 bg-white transition-all duration-300 ${menuOpen ? 'opacity-0' : ''}`} />
         <span className={`h-[2px] w-6 bg-white transition-all duration-300 ${menuOpen ? '-translate-y-[7px] -rotate-45' : ''}`} />
       </button>
     </header>
-    <nav id="mobile-menu" aria-label="Mobile navigation" aria-hidden={!menuOpen} inert={!menuOpen} className="fixed inset-0 z-[9] flex flex-col items-start justify-center gap-8 bg-black/90 px-8 text-[32px] font-medium text-white backdrop-blur-md transition-opacity duration-300 md:hidden" style={{ opacity: menuOpen ? 1 : 0, pointerEvents: menuOpen ? 'auto' : 'none' }}>
-      {links.map((link, i) => <a key={link} href={href(i)} onClick={onLink(i)}>{link}</a>)}
-      <a href="mailto:rasmus@gettowork.fi" className="underline underline-offset-2">Get in touch</a>
+    <nav id="mobile-menu" lang="fi" aria-label="Mobiilivalikko" aria-hidden={!menuOpen} inert={!menuOpen} className="fixed inset-0 z-[9] flex flex-col items-start justify-center gap-8 bg-black/90 px-8 text-[32px] font-medium text-white backdrop-blur-md transition-opacity duration-300 md:hidden" style={{ opacity: menuOpen ? 1 : 0, pointerEvents: menuOpen ? 'auto' : 'none' }}>
+      <a href={HOME_PATH} onClick={toHome}>Testi</a>
+      <a href={ABOUT_PATH} onClick={toAbout}>Kysely</a>
+      <a href={MARKETING_URL} target="_blank" rel="noopener">Aloita markkinointi</a>
+      <a href={CONTACT} className="underline underline-offset-2">Tavoita minut</a>
     </nav>
   </>;
 }

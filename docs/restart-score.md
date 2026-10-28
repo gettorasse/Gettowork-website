@@ -14,9 +14,11 @@ Määrittely: Gettowork Restart Score – toteutusmäärittely v1.0 (28.10.2026)
 
 ## Ratkaisut
 
-- Julkinen osoite on **/restart-score**. Polku valitaan `src/router.ts`:ssä ilman lisäkirjastoa. `vercel.json` ohjaa polun `index.html`:ään, joten suora avaus ja päivitys toimivat. Viten kehityspalvelin tekee saman oletuksena.
-- Siirtymät etusivun ja kyselyn välillä tehdään sovelluksen sisällä (`history.pushState`), joten etusivulla käynti ei tyhjennä muistissa olevia vastauksia. Jokainen kyselyn vaihe on oma historiamerkintä; selaimen Takaisin palaa edelliseen vaiheeseen. URL ei sisällä pisteitä.
-- Header ja taustavideo erotettiin omiksi komponenteiksi (`SiteHeader.tsx`, `BackgroundVideo.tsx`) ilman muutoksia etusivun toimintaan. Kyselyssä headerin alla on tumma läpikuultava pinta vieritystä varten.
-- Kyselyn tiedostot ovat kansiossa `src/restart-score/`: `content.ts` (sisältö), `engine.ts` (laskenta), `storage.ts` (laitetallennus), `useRestartScore.ts` (tila), `RestartScore.tsx` (näkymät) ja `restart-score.css`.
-- Laskennan testit: `npm test` (Noden oma testiajuri, ei uusia riippuvuuksia), tiedosto `tests/restart-score.test.ts`.
-- Laitetallennus: avain `gettowork.restart-score.v1`, vain käyttäjän tallennuspainikkeesta, vanhenee 120 päivää viimeisestä tallennuksesta.
+- Etusivu (/) on testin aloitus suomeksi: kirjoittuva kysymys, himmeä A.R.I.A-taustateksti, iso "Aloita testi", pienet kysymysnappulat ja "Tavoita minut". Testi etenee samalla sivulla: taustavideo ja hahmo pysyvät, vain sisältö vaihtuu. Jokainen vaihe on oma historiamerkintä, joten selaimen Takaisin palaa edelliseen kysymykseen.
+- Yläpalkissa ei ole omaa taustaa. Valinnat: Kysely (/kysely, testin tietosivu) ja Aloita markkinointi (webshow.fi), oikealla Tavoita minut.
+- Pisteet 0–10 ovat pyöreitä palloja yhdellä rivillä näytön halki (mobiilissa 6 + 5, alle 380 px 4 + 4 + 3). Valinta syttyy nollasta valittuun numeroon. Pallon päälle vieminen tai valinta kääntää hahmon katsetta (lookAt BackgroundVideo.tsx:ssä).
+- Tulos kertoo pisteet / 120 ja yrittäjätyypin (Sammuttaja, Pyörittäjä, Rakentaja, Omistaja), kaksi kehityskohdetta ja avattavan 90 päivän ohjelman. Tulos- ja tietosivulla tausta himmenee lukemisen ajaksi.
+- "En osaa vielä arvioida" poistettiin käyttäjän pyynnöstä; jokaiseen kysymykseen annetaan arvosana.
+- Vanha /restart-score-osoite ohjautuu etusivulle. vercel.json ohjaa /kysely- ja /restart-score-polut index.html:ään.
+- Kyselyn tiedostot: src/restart-score/ (content, engine, storage, useRestartScore, RestartScore, About, CSS). Testit: npm test.
+- Laitetallennus: avain gettowork.restart-score.v1, vain käyttäjän tallennuspainikkeesta, vanhenee 120 päivää viimeisestä tallennuksesta.

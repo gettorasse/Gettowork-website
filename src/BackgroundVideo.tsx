@@ -1,5 +1,13 @@
 import { useEffect, useRef } from 'react';
 
+const GAZE_EVENT = 'gtw:gaze';
+
+/** Kääntää A.R.I.An katseen: 0 = vasen reuna, 1 = oikea reuna. */
+export function lookAt(fraction: number) {
+  window.dispatchEvent(new CustomEvent<number>(GAZE_EVENT, { detail: fraction }));
+}
+
+/** Taustavideo, jota hiiri (työpöytä), vieritys (mobiili) tai lookAt() kelaa. */
 export function BackgroundVideo() {
   const ref = useRef<HTMLVideoElement>(null);
   useEffect(() => {
@@ -33,8 +41,15 @@ export function BackgroundVideo() {
       targetTime = Math.max(0, Math.min(video.duration, targetTime + (delta / window.innerWidth) * 0.8 * video.duration));
       scheduleSeek();
     };
+    const onGaze = (event: Event) => {
+      const fraction = (event as CustomEvent<number>).detail;
+      if (!Number.isFinite(video.duration) || !Number.isFinite(fraction)) return;
+      targetTime = Math.max(0, Math.min(1, fraction)) * video.duration;
+      scheduleSeek();
+    };
     const syncViewport = () => { prevX = null; onScroll(); };
     window.addEventListener('mousemove', onMove);
+    window.addEventListener(GAZE_EVENT, onGaze);
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', syncViewport);
     mobile.addEventListener('change', syncViewport);
@@ -45,6 +60,7 @@ export function BackgroundVideo() {
     return () => {
       cancelAnimationFrame(frame);
       window.removeEventListener('mousemove', onMove);
+      window.removeEventListener(GAZE_EVENT, onGaze);
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', syncViewport);
       mobile.removeEventListener('change', syncViewport);

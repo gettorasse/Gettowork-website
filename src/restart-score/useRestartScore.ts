@@ -6,14 +6,14 @@ import { evaluate, isValidPair, localDateString, missingIds } from './engine.ts'
 import {
   loadAssessment, newAssessment, removeAssessment, saveAssessment, type Assessment, type View,
 } from './storage.ts';
-import { QUIZ_PATH } from '../router.ts';
+import { HOME_PATH } from '../router.ts';
 
 export const MSG = {
-  restoreFailed: 'Tallennettua arviointia ei voitu palauttaa. Voit aloittaa uuden.',
+  restoreFailed: 'Tallennettua testiä ei voitu palauttaa. Voit aloittaa uuden.',
   saveFailed: 'Tallennus tälle laitteelle ei onnistunut. Voit jatkaa ja tulostaa tuloksen.',
-  noResult: 'Tulos muodostuu, kun olet vastannut kyselyyn.',
-  savedExit: 'Arviointi on tallennettu tälle laitteelle. Voit jatkaa sitä myöhemmin tällä selaimella.',
-  deleted: 'Tallennettu arviointi on poistettu tältä laitteelta.',
+  noResult: 'Tulos muodostuu, kun olet vastannut kaikkiin kysymyksiin.',
+  savedExit: 'Testi on tallennettu tähän selaimeen. Voit jatkaa sitä myöhemmin. Älä käytä tallennusta yhteiskäyttölaitteella.',
+  deleted: 'Tallennettu testi on poistettu tältä laitteelta.',
 } as const;
 
 type HistoryState = { rs?: { view: View; step: number } };
@@ -104,7 +104,7 @@ export function useRestartScore() {
 
   const pushView = useCallback((view: View, step: number) => {
     const state: HistoryState = { rs: { view, step } };
-    window.history.pushState(state, '', QUIZ_PATH);
+    window.history.pushState(state, '', HOME_PATH);
   }, []);
 
   const go = useCallback((view: View, step?: number) => {
@@ -136,10 +136,6 @@ export function useRestartScore() {
     setAssessment(a => ({ ...a, view: rs.view, currentStep: step }));
   }, []);
 
-  const enterFromOutside = useCallback(() => {
-    setAssessment(a => ({ ...a, view: 'intro' }));
-  }, []);
-
   const start = useCallback((replaceDeviceDraft = false) => {
     const fresh = { ...newAssessment(), view: 'question' as View, currentStep: 0 };
     setAssessment(fresh);
@@ -167,16 +163,6 @@ export function useRestartScore() {
       if (a.answers[id] === score && !a.deferred.includes(id)) return a;
       const next = { ...a, answers: { ...a.answers, [id]: score }, deferred: a.deferred.filter(d => d !== id) };
       return a.answers[id] === score ? next : invalidateResult(next);
-    });
-  }, []);
-
-  const setDeferred = useCallback((id: PId, deferred: boolean) => {
-    setAssessment(a => {
-      if (deferred) {
-        const next = { ...a, answers: { ...a.answers, [id]: null }, deferred: a.deferred.includes(id) ? a.deferred : [...a.deferred, id] };
-        return a.answers[id] === null ? next : invalidateResult(next);
-      }
-      return { ...a, deferred: a.deferred.filter(d => d !== id) };
     });
   }, []);
 
@@ -233,7 +219,7 @@ export function useRestartScore() {
   return {
     assessment, ...derived, persist, deviceDraft, notice, storageError,
     hasMemoryProgress: hasProgress(assessment),
-    go, syncFromHistory, enterFromOutside, start, resume, setScore, setDeferred, showResult,
+    go, syncFromHistory, start, resume, setScore, showResult,
     choosePriorities, resetPriorities, saveToDevice, saveAndExit, deleteFromDevice,
     clearNotice: () => setNotice(null),
   };
