@@ -173,6 +173,7 @@
 .rs-picker .rs-check { margin-top: 0; }
 .rs-picker__score { margin-left: auto; font-family: var(--font-heading); white-space: nowrap; }
 
+.rs-plan-areas { margin: -4px 0 18px !important; font-family: var(--font-heading); }
 .rs-plan-meta { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 40px; margin: 0; }
 @media (max-width: 640px) { .rs-plan-meta { grid-template-columns: 1fr; } }
 .rs-plan-meta dt { font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--rs-muted); }
@@ -206,7 +207,7 @@
   .rs-panel--wide { max-width: none; }
   .rs-total { font-size: 54pt !important; }
   .rs-section { margin-top: 22pt; padding-top: 12pt; }
-  .rs-area { grid-template-columns: 38% 30% 12% 20%; gap: 8pt; padding: 4pt 0; break-inside: avoid; }
+  .rs-area { grid-template-columns: minmax(0, 2fr) minmax(0, 1.4fr) auto minmax(0, 1.3fr); gap: 8pt; padding: 4pt 0; break-inside: avoid; }
   .rs-area__bar { grid-column: auto; grid-row: auto; border: 1px solid #000; background: #fff; height: 8pt; }
   .rs-area__bar > span, .rs-area--build .rs-area__bar > span { background: #000; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
   .rs-area__status { grid-column: auto; }

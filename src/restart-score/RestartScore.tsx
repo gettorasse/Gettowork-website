@@ -110,6 +110,7 @@ function QuestionView({ rs, headingRef, fromReview }: ViewProps & { fromReview: 
   const value = rs.assessment.answers[q.id];
   const deferred = rs.assessment.deferred.includes(q.id);
   const [error, setError] = useState(false);
+  const [errorTick, setErrorTick] = useState(0);
   const errorRef = useRef<HTMLParagraphElement>(null);
   const last = step === QUESTIONS.length - 1;
   const ids = { help: `rs-help-${q.id}`, anchors: `rs-anchors-${q.id}`, error: `rs-error-${q.id}` };
@@ -117,9 +118,10 @@ function QuestionView({ rs, headingRef, fromReview }: ViewProps & { fromReview: 
   const ensureAnswered = () => {
     if (value !== null || deferred) return true;
     setError(true);
-    requestAnimationFrame(() => errorRef.current?.focus());
+    setErrorTick(t => t + 1);
     return false;
   };
+  useEffect(() => { if (errorTick > 0) errorRef.current?.focus(); }, [errorTick]);
   const next = () => { if (ensureAnswered()) rs.go(last ? 'review' : 'question', last ? step : step + 1); };
   const prev = () => (step === 0 ? rs.go('intro') : rs.go('question', step - 1));
   const backToReview = () => { if (ensureAnswered()) rs.go('review'); };
@@ -271,7 +273,7 @@ function Result({ rs, headingRef }: ViewProps) {
     <section className="rs-section" aria-labelledby="rs-prio-title">
       <h2 id="rs-prio-title" className="rs-h3">{ev.maintenanceOnly ? 'Kaksi ylläpidettävää vahvuutta' : 'Kaksi seuraavaa kehityskohdettasi'}</h2>
       {userChoice
-        ? <p><strong>Oma valintasi.</strong> Laskettu ehdotus oli {ev.recommendedPriorities.map(id => QUESTION_BY_ID[id].name).join(' ja ')}.</p>
+        ? <p><strong>Oma valintasi.</strong> Laskettu ehdotus: {ev.recommendedPriorities.map(id => QUESTION_BY_ID[id].name).join(' · ')}.</p>
         : <>
             <p>{ev.maintenanceOnly
               ? 'Vastauksissa ei ole selvästi heikkoa osa-aluetta. Näillä kahdella varmistat, että vahva käytäntö kestää myös muutoksia.'
@@ -361,7 +363,8 @@ function PriorityPicker({ scores, initial, onApply, onCancel }: {
 function Plan({ plans, start }: { plans: [AreaPlan, AreaPlan]; start: string }) {
   const name = (id: PId) => QUESTION_BY_ID[id].name;
   return <section className="rs-section rs-plan" aria-labelledby="rs-plan-title">
-    <h2 id="rs-plan-title" className="rs-h3">90 päivän ohjelma: {name(plans[0].id)} ja {name(plans[1].id)}</h2>
+    <h2 id="rs-plan-title" className="rs-h3">90 päivän ohjelma</h2>
+    <p className="rs-plan-areas">Kehityskohteet: {name(plans[0].id)} · {name(plans[1].id)}</p>
     <dl className="rs-plan-meta">
       <div><dt>Aloitus</dt><dd>Päivä 1 · {formatFi(start)}</dd></div>
       <div><dt>Rytmi</dt><dd>20 minuutin katsaus kerran viikossa</dd></div>
