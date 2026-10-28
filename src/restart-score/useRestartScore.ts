@@ -152,11 +152,10 @@ export function useRestartScore() {
   const resume = useCallback(() => {
     const source = deviceDraft && !persist ? deviceDraft : ref.current;
     if (deviceDraft && !persist) { setPersist(true); setDeviceDraft(null); }
-    let target: View = source.view === 'intro' ? (source.completedAt ? 'result' : 'question') : source.view;
-    let next = { ...source, view: target };
+    const target: View = source.view === 'intro' ? (source.completedAt ? 'result' : 'question') : source.view;
+    let next: Assessment = { ...source, view: target };
     if (target === 'result') {
-      if (missingIds(source.answers).length > 0) { target = 'review'; next = { ...source, view: 'review' }; }
-      else next = finalize(source);
+      next = missingIds(source.answers).length > 0 ? { ...source, view: 'review' } : finalize(source);
     }
     setAssessment(next);
     setNotice(null);
