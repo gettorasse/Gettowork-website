@@ -46,6 +46,7 @@ function App() {
     {/* Tausta pysyy samana koko ajan: etusivu, kysymykset ja tulos vaihtuvat sen päällä. */}
     <BackgroundVideo />
     <div className={`stage-dim${dim ? ' is-on' : ''}`} aria-hidden="true" />
+    <div className={`stage-floor${route === 'home' && view === 'question' ? ' is-on' : ''}`} aria-hidden="true" />
     <SiteHeader route={route} />
     {route === 'about' ? <About onStart={startFromAbout} /> : <RestartScore rs={rs} />}
   </>;

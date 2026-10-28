@@ -107,17 +107,14 @@
 }
 .rs-ball__input:focus-visible + .rs-ball__face { outline: 2px solid #fff; outline-offset: 6px; }
 
-.rs-ends { display: flex; justify-content: space-between; gap: 24px; margin-top: 16px; font-size: 14px; line-height: 1.35; color: var(--rs-muted); }
-.rs-ends p { max-width: 34ch; }
-.rs-ends p:last-child { text-align: right; }
-.rs-ends__n { font-family: var(--font-heading); color: #fff; margin-right: 4px; }
-@media (max-width: 520px) { .rs-ends { font-size: 13px; gap: 14px; } }
+.rs-ends { display: flex; flex-direction: column; gap: 4px; max-width: 560px; margin-top: 18px; font-size: 15px; line-height: 1.35; color: var(--rs-muted); }
+.rs-ends__n { display: inline-block; min-width: 2.2em; font-family: var(--font-heading); color: #fff; }
 
 .rs-error { margin-top: 16px !important; font-family: var(--font-heading); }
 .rs-error::before { content: "! "; color: var(--rs-accent); }
-.rs-q__nav { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 28px; }
-.rs-q__save { margin-left: auto; font-size: 14px; color: var(--rs-muted); }
-@media (max-width: 520px) { .rs-q__nav .rs-btn { flex: 1 1 0; } .rs-q__save { margin: 0 auto; } }
+.rs-q__nav { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 24px; }
+.rs-q__save { flex-basis: 100%; justify-content: flex-start; min-height: 40px; font-size: 14px; color: var(--rs-muted); }
+@media (max-width: 520px) { .rs-q__nav .rs-btn { flex: 1 1 0; } }
 
 /* --- Paneelit (vastaukset, tulos, Kysely-sivu) himmennetyn taustan päällä --- */
 .rs-stage--panel { justify-content: flex-start; }
@@ -193,7 +190,7 @@
 @media print {
   @page { margin: 16mm 14mm; }
   html, body { background: #fff !important; }
-  .site-header, #mobile-menu, .video-backdrop, .stage-dim, .rs-noprint, .rs-notices { display: none !important; }
+  .site-header, #mobile-menu, .video-backdrop, .stage-dim, .stage-floor, .rs-noprint, .rs-notices { display: none !important; }
   .rs-stage { --rs-muted: #444; --rs-line: #bbb; --rs-accent: #000; color: #000; text-shadow: none; padding: 0; min-height: 0; display: block; font-size: 11pt; }
   .rs-panel { max-width: none; }
   .rs-total { font-size: 54pt !important; }
