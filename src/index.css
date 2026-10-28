@@ -43,8 +43,8 @@ a:focus-visible, button:focus-visible { outline: 2px solid white; outline-offset
   html, body { overscroll-behavior-y: none; }
   .video-backdrop { height: 100lvh; }
   .background-video { left: 0; object-position: center; }
-  /* Gradientti nousee yli puolen näytön, jotta keskellä olevat tekstit erottuvat. */
-  .video-gradient { background: linear-gradient(to top, rgba(8, 14, 48, 0.97) 0%, rgba(8, 14, 48, 0.92) 35%, rgba(8, 14, 48, 0.78) 55%, rgba(8, 14, 48, 0.4) 72%, transparent 88%); }
+  .video-gradient { background: linear-gradient(to top, rgba(8, 14, 48, 0.96) 0%, rgba(8, 14, 48, 0.9) 22%, rgba(8, 14, 48, 0.55) 42%, transparent 72%); }
+  /* Testin aikana gradientti nousee yli puolen näytön, jotta keskellä olevat tekstit erottuvat. */
   .stage-floor { height: 85vh; background: linear-gradient(to top, rgb(8 14 48 / 0.92) 0%, rgb(8 14 48 / 0.82) 40%, rgb(8 14 48 / 0.5) 65%, rgb(8 14 48 / 0) 100%); }
   /* Keep the composition stable when mobile browser chrome expands or collapses. */
   .hero {
