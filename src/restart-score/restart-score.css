@@ -10,7 +10,8 @@
 .rs-stage p, .rs-stage h1, .rs-stage h2, .rs-stage h3 { margin: 0; }
 .rs-stage h1, .rs-stage h2, .rs-stage h3, .rs-stage legend { font-family: var(--font-heading); font-weight: 500; }
 .rs-home [tabindex="-1"]:focus, .rs-stage [tabindex="-1"]:focus { outline: none; }
-.rs-stage [tabindex="-1"]:focus-visible { outline: 2px solid #fff; outline-offset: 6px; }
+/* Fokus siirtyy otsikkoon ruudunlukijaa varten; otsikko ei ole toiminto, joten kehystä ei näytetä. */
+.rs-stage [tabindex="-1"]:focus-visible { outline: none; }
 
 /* --- Etusivu --- */
 .rs-checks { list-style: none; margin: 0 0 26px; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, max-content)); gap: 12px 28px; }
