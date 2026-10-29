@@ -16,8 +16,13 @@ function finish(root: HTMLElement) {
 
 /** GSAP ladataan index.html:n defer-skripteillä, jotka ajetaan vasta tämän moduulin jälkeen. */
 export function initLogoStackLoader() {
-  if (window.gsap || document.readyState !== 'loading') { runLoader(); return; }
-  document.addEventListener('DOMContentLoaded', runLoader, { once: true });
+  if (window.gsap || document.readyState === 'complete') { runLoader(); return; }
+  // Moduuli ajetaan tilassa 'interactive', ennen defer-skriptejä: odotetaan, kunnes ne on ajettu.
+  let started = false;
+  const start = () => { if (!started) { started = true; runLoader(); } };
+  document.addEventListener('DOMContentLoaded', start, { once: true });
+  window.addEventListener('load', start, { once: true });
+  window.setTimeout(start, 4000);
 }
 
 function runLoader() {
