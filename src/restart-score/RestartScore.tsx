@@ -88,7 +88,6 @@ function Intro({ rs, focusRef }: ViewProps) {
           <Notices rs={rs} />
         </div>
       </div>
-      <a className="pill outline-pill rs-contact-corner gap-2 sm:gap-3" href={`mailto:${CONTACT_EMAIL}`} style={{ opacity: pillsVisible ? 1 : 0, transition: 'opacity 0.4s ease' }}><span>Tavoita minut: <span className="underline underline-offset-1">{CONTACT_EMAIL}</span></span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2" /><path d="m2 5 10 8 10-8" /></svg></a>
     </main>
     <div className="mobile-scroll-spacer" aria-hidden="true" />
   </>;
