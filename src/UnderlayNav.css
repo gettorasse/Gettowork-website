@@ -3,8 +3,11 @@
 
 :root { --menu-width: 30em; }
 
-/* Sivun sisältö peittää valikon, kunnes se liukuu vasemmalle. */
-.underlay-main { position: relative; z-index: 2; }
+/* Sivun sisältö peittää valikon, kunnes se liukuu vasemmalle. Kääre itse ei liiku, joten
+   se ei saa ottaa klikkauksia vastaan – muuten se peittäisi avatun valikon. Lapset saavat
+   klikkaukset takaisin (:where = nolla spesifisyyttä, omat pointer-events-säännöt voittavat). */
+.underlay-main { position: relative; z-index: 2; pointer-events: none; }
+:where(.underlay-main > *) { pointer-events: auto; }
 
 .underlay-nav a { color: inherit; text-decoration: none; }
 
