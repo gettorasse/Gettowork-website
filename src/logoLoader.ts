@@ -14,7 +14,13 @@ function finish(root: HTMLElement) {
   window.dispatchEvent(new Event(LOADED_EVENT));
 }
 
+/** GSAP ladataan index.html:n defer-skripteillä, jotka ajetaan vasta tämän moduulin jälkeen. */
 export function initLogoStackLoader() {
+  if (window.gsap || document.readyState !== 'loading') { runLoader(); return; }
+  document.addEventListener('DOMContentLoaded', runLoader, { once: true });
+}
+
+function runLoader() {
   const root = document.querySelector<HTMLElement>('[data-logo-loader-init]');
   if (!root) { done = true; return; }
   const gsap = window.gsap;
