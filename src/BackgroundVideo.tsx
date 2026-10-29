@@ -8,6 +8,24 @@ const SOURCES: Record<Character, string> = {
 };
 
 /**
+ * Katseen kohdistus: missä kohtaa näytön korkeutta (0 = yläreuna, 1 = alareuna) video on
+ * alussa (top) ja lopussa (bottom). Jos hahmo katsoo kursorin yläpuolelle, siirrä
+ * molempia arvoja pienemmiksi; jos alapuolelle, suuremmiksi.
+ * Kokeiluun: lisää osoitteeseen ?katse=-0.12,0.88 (koskee valittua hahmoa).
+ */
+const GAZE: Record<Character, { top: number; bottom: number }> = {
+  woman: { top: -0.12, bottom: 0.88 },
+  man: { top: 0, bottom: 1 },
+};
+
+function gazeFor(c: Character) {
+  const override = new URLSearchParams(window.location.search).get('katse');
+  const parts = override?.split(',').map(Number);
+  if (parts && parts.length === 2 && parts.every(Number.isFinite) && parts[1] > parts[0]) return { top: parts[0], bottom: parts[1] };
+  return GAZE[c];
+}
+
+/**
  * Taustavideo. Työpöydällä kursorin pystysijainti koko näytön korkeudelta kelaa videota,
  * mobiilissa vieritys. Hahmon vaihto häivyttää videot ristiin; toinen video ladataan
  * vasta, kun se valitaan ensimmäisen kerran, ja se jatkaa samasta katseen kohdasta.
@@ -17,7 +35,8 @@ export function BackgroundVideo({ character }: { character: Character }) {
   const [ready, setReady] = useState<Record<Character, boolean>>({ woman: false, man: false });
   const refs = useRef<Record<Character, HTMLVideoElement | null>>({ woman: null, man: null });
   const active = useRef(character);
-  const fraction = useRef(0);
+  /** Mobiilissa vierityksen osuus 0–1, työpöydällä kursorin pystysijainti 0–1. */
+  const pointer = useRef<{ kind: 'scroll' | 'cursor'; value: number }>({ kind: 'scroll', value: 0 });
   const seeking = useRef(new WeakSet<HTMLVideoElement>());
   const schedule = useRef<() => void>(() => {});
   active.current = character;
@@ -31,7 +50,10 @@ export function BackgroundVideo({ character }: { character: Character }) {
       frame = 0;
       const video = refs.current[active.current];
       if (!video || seeking.current.has(video) || video.readyState < 2 || !Number.isFinite(video.duration)) return;
-      const target = fraction.current * video.duration;
+      const { kind, value } = pointer.current;
+      const g = gazeFor(active.current);
+      const fraction = kind === 'cursor' ? Math.max(0, Math.min(1, (value - g.top) / (g.bottom - g.top))) : value;
+      const target = fraction * video.duration;
       if (Math.abs(video.currentTime - target) < 0.01) return;
       seeking.current.add(video);
       video.currentTime = target;
@@ -40,13 +62,13 @@ export function BackgroundVideo({ character }: { character: Character }) {
     const onScroll = () => {
       if (!mobile.matches) return;
       const distance = document.documentElement.scrollHeight - window.innerHeight;
-      fraction.current = distance > 0 ? Math.max(0, Math.min(1, window.scrollY / distance)) : 0;
+      pointer.current = { kind: 'scroll', value: distance > 0 ? Math.max(0, Math.min(1, window.scrollY / distance)) : 0 };
       schedule.current();
     };
     const onMove = (event: MouseEvent) => {
       if (mobile.matches || window.innerHeight <= 0) return;
-      // Koko näytön korkeus on seuranta-alue: yläreuna = videon alku, alareuna = loppu.
-      fraction.current = Math.max(0, Math.min(1, event.clientY / window.innerHeight));
+      // Koko näytön korkeus on seuranta-alue; GAZE kohdistaa katseen hahmokohtaisesti.
+      pointer.current = { kind: 'cursor', value: event.clientY / window.innerHeight };
       schedule.current();
     };
     window.addEventListener('mousemove', onMove);
