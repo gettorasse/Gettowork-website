@@ -1,2 +1,14 @@
 <!doctype html>
-<html lang="fi"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="theme-color" content="#000000"/><link rel="icon" type="image/svg+xml" href="/group-2.svg"/><title>gettowork</title><link href="https://db.onlinewebfonts.com/c/5ac3fe7c6abd2f62067f266d89671492?family=HelveticaNowDisplay-Medium" rel="stylesheet"/><link href="https://db.onlinewebfonts.com/c/1aa3377e489837a26d019bba501e779d?family=HelveticaNowDisplayW01-Rg" rel="stylesheet"/></head><body><div id="root"></div><script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/CustomEase.min.js" defer></script><script type="module" src="/src/main.tsx"></script></body></html>
+<html lang="fi"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="theme-color" content="#080e30"/><link rel="preload" as="image" href="/group-2.svg"/><link rel="icon" type="image/svg+xml" href="/group-2.svg"/><title>gettowork</title><link href="https://db.onlinewebfonts.com/c/5ac3fe7c6abd2f62067f266d89671492?family=HelveticaNowDisplay-Medium" rel="stylesheet"/><link href="https://db.onlinewebfonts.com/c/1aa3377e489837a26d019bba501e779d?family=HelveticaNowDisplayW01-Rg" rel="stylesheet"/><style>
+/* Osmo Supply "Logo Stack Loader": tyylit heti HTML:ssä, jotta latausnäkymä peittää sivun ennen JavaScriptiä. */
+.logo-loader{position:fixed;inset:0%;z-index:200;display:flex;align-items:center;justify-content:center;color:#fff;perspective:40em;font-size:16px}
+.logo-loader__bg{position:absolute;inset:0%;z-index:0;background-color:#080e30;transform-origin:50% 0%}
+.logo-loader__stack{position:relative;z-index:1;display:grid;width:14em;transform-style:preserve-3d}
+.logo-loader__logo{grid-column:1;grid-row:1}
+.logo-loader__logo-img{display:block;width:100%;height:auto}
+.logo-loader__track{position:absolute;bottom:3.5em;left:0%;right:0%;z-index:1;width:8em;height:.25em;margin-left:auto;margin-right:auto;overflow:hidden;border-radius:100em;background-color:rgba(255,255,255,.15)}
+.logo-loader__bar{position:absolute;inset:0%;background-color:#fff;transform-origin:0% 50%;transform:scaleX(0)}
+[data-logo-loader-reset]{opacity:0}
+@media (max-width:767px){.logo-loader__stack{width:11em}}
+@media print{.logo-loader{display:none!important}}
+</style></head><body><div data-logo-loader-init aria-hidden="true" class="logo-loader"><div data-logo-loader-bg class="logo-loader__bg"></div><div data-logo-loader-stack data-logo-loader-reset class="logo-loader__stack"><div data-logo-loader-logo class="logo-loader__logo"><img src="/group-2.svg" alt="" class="logo-loader__logo-img" width="500" height="176"/></div></div><div data-logo-loader-track class="logo-loader__track"><div data-logo-loader-bar class="logo-loader__bar"></div></div></div><div id="root"></div><script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/CustomEase.min.js" defer></script><script type="module" src="/src/main.tsx"></script></body></html>

@@ -88,3 +88,28 @@ a:focus-visible, button:focus-visible { outline: 2px solid white; outline-offset
 }
 @media (prefers-reduced-motion: reduce) { .background-video, .character-switch__thumb, .character-switch__option { transition: none; } }
 @media print { .character-switch { display: none !important; } }
+
+/* Evästebanneri: pieni kortti vasemmassa alakulmassa, vain Hyväksy ja Hylkää. */
+.cookie-banner {
+  position: fixed; left: 24px; bottom: 24px; z-index: 90; width: min(360px, calc(100vw - 24px));
+  display: flex; flex-direction: column; gap: 10px; padding: 14px 16px;
+  border: 1px solid rgb(255 255 255 / 0.18); border-radius: 18px;
+  background: rgb(8 14 48 / 0.82); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  color: #fff; font-family: var(--font-body); font-size: 14px; line-height: 1.4;
+  opacity: 0; transform: translateY(12px); pointer-events: none; transition: opacity 300ms ease, transform 300ms ease;
+}
+.cookie-banner.is-shown { opacity: 1; transform: none; pointer-events: auto; }
+.cookie-banner__text { margin: 0; }
+.cookie-banner__text a { color: #fff; text-decoration: underline; text-underline-offset: 2px; }
+.cookie-banner__actions { display: flex; gap: 8px; }
+.cookie-banner__btn {
+  flex: 1 1 0; min-height: 40px; padding: 0 16px; border: 1.5px solid rgb(255 255 255 / 0.6); border-radius: 9999px;
+  background: transparent; color: #fff; font: inherit; font-family: var(--font-heading); cursor: pointer; transition: background-color 200ms, color 200ms;
+}
+.cookie-banner__btn:hover { border-color: #fff; }
+.cookie-banner__btn.is-primary { background: #fff; border-color: #fff; color: #080e30; }
+.cookie-banner__btn.is-primary:hover { background: #1480ff; border-color: #1480ff; color: #fff; }
+.cookie-banner__btn:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+@media (max-width: 767px) { .cookie-banner { left: 12px; right: 12px; bottom: 12px; width: auto; } }
+@media (prefers-reduced-motion: reduce) { .cookie-banner { transition: none; } }
+@media print { .cookie-banner { display: none !important; } }

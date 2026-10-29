@@ -42,7 +42,7 @@ export function Privacy() {
 
       <section className="rs-section">
         <h2 className="rs-h2">Selaimeen tallennettavat tiedot</h2>
-        <p>Jos valitset tallennuksen tälle laitteelle, testin vastaukset tallennetaan selaimesi paikalliseen tallennustilaan 120 päiväksi. Selain muistaa myös valitsemasi taustahahmon. Näitä tietoja ei lähetetä meille.</p>
+        <p>Jos valitset tallennuksen tälle laitteelle, testin vastaukset tallennetaan selaimesi paikalliseen tallennustilaan 120 päiväksi. Selain muistaa myös valitsemasi taustahahmon ja evästevalintasi (hyväksy tai hylkää). Näitä tietoja ei lähetetä meille. Sivustolla ei tällä hetkellä käytetä seuranta- tai markkinointievästeitä; jos niitä otetaan käyttöön, ne käynnistyvät vain, jos olet hyväksynyt evästeet.</p>
       </section>
     </article>
   </main>;

@@ -4,6 +4,8 @@ import './index.css';
 import { BackgroundVideo, type Character } from './BackgroundVideo.tsx';
 import { CharacterSwitch, loadCharacter, saveCharacter } from './CharacterSwitch.tsx';
 import { UnderlayNav } from './UnderlayNav.tsx';
+import { CookieBanner } from './CookieBanner.tsx';
+import { initLogoStackLoader } from './logoLoader.ts';
 import { HOME_PATH, isLegacyPath, routeFromPath, type Route } from './router.ts';
 import { About } from './restart-score/About.tsx';
 import { Privacy } from './restart-score/Privacy.tsx';
@@ -59,7 +61,9 @@ function App() {
     <CharacterSwitch value={character} onChange={chooseCharacter} visible={route === 'home' && view === 'intro'} />
     {route === 'about' ? <About onStart={startFromAbout} /> : route === 'privacy' ? <Privacy /> : <RestartScore rs={rs} />}
     </div>
+    <CookieBanner />
   </>;
 }
 
+initLogoStackLoader();
 createRoot(document.getElementById('root')!).render(<App />);
