@@ -47,7 +47,8 @@ export function CookieBanner() {
   };
 
   if (choice) return null;
-  return <section className={`cookie-banner${shown ? ' is-shown' : ''}`} lang="fi" aria-label="Evästeet" aria-hidden={!shown} inert={!shown}>
+  return <section className={`cookie-banner${shown ? ' is-shown' : ''}`} lang="fi" aria-labelledby="cookie-title" aria-hidden={!shown} inert={!shown}>
+    <h2 id="cookie-title" className="cookie-banner__title">Evästeet</h2>
     <p className="cookie-banner__text">Saammeko käyttää evästeitä sivuston kehittämiseen? <a href={PRIVACY_PATH} onClick={e => interceptClick(e, PRIVACY_PATH)}>Lue lisää</a></p>
     <div className="cookie-banner__actions">
       <button type="button" className="cookie-banner__btn" onClick={() => decide('declined')}>Hylkää</button>
