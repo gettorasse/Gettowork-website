@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 export type Character = 'woman' | 'man';
 
 const SOURCES: Record<Character, string> = {
-  woman: '/getto-video.mp4',
+  woman: '/getto-video-woman-2.mp4',
   man: '/getto-video-man-4.mp4',
 };
 

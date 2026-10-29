@@ -8,7 +8,7 @@ Määrittely: Gettowork Restart Score – toteutusmäärittely v1.0 (28.10.2026)
 - Rakennus `npm run build` (`tsc --noEmit && vite build`), Vercel tarjoaa `dist`-kansion (`vercel.json`, framework `vite`).
 - Fontit: `HelveticaNowDisplay-Medium` (otsikot) ja `HelveticaNowDisplayW01-Rg` (leipäteksti), muuttujat `--font-heading` ja `--font-body`.
 - Värit: pohja `#080e30` (videon liukuväri), korostus `#1480FF` (painikkeiden hover), valkoinen teksti. Painikkeet: `.pill`, `.white-pill`, `.outline-pill`.
-- A.R.I.A-hahmo on taustavideo `public/getto-video.mp4`, jota hiiri (työpöytä) tai vieritys (mobiili) kelaa.
+- A.R.I.A-hahmo on taustavideo (nykyään `public/getto-video-woman-2.mp4`, käännetty niin, että alku katsoo ylös ja loppu alas), jota hiiri (työpöytä) tai vieritys (mobiili) kelaa.
 - Mobiilissa etusivun `.hero` on kiinteä ja painikkeet kahden sarakkeen ruudukossa; navigaatio on hampurilaisvalikko.
 - Analytiikkaa ei ole käytössä, joten kysely ei lähetä tapahtumia.
 
