@@ -4,7 +4,7 @@ export type Character = 'woman' | 'man';
 
 const SOURCES: Record<Character, string> = {
   woman: '/getto-video-woman-2.mp4',
-  man: '/getto-video-man-4.mp4',
+  man: '/getto-video-man-5.mp4',
 };
 
 /**
