@@ -19,6 +19,10 @@ body { margin: 0; background: #000; font-family: var(--font-body); }
 .stage-top { position: fixed; inset: 0 0 auto 0; height: 150px; z-index: 5; pointer-events: none; opacity: 0; transition: opacity 400ms ease;
   background: linear-gradient(to bottom, rgb(8 14 48) 0%, rgb(8 14 48 / 0.97) 45%, rgb(8 14 48 / 0.7) 72%, rgb(8 14 48 / 0) 100%); }
 .stage-top.is-on { opacity: 1; }
+/* Testin aikana: yläreunan liukuväri kevyempänä, ettei vieritetty teksti jää logon alle. */
+.stage-top.is-soft { opacity: 0.85; }
+/* Puhelimessa väittämät kulkevat hahmon päällä, joten tausta himmenee testin ajaksi kevyesti. */
+@media (max-width: 768px) { .stage-dim.is-soft { opacity: 0.55; } }
 @media (max-width: 640px) { .stage-top { height: 120px; } }
 @media (prefers-reduced-motion: reduce) { .stage-dim, .stage-floor, .stage-top { transition: none; } }
 .video-gradient { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(8, 14, 48, 0.35), transparent 65%); }

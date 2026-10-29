@@ -45,13 +45,14 @@ function App() {
 
   const view = rs.assessment.view;
   const dim = route !== 'home' || view === 'result';
+  const question = route === 'home' && view === 'question';
 
   return <>
     {/* Tausta pysyy samana koko ajan: etusivu, kysymykset ja tulos vaihtuvat sen päällä. */}
     <BackgroundVideo character={character} />
-    <div className={`stage-dim${dim ? ' is-on' : ''}`} aria-hidden="true" />
-    <div className={`stage-floor${route === 'home' && view === 'question' ? ' is-on' : ''}`} aria-hidden="true" />
-    <div className={`stage-top${dim ? ' is-on' : ''}`} aria-hidden="true" />
+    <div className={`stage-dim${dim ? ' is-on' : ''}${question ? ' is-soft' : ''}`} aria-hidden="true" />
+    <div className={`stage-floor${question ? ' is-on' : ''}`} aria-hidden="true" />
+    <div className={`stage-top${dim ? ' is-on' : ''}${question ? ' is-soft' : ''}`} aria-hidden="true" />
     <SiteHeader route={route} />
     <CharacterSwitch value={character} onChange={chooseCharacter} visible={route === 'home' && view === 'intro'} />
     {route === 'about' ? <About onStart={startFromAbout} /> : route === 'privacy' ? <Privacy /> : <RestartScore rs={rs} />}
