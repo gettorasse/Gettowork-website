@@ -1,69 +1,55 @@
 // Kyselyn tila. Pidetään sovelluksen ylimmällä tasolla, jotta etusivulla
 // käynti ei tyhjennä muistissa olevaa arviointia.
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ORDER, type PId, type Score } from './content.ts';
-import { evaluate, isValidPair, localDateString, missingIds } from './engine.ts';
+import { type Answer, type PId } from './content.ts';
+import { defaultPriorities, evaluate, isValidPair, localDateString, missingIndexes, sectionOf } from './engine.ts';
 import {
-  loadAssessment, newAssessment, removeAssessment, saveAssessment, type Assessment, type View,
+  SECTIONS, loadAssessment, newAssessment, removeAssessment, saveAssessment, type Assessment, type View,
 } from './storage.ts';
 import { HOME_PATH } from '../router.ts';
 
 export const MSG = {
   restoreFailed: 'Tallennettua testiä ei voitu palauttaa. Voit aloittaa uuden.',
   saveFailed: 'Tallennus tälle laitteelle ei onnistunut. Voit jatkaa ja tulostaa tuloksen.',
-  noResult: 'Tulos muodostuu, kun olet vastannut kaikkiin kysymyksiin.',
+  noResult: 'Tulos muodostuu, kun olet vastannut kaikkiin väittämiin.',
   savedExit: 'Testi on tallennettu tähän selaimeen. Voit jatkaa sitä myöhemmin. Älä käytä tallennusta yhteiskäyttölaitteella.',
   deleted: 'Tallennettu testi on poistettu tältä laitteelta.',
 } as const;
 
 type HistoryState = { rs?: { view: View; step: number } };
 
-const hasProgress = (a: Assessment) =>
-  ORDER.some(id => a.answers[id] !== null) || a.deferred.length > 0 || a.completedAt !== null;
+const hasProgress = (a: Assessment) => a.answers.some(v => v !== null) || a.completedAt !== null;
+const clampStep = (n: number) => Math.max(0, Math.min(SECTIONS - 1, Math.trunc(n) || 0));
 
-/** Palautetun tietueen johdetut tiedot lasketaan aina uudelleen. */
+/** Palautettu tietue: tulosnäkymä vain, jos kaikkiin on vastattu. */
 function normalize(a: Assessment): Assessment {
-  const ev = evaluate(a.answers);
-  if (!ev.ok) {
-    return {
-      ...a,
-      recommendedPriorities: null, selectedPriorities: null, prioritySource: 'recommended',
-      completedAt: null, planStartDate: null,
-      view: a.view === 'result' ? 'review' : a.view,
-    };
-  }
-  const recommended = ev.recommendedPriorities;
-  const keepUser = a.prioritySource === 'user' && isValidPair(a.selectedPriorities);
+  const missing = missingIndexes(a.answers);
+  if (missing.length === 0) return a;
   return {
     ...a,
-    recommendedPriorities: recommended,
-    selectedPriorities: keepUser ? a.selectedPriorities : recommended,
-    prioritySource: keepUser ? 'user' : 'recommended',
+    selectedPriorities: null, prioritySource: 'recommended', completedAt: null, planStartDate: null,
+    view: a.view === 'result' ? 'question' : a.view,
+    currentStep: a.view === 'result' ? sectionOf(missing[0]) : a.currentStep,
   };
 }
 
 function finalize(a: Assessment, now = new Date()): Assessment {
   const ev = evaluate(a.answers);
   if (!ev.ok) return a;
-  if (a.completedAt && a.planStartDate && isValidPair(a.selectedPriorities)) {
-    return { ...a, recommendedPriorities: ev.recommendedPriorities, view: 'result' };
-  }
+  if (a.completedAt && a.planStartDate && isValidPair(a.selectedPriorities)) return { ...a, view: 'result' };
   return {
     ...a,
     view: 'result',
-    recommendedPriorities: ev.recommendedPriorities,
-    selectedPriorities: ev.recommendedPriorities,
+    selectedPriorities: defaultPriorities(ev),
     prioritySource: 'recommended',
     completedAt: now.toISOString(),
     planStartDate: localDateString(now),
   };
 }
 
-/** Vastauksen muutos valmiin tuloksen jälkeen muodostaa ehdotuksen ja ohjelman uudelleen. */
+/** Vastauksen muutos valmiin tuloksen jälkeen laskee tuloksen ja ohjelman uudelleen. */
 const invalidateResult = (a: Assessment): Assessment => a.completedAt === null ? a : {
-  ...a,
-  completedAt: null, planStartDate: null,
-  recommendedPriorities: null, selectedPriorities: null, prioritySource: 'recommended',
+  ...a, completedAt: null, planStartDate: null, selectedPriorities: null, prioritySource: 'recommended',
 };
 
 export function useRestartScore() {
@@ -108,7 +94,7 @@ export function useRestartScore() {
   }, []);
 
   const go = useCallback((view: View, step?: number) => {
-    const s = step ?? ref.current.currentStep;
+    const s = clampStep(step ?? ref.current.currentStep);
     setAssessment(a => ({ ...a, view, currentStep: s }));
     setNotice(null);
     pushView(view, s);
@@ -122,9 +108,9 @@ export function useRestartScore() {
       setAssessment(a => ({ ...a, view: 'intro' }));
       return;
     }
-    const step = Math.max(0, Math.min(11, Math.trunc(rs.step) || 0));
+    const step = clampStep(rs.step);
     if (rs.view === 'result') {
-      if (missingIds(ref.current.answers).length > 0) {
+      if (missingIndexes(ref.current.answers).length > 0) {
         window.history.replaceState({ rs: { view: 'intro', step: 0 } } satisfies HistoryState, '', window.location.href);
         setAssessment(a => ({ ...a, view: 'intro' }));
         setNotice(MSG.noResult);
@@ -133,7 +119,7 @@ export function useRestartScore() {
       setAssessment(a => finalize(a));
       return;
     }
-    setAssessment(a => ({ ...a, view: rs.view, currentStep: step }));
+    setAssessment(a => ({ ...a, view: rs.view === 'question' ? 'question' : 'intro', currentStep: step }));
   }, []);
 
   const start = useCallback((replaceDeviceDraft = false) => {
@@ -148,27 +134,27 @@ export function useRestartScore() {
   const resume = useCallback(() => {
     const source = deviceDraft && !persist ? deviceDraft : ref.current;
     if (deviceDraft && !persist) { setPersist(true); setDeviceDraft(null); }
-    const target: View = source.view === 'intro' ? (source.completedAt ? 'result' : 'question') : source.view;
-    let next: Assessment = { ...source, view: target };
-    if (target === 'result') {
-      next = missingIds(source.answers).length > 0 ? { ...source, view: 'review' } : finalize(source);
-    }
+    const missing = missingIndexes(source.answers);
+    const next: Assessment = missing.length === 0
+      ? finalize(source)
+      : { ...source, view: 'question', currentStep: source.view === 'question' ? source.currentStep : sectionOf(missing[0]) };
     setAssessment(next);
     setNotice(null);
     pushView(next.view, next.currentStep);
   }, [deviceDraft, persist, pushView]);
 
-  const setScore = useCallback((id: PId, score: Score) => {
+  const setAnswer = useCallback((index: number, value: Answer) => {
     setAssessment(a => {
-      if (a.answers[id] === score && !a.deferred.includes(id)) return a;
-      const next = { ...a, answers: { ...a.answers, [id]: score }, deferred: a.deferred.filter(d => d !== id) };
-      return a.answers[id] === score ? next : invalidateResult(next);
+      if (a.answers[index] === value) return a;
+      const answers = [...a.answers];
+      answers[index] = value;
+      return invalidateResult({ ...a, answers });
     });
   }, []);
 
   const showResult = useCallback(() => {
     const a = ref.current;
-    if (missingIds(a.answers).length > 0) return false;
+    if (missingIndexes(a.answers).length > 0) return false;
     const next = finalize(a);
     setAssessment(next);
     pushView('result', next.currentStep);
@@ -178,14 +164,18 @@ export function useRestartScore() {
   const choosePriorities = useCallback((pair: [PId, PId]) => {
     if (!isValidPair(pair)) return;
     setAssessment(a => {
-      const rec = a.recommendedPriorities;
+      const ev = evaluate(a.answers);
+      const rec = ev.ok ? defaultPriorities(ev) : null;
       const same = rec && rec[0] === pair[0] && rec[1] === pair[1];
       return { ...a, selectedPriorities: pair, prioritySource: same ? 'recommended' : 'user' };
     });
   }, []);
 
   const resetPriorities = useCallback(() => {
-    setAssessment(a => ({ ...a, selectedPriorities: a.recommendedPriorities, prioritySource: 'recommended' }));
+    setAssessment(a => {
+      const ev = evaluate(a.answers);
+      return ev.ok ? { ...a, selectedPriorities: defaultPriorities(ev), prioritySource: 'recommended' } : a;
+    });
   }, []);
 
   const saveToDevice = useCallback(() => {
@@ -215,15 +205,15 @@ export function useRestartScore() {
     setNotice(MSG.deleted);
   }, []);
 
-  const derived = useMemo(() => {
-    const ev = evaluate(assessment.answers);
-    return { evaluation: ev, missing: missingIds(assessment.answers) };
-  }, [assessment.answers]);
+  const derived = useMemo(() => ({
+    evaluation: evaluate(assessment.answers),
+    missing: missingIndexes(assessment.answers),
+  }), [assessment.answers]);
 
   return {
     assessment, ...derived, persist, deviceDraft, notice, storageError,
     hasMemoryProgress: hasProgress(assessment),
-    go, syncFromHistory, start, resume, setScore, showResult,
+    go, syncFromHistory, start, resume, setAnswer, showResult,
     choosePriorities, resetPriorities, saveToDevice, saveAndExit, deleteFromDevice, unlockReport,
     clearNotice: () => setNotice(null),
   };

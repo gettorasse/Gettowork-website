@@ -1,6 +1,6 @@
 // Yhteystietolomake ennen raporttia. Lähetys menee sivuston omaan Vercel-funktioon
 // (api/lead.ts), joka tallentaa rivin Notion-tietokantaan.
-import { QUESTION_BY_ID, ORDER, type PId, type Score } from './content.ts';
+import { LEVER_BY_ID, ORDER, type PId } from './content.ts';
 
 export type Lead = { name: string; email: string; phone: string };
 export type LeadErrors = Partial<Record<keyof Lead, string>>;
@@ -8,7 +8,9 @@ export type LeadErrors = Partial<Record<keyof Lead, string>>;
 export type LeadPayload = Lead & {
   total: number;
   ownerType: string;
-  scores: Record<PId, Score>;
+  level: string;
+  /** Osa-alueiden kunto 0–100. */
+  health: Record<PId, number>;
   priorities: [PId, PId];
   completedAt: string | null;
   /** Roskapostiansa; oikea kävijä jättää tyhjäksi. */
@@ -31,9 +33,9 @@ export function validateLead(lead: Lead): LeadErrors {
 export function toRequestBody(payload: LeadPayload) {
   return {
     name: payload.name, email: payload.email, phone: payload.phone,
-    total: payload.total, ownerType: payload.ownerType, completedAt: payload.completedAt,
-    areas: ORDER.map(id => ({ name: QUESTION_BY_ID[id].name, score: payload.scores[id] })),
-    priorities: payload.priorities.map(id => QUESTION_BY_ID[id].name),
+    total: payload.total, ownerType: payload.ownerType, level: payload.level, completedAt: payload.completedAt,
+    areas: ORDER.map(id => ({ name: LEVER_BY_ID[id].name, score: payload.health[id] })),
+    priorities: payload.priorities.map(id => LEVER_BY_ID[id].name),
     website: payload.website ?? '',
   };
 }

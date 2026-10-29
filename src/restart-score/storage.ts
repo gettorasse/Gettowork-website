@@ -1,23 +1,25 @@
 // Valinnainen tallennus tälle laitteelle. Vain yksi localStorage-avain; muuta
 // sivuston tallennustilaa ei kosketa. Vastauksia ei lähetetä minnekään.
-import { CONTENT_VERSION, ORDER, type PId, type Score } from './content.ts';
-import { emptyAnswers, isDateString, isPId, isScore, isValidPair, type Answers } from './engine.ts';
+import { CONTENT_VERSION, TOTAL_Q, type PId } from './content.ts';
+import { emptyAnswers, isAnswer, isDateString, isValidPair, type Answers } from './engine.ts';
 
-export const STORAGE_KEY = 'gettowork.restart-score.v1';
+export const STORAGE_KEY = 'gettowork.restart-score.v2';
+/** Edellisen version tallennus poistetaan, koska kysymykset vaihtuivat. */
+export const LEGACY_STORAGE_KEY = 'gettowork.restart-score.v1';
 export const RETENTION_DAYS = 120;
+export const SECTIONS = 12;
 const DAY_MS = 24 * 60 * 60 * 1000;
 
-export type View = 'intro' | 'question' | 'review' | 'result';
-const VIEWS: readonly View[] = ['intro', 'question', 'review', 'result'];
+export type View = 'intro' | 'question' | 'result';
+const VIEWS: readonly View[] = ['intro', 'question', 'result'];
 
 export type Assessment = {
-  schemaVersion: 1;
+  schemaVersion: 2;
   contentVersion: typeof CONTENT_VERSION;
   answers: Answers;
-  deferred: PId[];
+  /** Osio 0–11. */
   currentStep: number;
   view: View;
-  recommendedPriorities: [PId, PId] | null;
   selectedPriorities: [PId, PId] | null;
   prioritySource: 'recommended' | 'user';
   completedAt: string | null;
@@ -30,13 +32,11 @@ export type Assessment = {
 
 export function newAssessment(now = new Date()): Assessment {
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     contentVersion: CONTENT_VERSION,
     answers: emptyAnswers(),
-    deferred: [],
     currentStep: 0,
     view: 'intro',
-    recommendedPriorities: null,
     selectedPriorities: null,
     prioritySource: 'recommended',
     completedAt: null,
@@ -53,42 +53,29 @@ const isIsoDate = (v: unknown) => typeof v === 'string' && !Number.isNaN(Date.pa
 export function parseAssessment(raw: unknown): Assessment | null {
   if (!raw || typeof raw !== 'object') return null;
   const r = raw as Record<string, unknown>;
-  if (r.schemaVersion !== 1 || r.contentVersion !== CONTENT_VERSION) return null;
-
-  const a = r.answers;
-  if (!a || typeof a !== 'object' || Array.isArray(a)) return null;
-  const answerRecord = a as Record<string, unknown>;
-  if (Object.keys(answerRecord).length !== ORDER.length) return null;
-  for (const id of ORDER) {
-    const v = answerRecord[id];
-    if (v !== null && !isScore(v)) return null;
-  }
-
-  if (!Array.isArray(r.deferred) || !r.deferred.every(isPId)) return null;
-  if (r.deferred.some(id => answerRecord[id as PId] !== null)) return null;
-  if (typeof r.currentStep !== 'number' || !Number.isInteger(r.currentStep) || r.currentStep < 0 || r.currentStep > 11) return null;
+  if (r.schemaVersion !== 2 || r.contentVersion !== CONTENT_VERSION) return null;
+  if (!Array.isArray(r.answers) || r.answers.length !== TOTAL_Q) return null;
+  if (!r.answers.every(v => v === null || isAnswer(v))) return null;
+  if (typeof r.currentStep !== 'number' || !Number.isInteger(r.currentStep) || r.currentStep < 0 || r.currentStep >= SECTIONS) return null;
   if (!VIEWS.includes(r.view as View)) return null;
-  if (r.recommendedPriorities !== null && !isValidPair(r.recommendedPriorities)) return null;
   if (r.selectedPriorities !== null && !isValidPair(r.selectedPriorities)) return null;
   if (r.prioritySource !== 'recommended' && r.prioritySource !== 'user') return null;
   if (r.completedAt !== null && !isIsoDate(r.completedAt)) return null;
   if (r.planStartDate !== null && !isDateString(r.planStartDate)) return null;
+  if (r.leadSubmittedAt !== null && !isIsoDate(r.leadSubmittedAt)) return null;
   if (!isIsoDate(r.updatedAt) || !isIsoDate(r.expiresAt)) return null;
-  const leadSubmittedAt = r.leadSubmittedAt === undefined || r.leadSubmittedAt === null ? null : (isIsoDate(r.leadSubmittedAt) ? r.leadSubmittedAt as string : null);
 
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     contentVersion: CONTENT_VERSION,
-    answers: Object.fromEntries(ORDER.map(id => [id, answerRecord[id] as Score | null])) as Answers,
-    deferred: [...new Set(r.deferred as PId[])],
+    answers: [...r.answers] as Answers,
     currentStep: r.currentStep as number,
     view: r.view as View,
-    recommendedPriorities: r.recommendedPriorities as [PId, PId] | null,
     selectedPriorities: r.selectedPriorities as [PId, PId] | null,
     prioritySource: r.prioritySource as 'recommended' | 'user',
     completedAt: r.completedAt as string | null,
     planStartDate: r.planStartDate as string | null,
-    leadSubmittedAt,
+    leadSubmittedAt: r.leadSubmittedAt as string | null,
     updatedAt: r.updatedAt as string,
     expiresAt: r.expiresAt as string,
   };
@@ -103,6 +90,7 @@ export type LoadResult =
 export function loadAssessment(now = new Date()): LoadResult {
   let text: string | null;
   try {
+    window.localStorage.removeItem(LEGACY_STORAGE_KEY);
     text = window.localStorage.getItem(STORAGE_KEY);
   } catch {
     return { status: 'unavailable' };

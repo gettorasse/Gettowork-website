@@ -24,3 +24,14 @@ Määrittely: Gettowork Restart Score – toteutusmäärittely v1.0 (28.10.2026)
 - Laitetallennus: avain gettowork.restart-score.v1, vain käyttäjän tallennuspainikkeesta, vanhenee 120 päivää viimeisestä tallennuksesta.
 - Etusivun oikeassa alakulmassa (mobiilissa ylhäällä) on Nainen / Mies -kytkin. Mies-video on public/getto-video-man-3.mp4 (H.264, avainkuva 12 framen välein kuten alkuperäinen). Video ladataan vasta, kun se valitaan, ja valinta muistetaan selaimessa (gettowork.character).
 - Tulos: ensin lyhyt lataus (Tulos valmistuu…), sitten pisteet ja yrittäjätyyppi. Kehityskohteet ja 90 päivän ohjelma avautuvat yhteystietolomakkeen jälkeen (nimi ja sähköposti pakollisia, puhelin valinnainen). Lomake lähettää tiedot sivuston Vercel-funktioon api/lead.ts, joka lisää rivin Notion-tietokantaan (ympäristömuuttujat NOTION_TOKEN ja NOTION_DATABASE_ID). Tietosuojaseloste on osoitteessa /tietosuoja. Laitteelle tallennetaan vain avaushetki (leadSubmittedAt), ei yhteystietoja.
+
+## Versio 2.0 (29.10.2026): OwnerScore-rakenne
+
+- 12 osa-aluetta kolmessa vaiheessa (Perusta, Arki, Omistaja), kuusi väittämää kussakin, yhteensä 72. Yksi osa-alue = yksi sivu; jokaiseen väittämään vastataan seitsemällä pallolla (täysin eri mieltä … täysin samaa mieltä). Samaa mieltä oleminen tarkoittaa heikkoutta.
+- Pisteytys (engine.ts): heikkouspisteet −3…+3, väittämän omalle osa-alueelle täysinä ja lisäosa-alueille kolmanneksen painolla. Osa-alueen kunto 0–100 = 100 × (M − T) / (2M). Kokonaispisteet = kuntojen summa / 10 → 0–120.
+- Tasot: Itsensätyöllistäjä 0–40, Pyörittäjä 41–80, Omistaja 81–120. Vyöhykkeet: alle 40 vaatii työtä, 40–69 kehittymässä, 70+ vahvuus.
+- Heikoin osa-alue määrää yrittäjätyypin (12 tyyppiä). Korjaa ensin = punaisista varhaisimman vaiheen heikoin.
+- Tulossivu: tyyppi, pisteet ja taso näkyvät heti; lomakkeen jälkeen kuvaus, aloita tästä, kaikki 12 osa-aluetta palkkeina, omistajan portaat, vahvuudet ja varoitusmerkit, toiseksi heikoin ja vahvin osa-alue, polku seuraavalle tasolle ja 90 päivän ohjelma.
+- Rakenne ja pisteytyslogiikka mukailevat OwnerScore-testiä; väittämät ja kaikki tekstit on kirjoitettu itse suomeksi.
+- Laitetallennuksen avain vaihtui: gettowork.restart-score.v2 (v1 poistetaan).
+- Notion: Pisteet = kokonaispisteet, Yrittäjätyyppi = uusi tyyppinimi (Notion luo uuden valinnan automaattisesti), Osa-alueet = "Taso: … . Hinnoittelu 45, …" (0–100).

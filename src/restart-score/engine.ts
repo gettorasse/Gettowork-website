@@ -1,70 +1,136 @@
 // Gettowork Restart Score — laskenta. Ei riippuvuuksia käyttöliittymään.
+//
+// Jokainen väittämä antaa "heikkouspisteitä" asteikolla −3 … +3 (täysin eri mieltä …
+// täysin samaa mieltä). Pisteet menevät väittämän omalle osa-alueelle täysinä ja
+// jokaiselle lisäosa-alueelle kolmanneksen painolla. Osa-alueen kunto 0–100:
+//   M = 3 × omien väittämien määrä + lisäkosketusten määrä
+//   T = omien pisteiden summa + lisäpisteiden summa (⅓)
+//   kunto = rajaa(pyöristä(100 × (M − T) / (2M)), 0, 100)
+// Kokonaispisteet = pyöristä(12 osa-alueen kuntojen summa / 10) → 0–120.
 import {
-  AREA_GUIDANCE, AREA_STATUS, MAINTENANCE_STEPS, ORDER, PLAN_LIBRARY,
-  type AreaLevel, type BandKey, type PId, type PlanStep, type Score,
+  FLAT, LEVELS, LEVER_BY_ID, MAINTENANCE_STEPS, ORDER, PER_SECTION, PLAN_LIBRARY, TOTAL_Q,
+  type Answer, type Level, type PId, type PlanStep, type Zone,
 } from './content.ts';
 
-export type Answers = Record<PId, Score | null>;
+export type Answers = (Answer | null)[];
 
 export function isPId(value: unknown): value is PId {
   return typeof value === 'string' && (ORDER as readonly string[]).includes(value);
 }
 
-/** Hyväksyy vain kokonaisluvut 0–10. Merkkijonoja, desimaaleja tai NaN-arvoa ei korjata. */
-export function isScore(value: unknown): value is Score {
-  return typeof value === 'number' && Number.isInteger(value) && value >= 0 && value <= 10;
+/** Hyväksyy vain kokonaisluvut 0–6. */
+export function isAnswer(value: unknown): value is Answer {
+  return typeof value === 'number' && Number.isInteger(value) && value >= 0 && value <= 6;
 }
 
 export function emptyAnswers(): Answers {
-  return Object.fromEntries(ORDER.map(id => [id, null])) as Answers;
+  return Array.from({ length: TOTAL_Q }, () => null);
 }
 
-export function missingIds(answers: Record<string, unknown>): PId[] {
-  return ORDER.filter(id => !isScore(answers[id]));
+/** Vastaamattomien väittämien indeksit. */
+export function missingIndexes(answers: readonly unknown[]): number[] {
+  const out: number[] = [];
+  for (let i = 0; i < TOTAL_Q; i++) if (!isAnswer(answers[i])) out.push(i);
+  return out;
 }
 
-export function bandFor(total: number): BandKey {
-  return total <= 39 ? 'foundation'
-    : total <= 69 ? 'stabilise'
-    : total <= 99 ? 'independence' : 'resilience';
+/** Osion (0–11) väittämien indeksit. */
+export const sectionIndexes = (section: number) => Array.from({ length: PER_SECTION }, (_, i) => section * PER_SECTION + i);
+export const sectionComplete = (answers: readonly unknown[], section: number) => sectionIndexes(section).every(i => isAnswer(answers[i]));
+export const sectionOf = (index: number) => Math.floor(index / PER_SECTION);
+
+const trapPoints = (a: Answer) => a - 3;
+
+export function levelFor(total: number): Level {
+  return LEVELS.find(l => total <= l.max) ?? LEVELS[LEVELS.length - 1];
 }
 
-export function areaLevel(score: number): AreaLevel {
-  return score <= 3 ? 'build' : score <= 6 ? 'stabilise' : score <= 8 ? 'strengthen' : 'maintain';
+export function zoneFor(health: number): Zone {
+  return health < 40 ? 'red' : health < 70 ? 'gold' : 'strong';
 }
 
-export const areaStatus = (score: number) => AREA_STATUS[areaLevel(score)];
-export const areaGuidance = (score: number) => AREA_GUIDANCE[areaLevel(score)];
+const PHASE_RANK = { base: 0, work: 1, owner: 2 } as const;
 
 export type Evaluation =
-  | { ok: false; invalidIds: PId[] }
+  | { ok: false; missing: number[] }
   | {
       ok: true;
+      health: Record<PId, number>;
       total: number;
-      band: BandKey;
-      recommendedPriorities: [PId, PId];
-      /** Kahden ensimmäisen järjestys tai toinen valinta ratkesi tasapisteillä. */
-      tieBroken: boolean;
-      maintenanceOnly: boolean;
+      level: Level;
+      /** Heikoin osa-alue → yrittäjätyyppi. */
+      dominant: PId;
+      /** Toiseksi heikoin. */
+      shadow: PId;
+      /** Vahvin. */
+      strongest: PId;
+      /** Ensimmäinen korjattava: punaisista varhaisin vaihe, sen sisällä heikoin. */
+      fixFirst: PId;
+      redCount: number;
+      /** Heikoimmasta vahvimpaan, tasapisteissä osa-alueiden järjestys. */
+      ranked: PId[];
+      /** Pisteet seuraavalle tasolle (null, jos jo ylimmällä). */
+      toNextLevel: number | null;
+      nextLevel: Level | null;
     };
 
-export function evaluate(answers: Record<string, unknown>): Evaluation {
-  const rows = ORDER.map((id, index) => ({ id, index, score: answers[id] }));
-  const invalid = rows.filter(row => !isScore(row.score));
-  if (invalid.length > 0) return { ok: false, invalidIds: invalid.map(row => row.id) };
+/** Laskee osa-alueiden kunnon. Puuttuvat vastaukset lasketaan neutraaleiksi. */
+export function healthOf(answers: readonly unknown[]): Record<PId, number> {
+  const max = Object.fromEntries(ORDER.map(id => [id, 0])) as Record<PId, number>;
+  const trap = Object.fromEntries(ORDER.map(id => [id, 0])) as Record<PId, number>;
+  FLAT.forEach((q, i) => {
+    const a = answers[i];
+    const t = isAnswer(a) ? trapPoints(a) : 0;
+    max[q.lever] += 3;
+    trap[q.lever] += t;
+    for (const other of q.also) {
+      max[other] += 1;
+      trap[other] += t / 3;
+    }
+  });
+  return Object.fromEntries(ORDER.map(id => {
+    const m = max[id];
+    const h = Math.round((100 * (m - trap[id])) / (2 * m));
+    return [id, Math.max(0, Math.min(100, h))];
+  })) as Record<PId, number>;
+}
 
-  const complete = rows.map(row => ({ ...row, score: row.score as Score }));
-  const total = complete.reduce((sum, row) => sum + row.score, 0);
-  const ranked = [...complete].sort((a, b) => a.score - b.score || a.index - b.index);
+export function evaluate(answers: readonly unknown[]): Evaluation {
+  const missing = missingIndexes(answers);
+  if (missing.length > 0) return { ok: false, missing };
+
+  const health = healthOf(answers);
+  const total = Math.round(ORDER.reduce((sum, id) => sum + health[id], 0) / 10);
+  const level = levelFor(total);
+  const ranked = [...ORDER].sort((a, b) => health[a] - health[b] || ORDER.indexOf(a) - ORDER.indexOf(b));
+  const reds = ORDER.filter(id => zoneFor(health[id]) === 'red');
+  const fixFirst = reds.length
+    ? [...reds].sort((a, b) => PHASE_RANK[LEVER_BY_ID[a].phase] - PHASE_RANK[LEVER_BY_ID[b].phase] || health[a] - health[b] || ORDER.indexOf(a) - ORDER.indexOf(b))[0]
+    : ranked[0];
+  const strongest = [...ORDER].sort((a, b) => health[b] - health[a] || ORDER.indexOf(a) - ORDER.indexOf(b))[0];
+  const levelIndex = LEVELS.indexOf(level);
+  const nextLevel = levelIndex < LEVELS.length - 1 ? LEVELS[levelIndex + 1] : null;
 
   return {
     ok: true,
+    health,
     total,
-    band: bandFor(total),
-    recommendedPriorities: [ranked[0].id, ranked[1].id],
-    tieBroken: ranked[0].score === ranked[1].score || ranked[1].score === ranked[2].score,
-    maintenanceOnly: complete.every(row => row.score >= 9),
+    level,
+    dominant: ranked[0],
+    shadow: ranked[1],
+    strongest,
+    fixFirst,
+    redCount: reds.length,
+    ranked,
+    toNextLevel: nextLevel ? nextLevel.min - total : null,
+    nextLevel,
   };
+}
+
+/** Kaksi oletuskehityskohdetta 90 päivän ohjelmaan: ensin korjattava ja seuraava heikoin. */
+export function defaultPriorities(ev: Extract<Evaluation, { ok: true }>): [PId, PId] {
+  const second = ev.ranked.find(id => id !== ev.fixFirst)!;
+  return [ev.fixFirst, second];
 }
 
 export function isValidPair(pair: unknown): pair is [PId, PId] {
@@ -73,23 +139,21 @@ export function isValidPair(pair: unknown): pair is [PId, PId] {
 
 export type AreaPlan = {
   id: PId;
-  score: Score;
+  health: number;
   goal: string;
-  guidance: string;
   steps: [PlanStep, PlanStep, PlanStep];
   metric: string;
   verification: boolean;
 };
 
-/** Ohjelma vain valitulle osa-alueelle. Pisteillä 9–10 tehtävät painottavat varmistamista. */
-export function buildAreaPlan(id: PId, score: Score): AreaPlan {
+/** Ohjelma valitulle osa-alueelle. Vahvalla osa-alueella (70+) tehtävät painottavat varmistamista. */
+export function buildAreaPlan(id: PId, health: number): AreaPlan {
   const entry = PLAN_LIBRARY[id];
-  const verification = score >= 9;
+  const verification = health >= 70;
   return {
     id,
-    score,
+    health,
     goal: entry.goal,
-    guidance: areaGuidance(score),
     steps: verification ? MAINTENANCE_STEPS : entry.steps,
     metric: entry.metric,
     verification,

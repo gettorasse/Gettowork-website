@@ -44,7 +44,7 @@ function App() {
   };
 
   const view = rs.assessment.view;
-  const dim = route !== 'home' || view === 'review' || view === 'result';
+  const dim = route !== 'home' || view === 'result';
 
   return <>
     {/* Tausta pysyy samana koko ajan: etusivu, kysymykset ja tulos vaihtuvat sen päällä. */}

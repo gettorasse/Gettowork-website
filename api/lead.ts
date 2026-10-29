@@ -4,12 +4,12 @@
 //   NOTION_DATABASE_ID  – tietokanta, joka on jaettu integraatiolle
 // Tietokannan sarakkeet: Nimi (otsikko), Sähköposti (sähköposti), Puhelin (puhelinnumero),
 // Pisteet (numero), Yrittäjätyyppi (valinta), Kehityskohteet (monivalinta),
-// Osa-alueet (teksti), Valmistunut (päivämäärä).
+// Osa-alueet (teksti: taso ja osa-alueiden kunto 0–100), Valmistunut (päivämäärä).
 
 type AreaScore = { name: string; score: number };
 type Incoming = {
   name?: unknown; email?: unknown; phone?: unknown;
-  total?: unknown; ownerType?: unknown; areas?: unknown; priorities?: unknown; completedAt?: unknown;
+  total?: unknown; ownerType?: unknown; level?: unknown; areas?: unknown; priorities?: unknown; completedAt?: unknown;
   website?: unknown; // roskapostiansa: oikea kävijä ei täytä tätä
 };
 
@@ -35,10 +35,11 @@ export async function POST(request: Request): Promise<Response> {
   if (!isInt(data.total, 0, 120)) return json(400, { ok: false, error: 'invalid_score' });
 
   const areas: AreaScore[] = Array.isArray(data.areas)
-    ? data.areas.slice(0, 12).filter((a): a is AreaScore => Boolean(a) && typeof (a as AreaScore).name === 'string' && isInt((a as AreaScore).score, 0, 10))
+    ? data.areas.slice(0, 12).filter((a): a is AreaScore => Boolean(a) && typeof (a as AreaScore).name === 'string' && isInt((a as AreaScore).score, 0, 100))
     : [];
   const priorities = Array.isArray(data.priorities) ? data.priorities.slice(0, 2).map(p => str(p, 60)).filter(Boolean) : [];
   const ownerType = str(data.ownerType, 40);
+  const level = str(data.level, 40);
   const completed = typeof data.completedAt === 'string' && !Number.isNaN(Date.parse(data.completedAt)) ? data.completedAt : new Date().toISOString();
 
   const token = process.env.NOTION_TOKEN;
@@ -52,7 +53,7 @@ export async function POST(request: Request): Promise<Response> {
     'Pisteet': { number: data.total },
     'Yrittäjätyyppi': ownerType ? { select: { name: ownerType } } : { select: null },
     'Kehityskohteet': { multi_select: priorities.map(p => ({ name: p })) },
-    'Osa-alueet': { rich_text: [{ text: { content: areas.map(a => `${a.name} ${a.score}`).join(', ').slice(0, 1900) } }] },
+    'Osa-alueet': { rich_text: [{ text: { content: `${level ? `Taso: ${level}. ` : ''}${areas.map(a => `${a.name} ${a.score}`).join(', ')}`.slice(0, 1900) } }] },
     'Valmistunut': { date: { start: completed } },
   };
 
