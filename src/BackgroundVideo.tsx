@@ -4,11 +4,11 @@ export type Character = 'woman' | 'man';
 
 const SOURCES: Record<Character, string> = {
   woman: '/getto-video.mp4',
-  man: '/getto-video-man-3.mp4',
+  man: '/getto-video-man-4.mp4',
 };
 
 /**
- * Taustavideo. Työpöydällä kursorin vaakasijainti koko näytön leveydeltä kelaa videota,
+ * Taustavideo. Työpöydällä kursorin pystysijainti koko näytön korkeudelta kelaa videota,
  * mobiilissa vieritys. Hahmon vaihto häivyttää videot ristiin; toinen video ladataan
  * vasta, kun se valitaan ensimmäisen kerran, ja se jatkaa samasta katseen kohdasta.
  */
@@ -44,9 +44,9 @@ export function BackgroundVideo({ character }: { character: Character }) {
       schedule.current();
     };
     const onMove = (event: MouseEvent) => {
-      if (mobile.matches || window.innerWidth <= 0) return;
-      // Koko näytön leveys on seuranta-alue: vasen reuna = videon alku, oikea reuna = loppu.
-      fraction.current = Math.max(0, Math.min(1, event.clientX / window.innerWidth));
+      if (mobile.matches || window.innerHeight <= 0) return;
+      // Koko näytön korkeus on seuranta-alue: yläreuna = videon alku, alareuna = loppu.
+      fraction.current = Math.max(0, Math.min(1, event.clientY / window.innerHeight));
       schedule.current();
     };
     window.addEventListener('mousemove', onMove);
