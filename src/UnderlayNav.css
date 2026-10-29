@@ -1,0 +1,81 @@
+/* Osmo Supply "Fixed Underlay Navigation" – sovitettu Gettoworkin väreihin ja fontteihin.
+   Valikko on valkoinen paneeli tummansinisellä tekstillä; korostus #1480ff. */
+
+:root { --menu-width: 30em; }
+
+/* Sivun sisältö peittää valikon, kunnes se liukuu vasemmalle. */
+.underlay-main { position: relative; z-index: 2; }
+
+.underlay-nav a { color: inherit; text-decoration: none; }
+
+.underlay-nav__header { z-index: 100; color: #fff; position: fixed; inset: 0% 0% auto; pointer-events: none; }
+.underlay-nav__bar { width: 100%; margin-left: auto; margin-right: auto; }
+.underlay-nav__container { justify-content: space-between; align-items: center; padding: 1.5em 2.5em; display: flex; }
+.underlay-nav__logo, .underlay-nav__toggle { pointer-events: auto; }
+.underlay-nav__logo { justify-content: center; align-items: center; display: flex; }
+.underlay-nav__logo-img { display: block; height: 44px; width: auto; }
+
+.underlay-nav__toggle {
+  grid-column-gap: .75em; grid-row-gap: .75em; background-color: #0000; border: 0;
+  justify-content: center; align-items: center; margin: -1em; padding: 1em; display: flex;
+  font: inherit; font-family: var(--font-body); color: #fff; cursor: pointer;
+}
+.underlay-nav__toggle:focus-visible { outline: 2px solid currentColor; outline-offset: -4px; border-radius: 8px; }
+.underlay-nav__toggle-text { flex-flow: column; flex: none; justify-content: flex-start; align-items: flex-end; height: 1.5em; display: flex; overflow: hidden; }
+.underlay-nav__toggle-label { font-size: 1.25em; line-height: 1.2; }
+.underlay-nav__toggle-icon { grid-column-gap: .375em; grid-row-gap: .375em; flex-flow: column; flex: none; justify-content: center; align-items: center; width: 1.5em; margin-bottom: -.1em; display: flex; }
+.underlay-nav__toggle-bar { background-color: currentColor; flex: none; width: 100%; height: .125em; padding: 0; }
+
+.underlay-nav__menu {
+  z-index: 1; width: var(--menu-width); position: fixed; top: 0; bottom: 0; right: 0;
+  background: #fff; color: #080e30; font-family: var(--font-body);
+}
+.underlay-nav__overlay { z-index: 100; pointer-events: none; cursor: pointer; visibility: hidden; position: fixed; inset: 0% -1px 0% 0%; overflow: clip; }
+
+.underlay-nav__inner {
+  grid-column-gap: 2em; grid-row-gap: 2em; flex-flow: column; justify-content: space-between; align-items: stretch;
+  width: 100%; height: 100%; padding: 7.5em 2em 2em; display: flex; overflow: auto;
+}
+.underlay-nav__list { flex-flow: column; width: 100%; margin: 0; padding: 0; list-style: none; display: flex; }
+.underlay-nav__list.is--small { grid-column-gap: .75em; grid-row-gap: .75em; }
+
+.underlay-nav__link-large { display: flex; flex-direction: column; gap: .35em; border-radius: .25em; width: 100%; padding: .75em 1em; transition: background-color 200ms ease; }
+.underlay-nav__link-large:hover { background-color: rgb(8 14 48 / 0.06); }
+.underlay-nav__link-large.w--current { color: #fff; background-color: #1480ff; }
+.underlay-nav__link-large:focus-visible { outline: 2px solid #1480ff; outline-offset: 2px; }
+.underlay-nav__link-label { letter-spacing: -.03em; font-family: var(--font-heading); font-size: 3.25em; line-height: .95; }
+.underlay-nav__link-sub { font-size: .95em; opacity: .6; }
+
+.underlay-nav__footer { display: flex; flex-direction: column; gap: 1.75em; }
+.underlay-nav__bottom { justify-content: flex-start; align-items: flex-start; width: 100%; padding-top: 1.5em; display: flex; position: relative; }
+.underlay-nav__bottom-col { grid-column-gap: 1em; grid-row-gap: 1em; flex-flow: column; flex: 1; justify-content: flex-start; align-items: flex-start; display: flex; }
+.underlay-nav__link-small { font-size: 1em; line-height: 1.1; }
+a.underlay-nav__link-small:hover { color: #1480ff; }
+a.underlay-nav__link-small:focus-visible, .underlay-nav__legal a:focus-visible { outline: 2px solid #1480ff; outline-offset: 3px; }
+.underlay-nav__link-small.is--faded { opacity: .5; }
+.underlay-nav__legal { font-size: .85em; line-height: 1.5; opacity: .6; }
+.underlay-nav__legal p { margin: 0; }
+.underlay-nav__legal a { text-decoration: underline; text-underline-offset: 2px; }
+
+/* Kulmat ja reunat ovat valikon taustan värisiä: liukuvan sisällön reunaan muodostuu pyöristys. */
+.underlay-nav__corner { transform-origin: 100% 0; background-image: radial-gradient(circle farthest-side at 0 100%, #fff0 99%, #fff); width: 2em; height: 2em; }
+.underlay-nav__corner.is--bottom { transform-origin: 100% 100%; background-image: radial-gradient(circle farthest-side at 0 0, #fff0 99%, #fff); }
+.underlay-nav__dark { opacity: 0; background-color: #0000004d; position: absolute; inset: 0%; }
+.underlay-nav__bottom-border { opacity: .15; transform-origin: 0%; background-color: currentColor; width: 100%; height: 1px; position: absolute; inset: 0% 0% auto; }
+.underlay-nav__borders { flex-flow: column; justify-content: space-between; align-items: stretch; display: flex; position: absolute; inset: 0; }
+.underlay-nav__border { background-color: #fff; width: 100%; height: 1em; }
+.underlay-nav__border-row { flex-flow: column; justify-content: flex-start; align-items: flex-end; display: flex; }
+
+@media screen and (max-width: 767px) {
+  :root { --menu-width: 80vw; }
+  .underlay-nav__container { padding: 1em 1.25em; }
+  .underlay-nav__logo-img { height: 35px; }
+  .underlay-nav__toggle-text { height: 1.25em; }
+  .underlay-nav__toggle-label { font-size: 1em; }
+  .underlay-nav__inner { padding: 5em 1.25em 1.25em; }
+  .underlay-nav__link-label { font-size: 2em; }
+  .underlay-nav__bottom { grid-column-gap: 2em; grid-row-gap: 2em; flex-flow: column; padding-left: 1em; padding-right: 1em; }
+  .underlay-nav__legal { padding: 0 1em; }
+}
+
+@media print { .underlay-nav { display: none !important; } }

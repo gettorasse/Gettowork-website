@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import { BackgroundVideo, type Character } from './BackgroundVideo.tsx';
 import { CharacterSwitch, loadCharacter, saveCharacter } from './CharacterSwitch.tsx';
-import { SiteHeader } from './SiteHeader.tsx';
+import { UnderlayNav } from './UnderlayNav.tsx';
 import { HOME_PATH, isLegacyPath, routeFromPath, type Route } from './router.ts';
 import { About } from './restart-score/About.tsx';
 import { Privacy } from './restart-score/Privacy.tsx';
@@ -48,14 +48,17 @@ function App() {
   const question = route === 'home' && view === 'question';
 
   return <>
+    <UnderlayNav route={route} />
+    {/* Kaikki sivun sisältö yhdessä kääreessä: valikko avautuu sen alta (UnderlayNav). */}
+    <div data-main className="underlay-main">
     {/* Tausta pysyy samana koko ajan: etusivu, kysymykset ja tulos vaihtuvat sen päällä. */}
     <BackgroundVideo character={character} />
     <div className={`stage-dim${dim ? ' is-on' : ''}${question ? ' is-soft' : ''}`} aria-hidden="true" />
     <div className={`stage-floor${question ? ' is-on' : ''}`} aria-hidden="true" />
     <div className={`stage-top${dim ? ' is-on' : ''}${question ? ' is-soft' : ''}`} aria-hidden="true" />
-    <SiteHeader route={route} />
     <CharacterSwitch value={character} onChange={chooseCharacter} visible={route === 'home' && view === 'intro'} />
     {route === 'about' ? <About onStart={startFromAbout} /> : route === 'privacy' ? <Privacy /> : <RestartScore rs={rs} />}
+    </div>
   </>;
 }
 
