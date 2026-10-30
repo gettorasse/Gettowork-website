@@ -173,8 +173,8 @@ function Category() {
   return <section id="filosofia" className="co-section" aria-labelledby="co-cat-title">
     <Chapter id="filosofia" />
     <h2 id="co-cat-title" className="co-h2 co-strike" data-reveal>
-      Ei <s style={d(2)}>konsulttitoimisto</s>. Ei <s style={d(4)}>rekrytointialusta</s>. Ei <s style={d(6)}>startup-yhteisö</s>.{' '}
-      <span className="co-pop" style={d(10)}>Restart company.</span>
+      Ei <s style={d(2)}>rekrytointialusta</s>. Ei <s style={d(4)}>startup-yhteisö</s>.{' '}
+      <span className="co-pop" style={d(8)}>Restart company.</span>
     </h2>
     <div className="co-grid co-grid--wide">
       <div className="co-card co-card--glass" data-reveal style={d(1)}>
