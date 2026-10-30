@@ -10,8 +10,8 @@ const SCRUB: Record<Character, string> = {
 
 /** Pidempi, rauhallinen looppi testin taustalle. Ladataan laiskasti, kun sivu on valmis. */
 const LOOP: Record<Character, string> = {
-  woman: '/getto-loop-woman.mp4',
-  man: '/getto-loop-man.mp4',
+  woman: '/getto-loop-woman-2.mp4',
+  man: '/getto-loop-man-2.mp4',
 };
 
 /** Loopin toistonopeus (hieman hidastettu). */
