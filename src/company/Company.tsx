@@ -79,7 +79,7 @@ const CHAPTERS = [
   { id: 'kenelle', label: 'Kenelle Restart sopii' },
   { id: 'playbook', label: 'Restart playbook' },
   { id: 'yhteistyo', label: 'Ensimmäinen kauppa' },
-  { id: 'esimerkki', label: 'Miltä Restart näyttää' },
+  { id: 'esimerkki', label: 'Esimerkki: Keramore' },
   { id: 'hyodyt', label: 'Mitä asiakas saa' },
   { id: 'tekijoille', label: 'Tekijöille' },
   { id: 'verkosto', label: 'Verkosto' },
@@ -103,10 +103,6 @@ function Chapter({ id }: { id: ChapterId }) {
   </div>;
 }
 
-/** Euroluku, joka laskee näkyviin tullessaan. */
-function Euro({ to }: { to: number }) {
-  return <><CountUp to={to} /><span className="co-unit">&nbsp;€</span></>;
-}
 
 export function Company() {
   const root = useRef<HTMLElement>(null);
@@ -425,28 +421,88 @@ function Partnership() {
   </section>;
 }
 
-// --- 12. Miltä Restart näyttää (kuvitteellinen esimerkki) ---------------------------
+// --- 12. Esimerkki: Keramore ---------------------------------------------------------
+// Todellinen tapaus. Ei lukuja, joita ei ole mitattu: visuaalit havainnollistavat muutoksen suuntaa.
+
+type CaseMode = 'before' | 'after';
+
+const INFO = ['Asiakkaat', 'Tarjoukset', 'Tilaukset', 'Aikataulut', 'Laskutus', 'Viestit'];
+/** Ennen: tieto hajallaan (vasen %, ylä %, kierto). */
+const SCATTER = [[6, 10, -9], [58, 4, 7], [30, 40, -4], [70, 52, 11], [4, 70, 6], [44, 78, -12]];
+
+const DAY = [
+  { k: 'myynti', t: 'Myynti ja asiakkaat', before: 2, after: 6 },
+  { k: 'hallinto', t: 'Hallinto', before: 2, after: 1.4 },
+  { k: 'etsiminen', t: 'Tiedon etsiminen', before: 2.4, after: 0.25 },
+  { k: 'tulipalot', t: 'Tulipalojen sammuttelu', before: 3.6, after: 0.35 },
+];
+
+const CASE_CHANGES = [
+  { t: 'Yksi hallintajärjestelmä', d: 'Myynti ja hallinto yhtenäistettiin samaan järjestelmään.' },
+  { t: 'CRM käyttöön', d: 'Asiakkaat, tarjoukset ja seuraavat askeleet näkyvät yhdestä paikasta.' },
+  { t: 'Nopeammat rutiinit', d: 'Vähemmän käsityötä ja sekoilua, tehokkaampaa tekemistä.' },
+];
 
 function Example() {
+  const [mode, setMode] = useState<CaseMode>('before');
+  const [touched, setTouched] = useState(false);
+  const [ref, inView] = useInView<HTMLDivElement>(0.45);
+  // Näkyviin tullessa muutos esitetään kerran itsestään; sen jälkeen käyttäjä vaihtaa.
+  useEffect(() => {
+    if (!inView || touched) return;
+    if (reduced()) { setMode('after'); return; }
+    const t = window.setTimeout(() => setMode('after'), 1400);
+    return () => window.clearTimeout(t);
+  }, [inView, touched]);
+  const choose = (m: CaseMode) => { setTouched(true); setMode(m); };
+  const after = mode === 'after';
+
   return <section id="esimerkki" className="co-section" aria-labelledby="co-ex-title">
     <Chapter id="esimerkki" />
-    <h2 id="co-ex-title" className="co-h2" data-reveal>Pieni huoltoyritys.<br /><span className="co-blue-text">Suuri kehityspotentiaali.</span></h2>
-    <div className="co-grid">
-      <div className="co-stat" data-reveal style={d(1)}>
-        <p className="co-label">Nyt</p>
-        <p className="co-stat__n co-stat__n--white"><Euro to={600000} /></p>
-        <p className="co-stat__label">liikevaihto</p>
-        <p className="co-ex__row"><span><Euro to={48000} /></span><span className="co-muted">liikevoitto / 8 %</span></p>
-      </div>
-      <div className="co-stat co-stat--blue" data-reveal style={d(3)}>
-        <p className="co-label">Tavoite</p>
-        <p className="co-stat__n co-stat__n--white"><Euro to={750000} /></p>
-        <p className="co-stat__label">liikevaihto</p>
-        <p className="co-ex__row"><span><Euro to={75000} /></span><span>liikevoitto / 10 %</span></p>
-      </div>
+    <h2 id="co-ex-title" className="co-h2" data-reveal>Keramore.<br /><span className="co-blue-text">Vähemmän tulipaloja. Enemmän myyntiä.</span></h2>
+    <p className="co-lead" data-reveal>Toimme Keramorelle uudenlaisen hallintajärjestelmän ja CRM-ohjelmat. Myynti ja hallinto yhtenäistettiin, järjestelmät nopeutuivat ja tieto tuli selvästi esille. Myyjän aika ei enää mene tulipalojen sammutteluun.</p>
+
+    <div className="co-toggle" role="tablist" aria-label="Keramore ennen ja jälkeen" data-reveal>
+      {(['before', 'after'] as const).map(m => <button key={m} type="button" role="tab" aria-selected={mode === m}
+        className={`co-toggle__btn${mode === m ? ' is-on' : ''}`} onClick={() => choose(m)}>{m === 'before' ? 'Ennen' : 'Jälkeen'}</button>)}
+      <span className={`co-toggle__thumb is-${after ? 'restart' : 'startup'}`} aria-hidden="true" />
     </div>
-    <p className="co-statement" data-reveal><strong>Mitä muutettiin?</strong> Myynnin toimintatavat, asiakashankinta, automaatio, resurssien käyttö ja palveluiden kannattavuus.</p>
-    <p className="co-source" data-reveal>Kuvitteellinen 18 kuukauden tavoiteskenaario, ei toteutunut asiakastulos tai ennuste.</p>
+
+    <div ref={ref} className={`co-case${after ? ' is-after' : ''}`} role="tabpanel">
+      <figure className="co-case__panel">
+        <figcaption className="co-label">Tieto</figcaption>
+        <div className="co-board" aria-hidden="true">
+          <div className="co-board__head"><span>Yksi näkymä</span><span>Tila</span><span>Seuraava askel</span></div>
+          {INFO.map((label, i) => <span key={label} className="co-board__item" style={{
+            '--bx': `${SCATTER[i][0]}%`, '--by': `${SCATTER[i][1]}%`, '--br': `${SCATTER[i][2]}deg`,
+            '--ay': `${18 + i * 13.5}%`, '--i': i,
+          } as CSSProperties}>
+            <span className="co-board__dot" />{label}<span className="co-board__bar" /><span className="co-board__next" />
+          </span>)}
+        </div>
+        <p className="co-case__cap">{after ? 'Kaikki tieto yhdessä paikassa: kuka, mitä, missä vaiheessa ja mitä seuraavaksi.' : 'Tieto hajallaan: jokainen kysymys vaatii etsimistä ja kyselemistä.'}</p>
+      </figure>
+
+      <figure className="co-case__panel">
+        <figcaption className="co-label">Myyjän päivä</figcaption>
+        <div className="co-day" aria-hidden="true">
+          {DAY.map(s => <span key={s.k} className={`co-day__seg co-day__seg--${s.k}`} style={{ flexGrow: after ? s.after : s.before }} />)}
+        </div>
+        <ul className="co-day__legend">
+          {DAY.map(s => <li key={s.k}><span className={`co-day__key co-day__seg--${s.k}`} aria-hidden="true" />{s.t}</li>)}
+        </ul>
+        <p className="co-case__cap">{after ? 'Aika menee asiakkaille ja myyntiin. Hallinto hoituu järjestelmässä.' : 'Päivä pirstoutuu: tulipaloja, etsimistä ja keskeytyksiä.'}</p>
+      </figure>
+    </div>
+
+    <ol className="co-case__changes">
+      {CASE_CHANGES.map((c, i) => <li key={c.t} data-reveal style={d(i)}>
+        <span className="co-case__n">0{i + 1}</span>
+        <span className="co-case__t">{c.t}</span>
+        <span className="co-case__d">{c.d}</span>
+      </li>)}
+    </ol>
+    <p className="co-source" data-reveal>Kuvat havainnollistavat muutoksen suuntaa. Ne eivät ole mittaustuloksia.</p>
   </section>;
 }
 

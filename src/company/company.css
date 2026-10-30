@@ -362,3 +362,56 @@
 .co-builders-wrap .co-builders { margin-top: 0 !important; grid-template-columns: 1fr !important; }
 .co-builders-cta { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; }
 .co-builders-cta__t { font-family: var(--font-heading); font-size: clamp(24px, 2.4vw, 32px); line-height: 1.1; }
+
+/* --- Esimerkki: Keramore (ennen / jälkeen) --- */
+.co-case { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(28px, 4vw, 56px); margin-top: 40px; }
+@media (max-width: 860px) { .co-case { grid-template-columns: 1fr; } }
+.co-case__panel { margin: 0; padding-top: 22px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 18px; }
+.co-case__cap { min-height: 3em; color: var(--muted); font-size: 16px; }
+
+/* Tieto: hajallaan olevat palat järjestyvät yhdeksi näkymäksi. */
+.co-board { position: relative; height: clamp(300px, 30vw, 380px); border: 1px solid var(--line); background: rgb(255 255 255 / 0.02); overflow: hidden; transition: border-color 600ms, background-color 600ms; }
+.co-case.is-after .co-board { border-color: rgb(20 128 255 / 0.55); background: rgb(20 128 255 / 0.06); }
+.co-board__head { position: absolute; left: 5%; right: 5%; top: 5%; display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--line); font-family: var(--font-heading); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--blue-soft); opacity: 0; transform: translateY(-8px); transition: opacity 400ms ease, transform 500ms ease; }
+.co-case.is-after .co-board__head { opacity: 1; transform: none; transition-delay: 500ms; }
+.co-board__item {
+  position: absolute; left: var(--bx); top: var(--by); width: 42%; height: 11%;
+  display: flex; align-items: center; gap: 10px; padding: 0 12px;
+  border: 1px dashed rgb(255 255 255 / 0.35); color: rgb(255 255 255 / 0.75);
+  font-family: var(--font-heading); font-size: 14px; white-space: nowrap;
+  transform: rotate(var(--br));
+  transition: left 900ms cubic-bezier(.6,0,.2,1), top 900ms cubic-bezier(.6,0,.2,1), width 900ms cubic-bezier(.6,0,.2,1), transform 900ms cubic-bezier(.6,0,.2,1), border-color 400ms, background-color 400ms, color 400ms;
+  transition-delay: calc(var(--i) * 70ms);
+  animation: co-drift 5s ease-in-out infinite alternate; animation-delay: calc(var(--i) * -0.8s);
+}
+.co-case.is-after .co-board__item { left: 5%; top: var(--ay); width: 90%; transform: none; border-style: solid; border-color: transparent; border-bottom-color: var(--line); background: rgb(255 255 255 / 0.03); color: #fff; animation: none; }
+@keyframes co-drift { from { translate: 0 0; } to { translate: 6px -6px; } }
+.co-board__dot { flex: none; width: 8px; height: 8px; border-radius: 50%; background: rgb(255 255 255 / 0.4); transition: background-color 400ms; transition-delay: calc(600ms + var(--i) * 80ms); }
+.co-case.is-after .co-board__dot { background: var(--blue); }
+.co-board__bar, .co-board__next { height: 6px; border-radius: 3px; opacity: 0; transition: opacity 400ms ease; transition-delay: calc(700ms + var(--i) * 80ms); }
+.co-board__bar { margin-left: auto; width: 22%; background: var(--blue); }
+.co-board__next { width: 26%; background: rgb(255 255 255 / 0.25); }
+.co-case.is-after .co-board__bar, .co-case.is-after .co-board__next { opacity: 1; }
+
+/* Myyjän päivä: pirstoutunut palkki muuttuu selkeäksi. */
+.co-day { display: flex; gap: 4px; height: 64px; }
+.co-day__seg { flex-basis: 0; min-width: 0; transition: flex-grow 1000ms cubic-bezier(.6,0,.2,1); }
+.co-day__seg--myynti { background: var(--blue); }
+.co-day__seg--hallinto { background: rgb(255 255 255 / 0.55); }
+.co-day__seg--etsiminen { background: rgb(255 255 255 / 0.22); }
+.co-day__seg--tulipalot { background: repeating-linear-gradient(-45deg, rgb(255 255 255 / 0.3) 0 6px, rgb(255 255 255 / 0.08) 6px 12px); }
+.co-case.is-after .co-day__seg--myynti { box-shadow: var(--glow); }
+.co-day__legend { list-style: none; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px 20px; font-size: 15px; color: var(--muted); }
+.co-day__legend li { display: flex; align-items: center; gap: 10px; }
+.co-day__key { flex: none; width: 14px; height: 14px; }
+
+.co-case__changes { list-style: none; padding: 0; margin-top: 56px !important; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
+@media (max-width: 860px) { .co-case__changes { grid-template-columns: 1fr; gap: 24px; } }
+.co-case__changes li { display: flex; flex-direction: column; gap: 8px; padding-top: 18px; border-top: 1px solid rgb(255 255 255 / 0.35); }
+.co-case__n { font-family: var(--font-heading); font-size: 13px; letter-spacing: 0.18em; color: var(--blue-soft); }
+.co-case__t { font-family: var(--font-heading); font-size: clamp(22px, 2.2vw, 28px); line-height: 1.1; }
+.co-case__d { color: var(--muted); }
+@media (prefers-reduced-motion: reduce) {
+  .co-board__item { animation: none; transition: none; }
+  .co-day__seg, .co-board__head, .co-board__dot, .co-board__bar, .co-board__next { transition: none; }
+}
