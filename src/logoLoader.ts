@@ -164,4 +164,7 @@ function runLoader() {
     display: 'none',
   });
   timeline.eventCallback('onComplete', () => finish(root));
+  // Varmistus: jos selain hidastaa animaatioita (taustavälilehti, virransäästö), latausnäkymä
+  // ei saa jäädä sivun eteen. Hypätään loppuun viimeistään kuuden sekunnin kohdalla.
+  window.setTimeout(() => { if (!done) timeline.progress(1); }, 6000);
 }
