@@ -2,8 +2,9 @@ import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 
 import { HOME_PATH, interceptClick } from '../router.ts';
 import './company.css';
 
-// "Tietoa yrityksestä" – Gettowork, the restart company. Sisältö perustuu strategiaan
-// "Work. Build. Own." (lokakuu 2026); julkiselle sivulle on valittu esittelevät osat.
+// "Tietoa yrityksestä" – Gettowork, the restart company. Sisältö perustuu esitykseen
+// "Work. Build. Grow." (lokakuu 2026); julkiselle sivulle on valittu esittelevät osat
+// (sisäinen kannattavuuslaskelma, go-to-market ja 12 kk:n suunnitelma on jätetty pois).
 // Animaatiot ovat CSS:ää ja SVG:tä; näkyviin tulo IntersectionObserverilla.
 
 const EMAIL = 'rasmus@gettowork.fi';
@@ -66,6 +67,11 @@ function Eyebrow({ children }: { children: ReactNode }) {
   return <p className="co-eyebrow" data-reveal>{children}</p>;
 }
 
+/** Euroluku, joka laskee näkyviin tullessaan. */
+function Euro({ to }: { to: number }) {
+  return <><CountUp to={to} /><span className="co-unit">&nbsp;€</span></>;
+}
+
 export function Company() {
   const root = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -83,13 +89,15 @@ export function Company() {
     <ForWhom />
     <Playbook />
     <Partnership />
+    <Example />
+    <Benefits />
     <Network />
     <Fairness />
     <Closing />
   </main>;
 }
 
-// --- 1. Avaus ------------------------------------------------------------------
+// --- 01. Avaus ------------------------------------------------------------------
 
 function Hero({ headingRef }: { headingRef: React.RefObject<HTMLHeadingElement | null> }) {
   return <section className="co-hero" aria-labelledby="co-hero-title">
@@ -98,9 +106,9 @@ function Hero({ headingRef }: { headingRef: React.RefObject<HTMLHeadingElement |
       <h1 id="co-hero-title" ref={headingRef} tabIndex={-1} className="co-hero__title">
         <span className="co-hero__word" style={d(1)}>Work.</span>
         <span className="co-hero__word" style={d(3)}>Build.</span>
-        <span className="co-hero__word co-hero__word--own" style={d(5)}>Own.</span>
+        <span className="co-hero__word co-hero__word--own" style={d(5)}>Grow.</span>
       </h1>
-      <p className="co-hero__lead" style={d(8)}>Vanhoille yrityksille uusi tulevaisuus.<br />Ihmisille uusi tie työstä omistajuuteen.</p>
+      <p className="co-hero__lead" style={d(8)}>Vanhoille yrityksille uusi tulevaisuus.<br />Uuden ajan tekijöille oikeita mahdollisuuksia.</p>
       <p className="co-hero__motto" style={d(10)}>One for many. Many for one.</p>
     </div>
     <Orbit />
@@ -122,35 +130,35 @@ function Orbit() {
   </div>;
 }
 
-// --- 2. Uusi kategoria ----------------------------------------------------------
+// --- 02. Filosofia ----------------------------------------------------------------
 
 function Category() {
   return <section id="co-category" className="co-section" aria-labelledby="co-cat-title">
-    <Eyebrow>Uusi kategoria</Eyebrow>
+    <Eyebrow>Filosofia</Eyebrow>
     <h2 id="co-cat-title" className="co-h2 co-strike" data-reveal>
-      Ei <s style={d(2)}>startup</s>. Ei <s style={d(5)}>työnvälityspalvelu</s>.{' '}
+      Ei <s style={d(2)}>startup</s>. Ei <s style={d(5)}>perinteinen konsulttitalo</s>.{' '}
       <span className="co-pop" style={d(9)}>Restart company.</span>
     </h2>
     <div className="co-grid co-grid--wide">
       <div className="co-card co-card--glass" data-reveal style={d(1)}>
-        <p className="co-card__big">Gettowork on The Restart Company. Rakennamme vanhasta uutta – jotain aitoa.</p>
-        <p className="co-muted">Oikeita yrityksiä. Oikeita tekijöitä. Oikeaa omistajuutta.</p>
+        <p className="co-card__big">Rakennamme vanhasta uutta.</p>
+        <p className="co-muted">Uskomme, ettei tulevaisuuden yrityksiä tarvitse aina perustaa tyhjästä. Niitä voidaan rakentaa myös yrityksistä, jotka ovat jo olemassa.</p>
       </div>
       <div className="co-card co-card--blue" data-reveal style={d(3)}>
-        <p className="co-label">Uskomme</p>
-        <p className="co-card__big">Työ muuttuu. Mahdollisuuden omistaa on kasvettava.</p>
+        <p className="co-label">The belief</p>
+        <p className="co-card__big">Maailma muuttuu. Yritysten on muututtava mukana.</p>
       </div>
     </div>
   </section>;
 }
 
-// --- 3. Miksi nyt ---------------------------------------------------------------
+// --- 03. Miksi nyt -------------------------------------------------------------------
 
 function WhyNow() {
   return <section className="co-section" aria-labelledby="co-why-title">
     <Eyebrow>Miksi nyt</Eyebrow>
-    <h2 id="co-why-title" className="co-h2" data-reveal>Suomi on täynnä seuraavaa sukupolvea odottavia yrityksiä.</h2>
-    <p className="co-lead" data-reveal>Omistajanvaihdos on talouden rakennemuutos. Samalla ihmiset etsivät uutta tapaa ansaita ja rakentaa.</p>
+    <h2 id="co-why-title" className="co-h2" data-reveal>Suomi on täynnä yrityksiä, joilla on menneisyys. <span className="co-blue-text">Mutta myös tulevaisuus.</span></h2>
+    <p className="co-lead" data-reveal>Uusi teknologia muuttaa työskentelyä nopeammin kuin moni yritys ehtii uudistua. Samaan aikaan tuhansilla suomalaisilla yrityksillä on edessään sukupolvenvaihdos, kasvuhaaste tai tarve uudistaa toimintaansa.</p>
     <div className="co-grid">
       <div className="co-stat" data-reveal style={d(1)}>
         <p className="co-stat__n"><CountUp to={33000} /></p>
@@ -165,7 +173,8 @@ function WhyNow() {
         <Dots />
       </div>
     </div>
-    <p className="co-source" data-reveal>* Suomen Yrittäjien omistajanvaihdospoliittinen ohjelma (2025), Omistajanvaihdosbarometri 2024. Aikeita koskevia arvioita, ei toteutumia.</p>
+    <p className="co-statement" data-reveal><strong>Me näemme siellä mahdollisuuden.</strong> Ei vain vaihtaa omistajaa – vaan rakentaa parempi yritys.</p>
+    <p className="co-source" data-reveal>* Suomen Yrittäjien omistajanvaihdospoliittinen ohjelma (2025), Omistajanvaihdosbarometri 2024. Luvut kuvaavat omistajanvaihdosaikeita, eivät Gettoworkin todettua asiakaspotentiaalia.</p>
   </section>;
 }
 
@@ -176,46 +185,47 @@ function Dots() {
   </div>;
 }
 
-// --- 4. Kaksi maailmaa ----------------------------------------------------------
+// --- 04. Kaksi maailmaa ------------------------------------------------------------
 
 function TwoWorlds() {
   return <section className="co-section" aria-labelledby="co-two-title">
-    <Eyebrow>Mahdollisuus</Eyebrow>
-    <h2 id="co-two-title" className="co-h2" data-reveal>Yhdellä on asiakkaat.<br />Toisella halu rakentaa.</h2>
-    <p className="co-lead" data-reveal>Gettowork ratkaisee kohtaanto-ongelman: yritys tarvitsee uuden vaiheen, ihminen tarvitsee todellisen mahdollisuuden.</p>
+    <Eyebrow>Kaksi maailmaa</Eyebrow>
+    <h2 id="co-two-title" className="co-h2" data-reveal>Yhdellä on yritys.<br />Toisella keinot uudistaa se.</h2>
+    <p className="co-lead" data-reveal>Gettowork yhdistää olemassa olevan liiketoiminnan ja uuden ajan osaamisen.</p>
     <div className="co-worlds" data-reveal>
       <div className="co-card co-card--glass co-worlds__a">
-        <p className="co-label">Vanhan talouden yritys</p>
-        <p className="co-card__big">Asiakkaat, osaaminen, historia.</p>
-        <p className="co-muted">Kasvu, myynti tai jatkaja puuttuu. Omistaja ei halua aloittaa kaikkea alusta.</p>
+        <p className="co-label">Vakiintunut yritys</p>
+        <p className="co-card__big">Asiakkaat, kokemus ja toimiva liiketoiminta.</p>
+        <p className="co-muted">Mutta rajalliset resurssit, vanhentuneita menetelmiä tai käyttämätöntä kasvupotentiaalia.</p>
       </div>
       <div className="co-venn" aria-hidden="true">
         <span className="co-venn__c co-venn__c--a" />
         <span className="co-venn__c co-venn__c--b" />
-        <span className="co-venn__mid">Restart</span>
+        <span className="co-venn__mid">Gettowork</span>
       </div>
       <div className="co-card co-card--blue co-worlds__b">
-        <p className="co-label">Uuden ajan rakentaja</p>
-        <p className="co-card__big">Energiaa, osaamista, tekoälyä.</p>
-        <p>Ei välttämättä pääomaa, asiakkaita tai syytä perustaa uutta yritystä tyhjästä.</p>
+        <p className="co-label">Uuden ajan tekijät</p>
+        <p className="co-card__big">Energiaa, ideoita, teknologiaa ja osaamista.</p>
+        <p>Mutta ei välttämättä omaa yritystä tai valmista asiakaskuntaa.</p>
       </div>
     </div>
+    <p className="co-statement" data-reveal><strong>Gettowork</strong> yhdistää nämä kaksi maailmaa ja muuttaa mahdollisuudet käytännön tuloksiksi.</p>
   </section>;
 }
 
-// --- 5. Startup vs. Restart (vaihdettava) ---------------------------------------
+// --- 05. Restart-ajattelu (vaihdettava) -------------------------------------------
 
 const MODES = {
   startup: ['Keksi uusi idea', 'Rakenna tuote', 'Hanki ensimmäiset asiakkaat', 'Todista liiketoiminta'],
-  restart: ['Etsi toimiva yritys', 'Ymmärrä mikä jo toimii', 'Uudista kasvu ja operointi', 'Rakenna polku omistajuuteen'],
+  restart: ['Löydä toimiva yritys', 'Tunnista sen mahdollisuudet', 'Tuo uudet tekijät, työkalut ja menetelmät', 'Kehitä, mittaa ja kasvata'],
 } as const;
 
 function StartupVsRestart() {
   const [mode, setMode] = useState<keyof typeof MODES>('restart');
   return <section className="co-section" aria-labelledby="co-svr-title">
-    <Eyebrow>Ei aloiteta nollasta</Eyebrow>
-    <h2 id="co-svr-title" className="co-h2" data-reveal>Startup luo kysyntää.<br /><span className="co-blue-text">Restart löytää sen jo valmiina.</span></h2>
-    <p className="co-lead" data-reveal>Restart ei poista riskiä. Se vaihtaa riskin luonteen: kysyntäriskistä operointi- ja uudistamisriskiin.</p>
+    <Eyebrow>Restart-ajattelu</Eyebrow>
+    <h2 id="co-svr-title" className="co-h2" data-reveal>Ei aloiteta <span className="co-blue-text">nollasta.</span></h2>
+    <p className="co-lead" data-reveal>Startup rakentaa liiketoiminnan alusta. Restart kehittää liiketoimintaa, joka on jo olemassa.</p>
     <div className="co-toggle" role="tablist" aria-label="Vertailu" data-reveal>
       {(['startup', 'restart'] as const).map(m => <button key={m} type="button" role="tab" aria-selected={mode === m}
         className={`co-toggle__btn${mode === m ? ' is-on' : ''}`} onClick={() => setMode(m)}>{m === 'startup' ? 'Startup' : 'Restart'}</button>)}
@@ -227,18 +237,19 @@ function StartupVsRestart() {
   </section>;
 }
 
-// --- 6. Kolme roolia --------------------------------------------------------------
+// --- 06. Mitä Gettowork on ----------------------------------------------------------
 
 const ROLES = [
-  { t: 'Työllistäjä', d: 'Mahdollistaa palkallisen työn ja osaamisen kasvun.' },
-  { t: 'Restart-kumppani', d: 'Rakentaa yrityksille kasvua, järjestelmiä ja toimintakykyä.' },
-  { t: 'Omistajuuden avaaja', d: 'Mahdollistaa tuloksiin perustuvan polun todelliseen omistajuuteen.' },
+  { t: 'Osaamisen yhdistäjä', d: 'Tuomme yrityksiin oikeat ihmiset, erityisosaamisen ja uutta tekemisen energiaa.' },
+  { t: 'Restart-kumppani', d: 'Uudistamme myyntiä, markkinointia, prosesseja, palveluita ja toimintatapoja.' },
+  { t: 'Käytännön toteuttaja', d: 'Otamme uudet teknologiat ja menetelmät käyttöön. Emme jätä muutosta pelkäksi suunnitelmaksi.' },
 ];
 
 function Roles() {
   return <section className="co-section" aria-labelledby="co-roles-title">
-    <Eyebrow>Operaattori, ei vain alusta</Eyebrow>
-    <h2 id="co-roles-title" className="co-h2" data-reveal>Kolme roolia.<br />Yksi liiketoimintamalli.</h2>
+    <Eyebrow>Mitä Gettowork on</Eyebrow>
+    <h2 id="co-roles-title" className="co-h2" data-reveal>Uudistamisen mahdollistaja.<br />Ei vain neuvonantaja.</h2>
+    <p className="co-lead" data-reveal>Kolme roolia. Yksi tavoite.</p>
     <ol className="co-roles">
       {ROLES.map((r, i) => <li key={r.t} className="co-role" data-reveal style={d(i)}>
         <span className="co-role__n">0{i + 1}</span>
@@ -249,20 +260,19 @@ function Roles() {
   </section>;
 }
 
-// --- 7. Tekijän polku: Work. Build. Own. ----------------------------------------
+// --- 07. Tekijän polku: Work. Build. Grow. ----------------------------------------
 
 const PATH = [
-  { k: 'Work.', t: 'Tee oikeaa työtä.', d: 'Palkka tai asianmukainen toimeksiantokorvaus. Ei ilmaista työpanosta.' },
-  { k: 'Build.', t: 'Kasvata yrityksen arvoa.', d: 'Vastuu, tulosmittarit ja mahdollinen lisäpalkkio. Osaaminen kasvaa.' },
-  { k: 'Own.', t: 'Osallistu arvonnousuun.', d: 'Erillisellä sopimuksella osakkeita tai optioita, kun näyttö ja ehdot ovat kunnossa.' },
+  { k: 'Work.', t: 'Tee oikeaa työtä.', d: 'Tee oikeaa työtä oikeissa yrityksissä. Ansaitse työlläsi ja kasvata osaamistasi.' },
+  { k: 'Build.', t: 'Rakenna näyttöä.', d: 'Osallistu yritysten kehittämiseen. Toteuta projekteja, ratkaise ongelmia ja rakenna omaa näyttöäsi.' },
+  { k: 'Grow.', t: 'Kasvata mahdollisuuksiasi.', d: 'Kehitä omia projekteja ja löydä osaavia ihmisiä, joiden kanssa voit rakentaa jotain uutta – vaikka yhteisen yrityksen.' },
 ];
 
 function Path() {
   const [step, setStep] = useState(0);
   return <section className="co-section" aria-labelledby="co-path-title">
     <Eyebrow>Tekijän polku</Eyebrow>
-    <h2 id="co-path-title" className="co-h2" data-reveal>Kaikkien ei tarvitse olla yrittäjiä.<br />Kaikilla voi olla mahdollisuus kasvaa.</h2>
-    <p className="co-lead" data-reveal>Kolme askelta. Eri vastuut, eri korvaukset. Omistajuus on mahdollisuus, ei pakko.</p>
+    <h2 id="co-path-title" className="co-h2" data-reveal>Kaikkien ei tarvitse perustaa yritystä.<br />Jokaisella pitää olla mahdollisuus rakentaa jotain merkityksellistä.</h2>
     <div className="co-path" data-reveal>
       <div className="co-stairs" aria-hidden="true">
         {PATH.map((p, i) => <span key={p.k} className={`co-stairs__step${i <= step ? ' is-on' : ''}`} style={{ '--h': `${(i + 1) * 33}%` } as CSSProperties} />)}
@@ -278,18 +288,19 @@ function Path() {
         </button>)}
       </div>
     </div>
+    <p className="co-source" data-reveal>Yrittäjyys on mahdollisuus, ei vaatimus eikä automaattinen osa asiakasprojektia.</p>
   </section>;
 }
 
-// --- 8. Kenelle Restart sopii ---------------------------------------------------
+// --- 08. Kenelle Restart sopii --------------------------------------------------------
 
 function ForWhom() {
-  const yes = ['Toistuvaa B2B-kysyntää', 'Paikallinen asiakaskanta', 'Omistaja valmis yhteistyöhön', 'Todellinen kannattavuuspotentiaali'];
-  const no = ['Romahtava kysyntä', 'Epäselvät vastuut ja velat', 'Vain omistajan varassa elävä myynti', 'Pakkomyynti ilman realistista korjausta'];
+  const yes = ['Toimivaa liiketoimintaa ja olemassa olevaa kysyntää', 'Kehittämätöntä kasvupotentiaalia', 'Omistajia, jotka haluavat uudistaa', 'Mahdollisuuksia parantaa kannattavuutta ja toimintaa'];
+  const no = ['Yrityksiä ilman realistista kysyntää', 'Hallitsemattomia taloudellisia riskejä', 'Muutosta, johon johto ei sitoudu', 'Projekteja, joissa tuloksia ei voida mitata'];
   return <section className="co-section" aria-labelledby="co-who-title">
     <Eyebrow>Kenelle Restart sopii</Eyebrow>
     <h2 id="co-who-title" className="co-h2" data-reveal>Tylsä on hyvä.<br />Rikkinäinen ei.</h2>
-    <p className="co-lead" data-reveal>Etsimme vakaita palveluyrityksiä, joilla on asiakkaita, osaamista ja kehittämätöntä kasvupotentiaalia.</p>
+    <p className="co-lead" data-reveal>Etsimme yrityksiä, joilla on jo jotain arvokasta: asiakkaita, kysyntää, osaamista ja mahdollisuus kasvaa.</p>
     <div className="co-grid">
       <div className="co-card co-card--blue" data-reveal>
         <p className="co-label">Etsimme</p>
@@ -300,24 +311,24 @@ function ForWhom() {
         <ul className="co-checks co-checks--no">{no.map((t, i) => <li key={t} style={d(i + 3)}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7 7 17" /></svg>{t}</li>)}</ul>
       </div>
     </div>
-    <p className="co-source" data-reveal>Ensimmäinen rajaus: kiinteistö-, toimitila-, huolto- ja erikoispalvelujen pk-yritykset.</p>
+    <p className="co-source" data-reveal>Aloitamme kiinteistö-, toimitila-, huolto- ja erikoispalveluiden pk-yrityksistä.</p>
   </section>;
 }
 
-// --- 9. Restart playbook: 180 päivää --------------------------------------------
+// --- 09. Restart playbook: 180 päivää ------------------------------------------------
 
 const PHASES = [
-  { days: '0–30', t: 'Discover', d: 'Taloustilanne, asiakkaat, kapasiteetti, riskit.', r: 'Selkeä lähtötaso' },
-  { days: '31–90', t: 'Deploy', d: 'Myynti, CRM, palveluvalikoima ja automaatiot käyttöön.', r: 'Ensimmäiset tulokset' },
-  { days: '91–180', t: 'Scale', d: 'Toistuva myynti, prosessit, vastuuhenkilöt ja raportointi.', r: 'Toistettava malli' },
+  { days: '0–30', t: 'Discover', d: 'Ymmärrämme liiketoiminnan, pullonkaulat ja suurimmat mahdollisuudet.' },
+  { days: '31–90', t: 'Deploy', d: 'Tuomme oikeat tekijät, teknologian ja uudet toimintatavat käyttöön.' },
+  { days: '91–180', t: 'Grow', d: 'Kehitämme toimivia ratkaisuja, mittaamme tulokset ja rakennamme jatkuvaa kasvua.' },
 ];
 
 function Playbook() {
   const [ref, inView] = useInView<HTMLDivElement>(0.35);
   return <section className="co-section" aria-labelledby="co-play-title">
-    <Eyebrow>Restart playbook · 180 päivää</Eyebrow>
-    <h2 id="co-play-title" className="co-h2" data-reveal>Ei konsulttiraporttia.<br /><span className="co-blue-text">Operatiivinen muutos.</span></h2>
-    <p className="co-lead" data-reveal>Siirrymme analyysista suoraan toteutukseen. Tulos näkyy asiakkaissa, katteessa ja työn laadussa.</p>
+    <Eyebrow>Restart playbook</Eyebrow>
+    <h2 id="co-play-title" className="co-h2" data-reveal>180 päivää.<br /><span className="co-blue-text">Todellisia muutoksia.</span></h2>
+    <p className="co-lead" data-reveal>Ei konsulttiraporttia. Käytännön kehittämistä.</p>
     <div ref={ref} className={`co-timeline${inView ? ' is-in' : ''}`}>
       <div className="co-timeline__track" aria-hidden="true"><span className="co-timeline__fill" /><span className="co-timeline__spark" /></div>
       {PHASES.map((p, i) => <div key={p.t} className="co-phase" style={{ '--d': `${300 + i * 650}ms` } as CSSProperties}>
@@ -325,36 +336,35 @@ function Playbook() {
         <p className="co-phase__days">{p.days} <span className="co-muted">päivää</span></p>
         <p className="co-phase__t">{p.t}</p>
         <p className="co-muted">{p.d}</p>
-        <p className="co-phase__r">{p.r}</p>
       </div>)}
     </div>
   </section>;
 }
 
-// --- 10. Kumppanuus ensin ja yhteistyön malli -----------------------------------
+// --- 10–11. Ensimmäinen kauppa ja liiketoimintamalli --------------------------------
 
 const MODEL = [
-  { t: 'Restart Audit', d: 'Maksullinen nykytila-analyysi ja 90 päivän toteutussuunnitelma.' },
-  { t: 'Operointipalkkio', d: 'Kuukausiveloitus kattaa toteutuksen, työpanoksen ja palvelun riskin.' },
-  { t: 'Tulospalkkio', d: 'Erikseen sovittu osuus todennetusta lisäarvosta, ei automaattinen oikeus.' },
-  { t: 'Omistusoptio', d: 'Mahdollinen osake- tai optiojärjestely vasta näytön ja erillisen sopimuksen jälkeen.' },
+  { t: 'Restart-kartoitus', d: 'Selvitämme, mikä toimii, mikä ei ja mitä kannattaa kehittää ensimmäisenä.' },
+  { t: 'Restart-projekti', d: 'Toteutamme sovitun uudistuksen oikeiden osaajien kanssa.' },
+  { t: 'Kehityskumppanuus', d: 'Jatkamme toimintojen kehittämistä sovitulla kuukausiveloituksella.' },
+  { t: 'Tulospalkkio', d: 'Voimme sopia lisäpalkkiosta, joka perustuu mitattuun ja todennettuun parannukseen.' },
 ];
 
 function Partnership() {
   return <section className="co-section" aria-labelledby="co-part-title">
-    <Eyebrow>Ei tarvita yrityskauppaa</Eyebrow>
-    <h2 id="co-part-title" className="co-h2" data-reveal>Kumppanuus ensin.<br />Omistus vasta myöhemmin.</h2>
-    <p className="co-lead" data-reveal>Yhteistyö voi alkaa palvelusopimuksella. Näin pääomariski pysyy rajattuna.</p>
+    <Eyebrow>Ensimmäinen kauppa</Eyebrow>
+    <h2 id="co-part-title" className="co-h2" data-reveal>Ei tarvita yritysostoa.<br />Tarvitaan yritys, joka haluaa kehittyä.</h2>
     <div className="co-flow" data-reveal>
-      <div className="co-flow__node"><p className="co-label">Paikallinen yritys</p><p>Asiakkaat, toimituskyky ja sovittu kehitystavoite.</p></div>
+      <div className="co-flow__node"><p className="co-label">Yritys</p><p>Tuo olemassa olevan liiketoiminnan, asiakkaat ja kehitystarpeen.</p></div>
       <span className="co-flow__arrow" aria-hidden="true"><i /><i /><i /></span>
-      <div className="co-flow__node co-flow__node--core"><p className="co-label">Gettowork</p><p>Myy, johtaa ja mittaa Restart-toteutusta.</p></div>
+      <div className="co-flow__node co-flow__node--core"><p className="co-label">Gettowork</p><p>Suunnittelee, kokoaa tekijät ja vastaa uudistuksen toteutuksesta.</p></div>
       <span className="co-flow__arrow" aria-hidden="true"><i /><i /><i /></span>
-      <div className="co-flow__node"><p className="co-label">Rakentajat</p><p>Toteuttavat työn palkalla tai sovitulla korvauksella.</p></div>
+      <div className="co-flow__node"><p className="co-label">Tekijät</p><p>Tuovat osaamisen, teknologian ja konkreettisen työpanoksen.</p></div>
     </div>
-    <p className="co-note" data-reveal>Mahdollinen jatko: erillinen neuvottelu omistusosuudesta, optiosta tai yrityskaupasta.</p>
+    <p className="co-note" data-reveal><strong>Yhteinen tavoite:</strong> parempi liiketoiminta, paremmat toimintatavat ja mitattavat tulokset.</p>
 
-    <h3 className="co-h3" data-reveal>Kassavirta ennen osakkeita</h3>
+    <h3 className="co-h3" data-reveal>Meille maksetaan yritysten kehittämisestä.</h3>
+    <p className="co-lead" data-reveal>Gettoworkin tehtävä ei ole ostaa yrityksiä. Sen tehtävä on tehdä niistä parempia.</p>
     <ol className="co-model">
       {MODEL.map((m, i) => <li key={m.t} className={`co-model__item${i === 3 ? ' is-blue' : ''}`} data-reveal style={d(i)}>
         <span className="co-model__n">0{i + 1}</span>
@@ -365,7 +375,54 @@ function Partnership() {
   </section>;
 }
 
-// --- 11. Verkosto ------------------------------------------------------------------
+// --- 12. Miltä Restart näyttää (kuvitteellinen esimerkki) ---------------------------
+
+function Example() {
+  return <section className="co-section" aria-labelledby="co-ex-title">
+    <Eyebrow>Miltä Restart näyttää?</Eyebrow>
+    <h2 id="co-ex-title" className="co-h2" data-reveal>Pieni huoltoyritys.<br /><span className="co-blue-text">Suuri kehityspotentiaali.</span></h2>
+    <div className="co-grid">
+      <div className="co-stat" data-reveal style={d(1)}>
+        <p className="co-label">Nyt</p>
+        <p className="co-stat__n co-stat__n--white"><Euro to={600000} /></p>
+        <p className="co-stat__label">liikevaihto</p>
+        <p className="co-ex__row"><span><Euro to={48000} /></span><span className="co-muted">liikevoitto / 8 %</span></p>
+      </div>
+      <div className="co-stat co-stat--blue" data-reveal style={d(3)}>
+        <p className="co-label">Tavoite</p>
+        <p className="co-stat__n co-stat__n--white"><Euro to={750000} /></p>
+        <p className="co-stat__label">liikevaihto</p>
+        <p className="co-ex__row"><span><Euro to={75000} /></span><span>liikevoitto / 10 %</span></p>
+      </div>
+    </div>
+    <p className="co-statement" data-reveal><strong>Mitä muutettiin?</strong> Myynnin toimintatavat, asiakashankinta, automaatio, resurssien käyttö ja palveluiden kannattavuus.</p>
+    <p className="co-source" data-reveal>Kuvitteellinen 18 kuukauden tavoiteskenaario, ei toteutunut asiakastulos tai ennuste.</p>
+  </section>;
+}
+
+// --- 14. Mitä asiakas saa -----------------------------------------------------------------
+
+const BENEFITS = [
+  { k: 'A', t: 'Enemmän kasvua', d: 'Uusia asiakkaita, parempaa myyntiä ja uusia liiketoimintamahdollisuuksia.' },
+  { k: 'B', t: 'Parempi kannattavuus', d: 'Tehokkaampia prosesseja, toimivampia järjestelmiä ja tuottavampaa työtä.' },
+  { k: 'C', t: 'Arvokkaampi yritys', d: 'Vahvempi liiketoiminta, joka voi jatkaa kasvua, siirtyä seuraavalle sukupolvelle tai kiinnostaa ostajia.' },
+];
+
+function Benefits() {
+  return <section className="co-section" aria-labelledby="co-ben-title">
+    <Eyebrow>Mitä asiakas saa?</Eyebrow>
+    <h2 id="co-ben-title" className="co-h2" data-reveal>Parempi yritys.<br />Useampi mahdollisuus.</h2>
+    <div className="co-benefits">
+      {BENEFITS.map((b, i) => <div key={b.k} className={`co-benefit${i === 2 ? ' is-blue' : ''}`} data-reveal style={d(i)}>
+        <span className="co-benefit__k">{b.k}</span>
+        <p className="co-benefit__t">{b.t}</p>
+        <p className="co-benefit__d">{b.d}</p>
+      </div>)}
+    </div>
+  </section>;
+}
+
+// --- 15. Verkosto ------------------------------------------------------------------------------
 
 function Network() {
   const [ref, inView] = useInView<HTMLDivElement>(0.35);
@@ -374,11 +431,11 @@ function Network() {
   return <section className="co-section" aria-labelledby="co-net-title">
     <div className="co-net">
       <div>
-        <Eyebrow>Verkosto on tuote</Eyebrow>
-        <h2 id="co-net-title" className="co-h2" data-reveal>Yksi Restart tekee seuraavasta helpomman.</h2>
-        <p className="co-lead" data-reveal>Kun järjestelmät, osaaminen ja tekijät ovat yhteisiä, verkoston arvo kasvaa yritys yritykseltä.</p>
+        <Eyebrow>One for many. Many for one.</Eyebrow>
+        <h2 id="co-net-title" className="co-h2" data-reveal>Verkosto on voimavaramme.</h2>
+        <p className="co-lead" data-reveal>Yhdessä yrityksessä opittu voidaan hyödyntää seuraavassa.</p>
         <ol className="co-net__steps">
-          {['Yritys – ensimmäinen toimiva Restart-pilotti', 'Osaaminen – toistettavat prosessit, tekijät ja data', 'Verkosto – seuraavan yrityksen uudistaminen helpottuu'].map((t, i) =>
+          {['Yritys – ensimmäinen onnistunut Restart-projekti', 'Osaaminen – uudet toimintamallit, osaajat, teknologiat ja kokemukset', 'Verkosto – jokainen onnistuminen vahvistaa kykyämme uudistaa seuraavaa yritystä'].map((t, i) =>
             <li key={t} data-reveal style={d(i)}><span>{i + 1}</span>{t}</li>)}
         </ol>
       </div>
@@ -389,24 +446,23 @@ function Network() {
         {nodes.map(([x, y], i) => <span key={i} className={`co-graph__node${i === 0 ? ' is-core' : ''}`} style={{ left: `${x}%`, top: `${y}%`, '--i': i } as CSSProperties} />)}
       </div>
     </div>
-    <p className="co-motto" data-reveal><strong>One for many:</strong> yksi yritys avaa mahdollisuuksia monelle. <strong>Many for one:</strong> moni rakentaa yhtä.</p>
+    <p className="co-motto" data-reveal><strong>One for many:</strong> yksi mahdollisuus luo työtä ja oppimista monelle. <strong>Many for one:</strong> monta osaajaa rakentaa yhdessä parempaa yritystä.</p>
   </section>;
 }
 
-// --- 12. Reiluus ----------------------------------------------------------------------
+// --- 16. Vastuu ja reiluus ----------------------------------------------------------------
 
 const RULES = [
-  { t: 'Ei ilmaista työtä', d: 'Työstä maksetaan. Omistus on mahdollinen lisä, ei palkattomuuden peruste.' },
-  { t: 'Ei kuviteltua omistusta', d: 'Bonukset, optiot ja osakkeet eritellään. Veroseuraamukset selvitetään.' },
-  { t: 'Ei työsuhteen kiertämistä', d: 'Sopimuksen nimi ei muuta työsuhteen tunnusmerkkejä.' },
-  { t: 'Selkeät roolit', d: 'Työnantaja- ja palveluntuottajarooli vahvistetaan ennen jokaista pilottia.' },
+  { t: 'Työstä maksetaan', d: 'Jokaisella projektilla on sovitut vastuut ja asianmukaiset korvaukset.' },
+  { t: 'Lupaukset pidetään', d: 'Myymme kehitystä, jonka pystymme toteuttamaan ja jonka vaikutuksia voidaan arvioida.' },
+  { t: 'Asiakas omistaa liiketoimintansa', d: 'Kehityskumppanuus ei edellytä omistusosuuden luovuttamista.' },
+  { t: 'Projekteilla on selkeät sopimukset', d: 'Työsuhteet, toimeksiannot, vastuut ja oikeudet määritellään ennen työn aloittamista.' },
 ];
 
 function Fairness() {
   return <section className="co-section" aria-labelledby="co-fair-title">
     <Eyebrow>Vastuu ja reiluus</Eyebrow>
-    <h2 id="co-fair-title" className="co-h2" data-reveal>Vallankumouksellinen malli.<br />Tavalliset velvollisuudet.</h2>
-    <p className="co-lead" data-reveal>Omistus ei korvaa palkkaa, työsopimusta eikä hyvää hallintoa.</p>
+    <h2 id="co-fair-title" className="co-h2" data-reveal>Uuden ajan tekemistä.<br />Selkeillä pelisäännöillä.</h2>
     <div className="co-rules">
       {RULES.map((r, i) => <div key={r.t} className="co-rule" data-reveal style={d(i)}>
         <p className="co-rule__t">{r.t}</p>
@@ -416,7 +472,7 @@ function Fairness() {
   </section>;
 }
 
-// --- 13. Lopetus ------------------------------------------------------------------------
+// --- 19. Lopetus ---------------------------------------------------------------------------
 
 function Closing() {
   return <section className="co-closing" aria-labelledby="co-close-title">
@@ -425,13 +481,14 @@ function Closing() {
       <span lang="en">We don’t need more startups.</span>
       <span lang="en" className="co-blue-text">We need more restarts.</span>
     </h2>
-    <p className="co-closing__sub" data-reveal>Tunnetko yrityksen, joka ansaitsee uuden vaiheen? Tai haluatko itse rakentaa?</p>
+    <p className="co-closing__sub" data-reveal>Vanhoille yrityksille uusi tulevaisuus. Tunnetko yrityksen, joka ansaitsee seuraavan vaiheen?</p>
     <div className="co-actions" data-reveal>
       <a className="co-btn co-btn--primary" href={TALK_HREF}>Kerro yrityksestäsi <span aria-hidden="true">→</span></a>
       <a className="co-btn" href={HOME_PATH} onClick={e => interceptClick(e, HOME_PATH, { rs: { view: 'intro', step: 0 } })}>Tee Restart-testi</a>
     </div>
     <div className="co-closing__foot" data-reveal>
-      <span lang="en">Work. Build. Own.</span>
+      <span lang="en">Work. Build. Grow.</span>
+      <span lang="en">One for many. Many for one.</span>
       <span lang="en">Forget jobs. Get to work.</span>
     </div>
   </section>;
