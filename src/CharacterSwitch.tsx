@@ -23,9 +23,10 @@ const KEY = 'gettowork.character';
 
 export function loadCharacter(): Character {
   try {
-    return window.localStorage.getItem(KEY) === 'man' ? 'man' : 'woman';
+    // Oletuksena mies; nainen vain, jos kävijä on valinnut sen.
+    return window.localStorage.getItem(KEY) === 'woman' ? 'woman' : 'man';
   } catch {
-    return 'woman';
+    return 'man';
   }
 }
 

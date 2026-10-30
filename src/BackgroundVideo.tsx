@@ -4,7 +4,7 @@ export type Character = 'woman' | 'man';
 
 /** Lyhyt (4 s) video, jota kursori kelaa: katse liikkuu ylhäältä alas. Ladataan heti. */
 const SCRUB: Record<Character, string> = {
-  woman: '/getto-scrub-woman.mp4',
+  woman: '/getto-scrub-woman-2.mp4',
   man: '/getto-scrub-man.mp4',
 };
 
