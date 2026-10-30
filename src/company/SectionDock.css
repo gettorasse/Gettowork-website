@@ -100,7 +100,7 @@ body[data-menu-status="open"] .section-dock__pill { visibility: hidden; }
   border-radius: 100em;
   padding: .5em 1em;
   text-decoration: none;
-  transition-property: color;
+  transition-property: color, background-color;
   transition-duration: .3s;
   transition-timing-function: ease;
   display: block;
@@ -110,6 +110,12 @@ body[data-menu-status="open"] .section-dock__pill { visibility: hidden; }
 [data-section-dock-link][data-active] {
   color: #fff;
 }
+
+/* Hover: himmeä sininen tausta muille kuin aktiiviselle luvulle (aktiivisen alla on ilmaisin). */
+@media (hover: hover) {
+  .section-dock__link:not([data-active]):hover { background-color: rgb(20 128 255 / 0.1); }
+}
+.section-dock__link:not([data-active]):focus-visible { background-color: rgb(20 128 255 / 0.1); }
 
 .section-dock__toggle:focus-visible,
 .section-dock__link:focus-visible { outline: 2px solid #1480ff; outline-offset: 2px; }
