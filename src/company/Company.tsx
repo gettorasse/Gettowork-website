@@ -156,24 +156,23 @@ function WhyNow() {
         <p className="co-stat__n"><CountUp to={33000} /></p>
         <p className="co-stat__label">yritystä myynnin piirissä</p>
         <p className="co-muted co-small">Arvio seuraavan 10 vuoden aikana myyntiä suunnittelevista yrityksistä.*</p>
-        <Dots lit={0.54} />
+        <Dots />
       </div>
       <div className="co-stat" data-reveal style={d(3)}>
         <p className="co-stat__n"><CountUp to={28000} /></p>
         <p className="co-stat__label">harkitsee lopettamista</p>
         <p className="co-muted co-small">Arvio yrittäjistä, jotka harkitsevat toiminnan lopettamista seuraavan 10 vuoden aikana.*</p>
-        <Dots lit={0.46} />
+        <Dots />
       </div>
     </div>
     <p className="co-source" data-reveal>* Suomen Yrittäjien omistajanvaihdospoliittinen ohjelma (2025), Omistajanvaihdosbarometri 2024. Aikeita koskevia arvioita, ei toteutumia.</p>
   </section>;
 }
 
-/** Pisteruudukko, joka syttyy rivi kerrallaan: havainnollistus, ei tarkka luku. */
-function Dots({ lit }: { lit: number }) {
-  const total = 60;
+/** Koriste: pisteruudukko syttyy aaltona. Ei kuvaa mitään osuutta. */
+function Dots() {
   return <div className="co-dots" aria-hidden="true">
-    {Array.from({ length: total }, (_, i) => <i key={i} className={i < Math.round(total * lit) ? 'on' : undefined} style={{ '--i': i } as CSSProperties} />)}
+    {Array.from({ length: 48 }, (_, i) => <i key={i} className="on" style={{ '--i': i } as CSSProperties} />)}
   </div>;
 }
 
