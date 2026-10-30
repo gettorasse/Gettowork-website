@@ -475,7 +475,7 @@ function Example() {
           <div className="co-board__head"><span>Yksi näkymä</span><span>Tila</span><span>Seuraava askel</span></div>
           {INFO.map((label, i) => <span key={label} className="co-board__item" style={{
             '--bx': `${SCATTER[i][0]}%`, '--by': `${SCATTER[i][1]}%`, '--br': `${SCATTER[i][2]}deg`,
-            '--ay': `${18 + i * 13.5}%`, '--i': i,
+            '--ay': `${19 + i * 13}%`, '--i': i,
           } as CSSProperties}>
             <span className="co-board__dot" />{label}<span className="co-board__bar" /><span className="co-board__next" />
           </span>)}
@@ -485,12 +485,14 @@ function Example() {
 
       <figure className="co-case__panel">
         <figcaption className="co-label">Myyjän päivä</figcaption>
-        <div className="co-day" aria-hidden="true">
-          {DAY.map(s => <span key={s.k} className={`co-day__seg co-day__seg--${s.k}`} style={{ flexGrow: after ? s.after : s.before }} />)}
+        <div className="co-daybox">
+          <div className="co-day" aria-hidden="true">
+            {DAY.map(s => <span key={s.k} className={`co-day__seg co-day__seg--${s.k}`} style={{ flexGrow: after ? s.after : s.before }} />)}
+          </div>
+          <ul className="co-day__legend">
+            {DAY.map(s => <li key={s.k}><span className={`co-day__key co-day__seg--${s.k}`} aria-hidden="true" />{s.t}</li>)}
+          </ul>
         </div>
-        <ul className="co-day__legend">
-          {DAY.map(s => <li key={s.k}><span className={`co-day__key co-day__seg--${s.k}`} aria-hidden="true" />{s.t}</li>)}
-        </ul>
         <p className="co-case__cap">{after ? 'Aika menee asiakkaille ja myyntiin. Hallinto hoituu järjestelmässä.' : 'Päivä pirstoutuu: tulipaloja, etsimistä ja keskeytyksiä.'}</p>
       </figure>
     </div>

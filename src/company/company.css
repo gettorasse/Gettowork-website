@@ -415,3 +415,14 @@
   .co-board__item { animation: none; transition: none; }
   .co-day__seg, .co-board__head, .co-board__dot, .co-board__bar, .co-board__next { transition: none; }
 }
+
+/* Keramore: pyöristetyt kulmat ja samankorkuiset kuvat rinnakkain. */
+.co-board, .co-daybox { height: clamp(250px, 22vw, 290px); border-radius: 20px; }
+.co-daybox { display: flex; flex-direction: column; justify-content: center; gap: 26px; padding: 0 clamp(20px, 2.4vw, 32px); border: 1px solid var(--line); background: rgb(255 255 255 / 0.02); transition: border-color 600ms, background-color 600ms; }
+.co-case.is-after .co-daybox { border-color: rgb(20 128 255 / 0.55); background: rgb(20 128 255 / 0.06); }
+.co-board__item { border-radius: 12px; font-size: 13px; }
+.co-board__head { top: 6%; }
+.co-day { height: 56px; }
+.co-day__seg { border-radius: 12px; }
+.co-day__key { border-radius: 4px; }
+.co-day__legend { font-size: 14px; }
