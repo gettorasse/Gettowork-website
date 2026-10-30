@@ -317,10 +317,15 @@ function initSectionAnchorDock(dock: HTMLElement): () => void {
   refreshLayout();
   // Sivun sisältö (kuvat, fontit) voi muuttaa korkeuksia: lasketaan rajat uudelleen.
   const refreshTimer = window.setTimeout(() => ScrollTrigger.refresh(), 600);
+  const refreshAll = () => ScrollTrigger.refresh();
+  window.addEventListener('load', refreshAll);
+  window.addEventListener('gettowork:loaded', refreshAll);
 
   return () => {
     alive = false;
     window.clearTimeout(refreshTimer);
+    window.removeEventListener('load', refreshAll);
+    window.removeEventListener('gettowork:loaded', refreshAll);
     triggers.forEach(t => t.kill());
     if (dockTl) dockTl.kill();
     gsap.killTweensOf([dock, pill, labelWrap, indicator, rect, list, toggle, ...links]);

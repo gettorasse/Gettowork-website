@@ -486,7 +486,7 @@ function Builders() {
   const [ref, inView] = useInView<HTMLOListElement>(0.35);
   return <section id="tekijoille" className="co-section" aria-labelledby="co-build-title">
       <Chapter id="tekijoille" />
-      <h2 id="co-build-title" className="co-h2" data-reveal>Kaikkien ei tarvitse alkaa yrittäjiksi,<br />jotta voisi rakentaa jotain merkityksellistä.</h2>
+      <h2 id="co-build-title" className="co-h2" data-reveal>Kaikkien ei tarvitse alkaa yrittäjiksi, jotta voisi rakentaa jotain merkityksellistä.</h2>
       <p className="co-lead" data-reveal>Gettoworkin toinen puoli on osaajaverkosto. Se tuo yrityksiin oikeat tekijät – ja tekijöille oikeita mahdollisuuksia.</p>
 
       {/* Tekijän polku vaakasuorana matkana: viiva piirtyy ja vaiheet syttyvät järjestyksessä. */}
