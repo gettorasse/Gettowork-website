@@ -89,7 +89,6 @@ function Intro({ rs, focusRef }: ViewProps) {
         </div>
       </div>
     </main>
-    <div className="mobile-scroll-spacer" aria-hidden="true" />
   </>;
 }
 

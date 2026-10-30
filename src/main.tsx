@@ -52,7 +52,8 @@ function App() {
   const view = rs.assessment.view;
   const dim = route !== 'home' || view === 'result';
   const question = route === 'home' && view === 'question';
-  const videoMode = route === 'home' && view !== 'intro' ? 'loop' : 'scrub';
+  // Etusivulla pidempi video pyörii; testissä lyhyt video seuraa kursoria (puhelimessa pysähtyy).
+  const videoMode = route === 'home' && view === 'intro' ? 'loop' : 'scrub';
 
   return <>
     <UnderlayNav route={route} />
@@ -63,8 +64,10 @@ function App() {
     <div className={`stage-dim${dim ? ' is-on' : ''}${question ? ' is-soft' : ''}`} aria-hidden="true" />
     <div className={`stage-floor${question ? ' is-on' : ''}`} aria-hidden="true" />
     <div className={`stage-top${dim ? ' is-on' : ''}${question ? ' is-soft' : ''}`} aria-hidden="true" />
-    <CharacterSwitch value={character} onChange={chooseCharacter} visible={route === 'home' && view === 'intro'} />
-    <VideoToggle paused={videoPaused} onToggle={toggleVideo} visible={videoMode === 'loop'} />
+    <div className="stage-controls">
+      <VideoToggle paused={videoPaused} onToggle={toggleVideo} visible={videoMode === 'loop'} />
+      <CharacterSwitch value={character} onChange={chooseCharacter} visible={route === 'home' && view === 'intro'} />
+    </div>
     {route === 'about' ? <About onStart={startFromAbout} /> : route === 'privacy' ? <Privacy /> : route === 'company' ? <Company /> : <RestartScore rs={rs} />}
     </div>
     <CookieBanner />
