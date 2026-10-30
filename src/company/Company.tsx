@@ -8,7 +8,7 @@ import './company.css';
 // Animaatiot ovat CSS:ää ja SVG:tä; näkyviin tulo IntersectionObserverilla.
 
 const EMAIL = 'rasmus@gettowork.fi';
-const TALK_HREF = `mailto:${EMAIL}?subject=${encodeURIComponent('Restart – kerron yrityksestäni')}`;
+const TALK_HREF = `mailto:${EMAIL}?subject=${encodeURIComponent('Restart-kartoitus yritykselleni')}`;
 
 const reduced = () => typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
@@ -91,6 +91,7 @@ export function Company() {
     <Partnership />
     <Example />
     <Benefits />
+    <Builders />
     <Network />
     <Fairness />
     <Closing />
@@ -103,12 +104,11 @@ function Hero({ headingRef }: { headingRef: React.RefObject<HTMLHeadingElement |
   return <section className="co-hero" aria-labelledby="co-hero-title">
     <div className="co-hero__text">
       <p className="co-eyebrow co-eyebrow--lit is-in">Gettowork <span aria-hidden="true">/</span> The Restart Company</p>
-      <h1 id="co-hero-title" ref={headingRef} tabIndex={-1} className="co-hero__title">
-        <span className="co-hero__word" style={d(1)}>Work.</span>
-        <span className="co-hero__word" style={d(3)}>Build.</span>
-        <span className="co-hero__word co-hero__word--own" style={d(5)}>Grow.</span>
+      <h1 id="co-hero-title" ref={headingRef} tabIndex={-1} className="co-hero__title co-hero__title--two">
+        <span className="co-hero__word" style={d(1)}>Vanha yritys.</span>
+        <span className="co-hero__word co-hero__word--own" style={d(4)}>Uusi vaihde.</span>
       </h1>
-      <p className="co-hero__lead" style={d(8)}>Vanhoille yrityksille uusi tulevaisuus.<br />Uuden ajan tekijöille oikeita mahdollisuuksia.</p>
+      <p className="co-hero__lead" style={d(8)}>Autamme olemassa olevia yrityksiä uudistumaan: tuomme käyttöön uuden ajan osaamista, teknologiaa, tekoälyä, myyntiä, markkinointia, osaajia ja parempia toimintatapoja.</p>
       <p className="co-hero__motto" style={d(10)}>One for many. Many for one.</p>
     </div>
     <Orbit />
@@ -136,13 +136,13 @@ function Category() {
   return <section id="co-category" className="co-section" aria-labelledby="co-cat-title">
     <Eyebrow>Filosofia</Eyebrow>
     <h2 id="co-cat-title" className="co-h2 co-strike" data-reveal>
-      Ei <s style={d(2)}>startup</s>. Ei <s style={d(5)}>perinteinen konsulttitalo</s>.{' '}
-      <span className="co-pop" style={d(9)}>Restart company.</span>
+      Ei <s style={d(2)}>konsulttitoimisto</s>. Ei <s style={d(4)}>rekrytointialusta</s>. Ei <s style={d(6)}>startup-yhteisö</s>.{' '}
+      <span className="co-pop" style={d(10)}>Restart company.</span>
     </h2>
     <div className="co-grid co-grid--wide">
       <div className="co-card co-card--glass" data-reveal style={d(1)}>
-        <p className="co-card__big">Rakennamme vanhasta uutta.</p>
-        <p className="co-muted">Uskomme, ettei tulevaisuuden yrityksiä tarvitse aina perustaa tyhjästä. Niitä voidaan rakentaa myös yrityksistä, jotka ovat jo olemassa.</p>
+        <p className="co-card__big">Käytännön kehityskumppani.</p>
+        <p className="co-muted">Autamme yrityksiä siirtymään uudelle aikakaudelle. Emme aloita nollasta – rakennamme sen päälle, mikä jo toimii.</p>
       </div>
       <div className="co-card co-card--blue" data-reveal style={d(3)}>
         <p className="co-label">The belief</p>
@@ -260,35 +260,48 @@ function Roles() {
   </section>;
 }
 
-// --- 07. Tekijän polku: Work. Build. Grow. ----------------------------------------
+// --- 07. Yrityksille: Connect. Build. Grow. ------------------------------------------
 
-const PATH = [
+type Step = { k: string; t: string; d: string };
+
+const BUSINESS_PATH: Step[] = [
+  { k: 'Connect.', t: 'Oikeat tekijät.', d: 'Yhdistämme yrityksen tarpeet ja oikean osaamisen.' },
+  { k: 'Build.', t: 'Oikeat ratkaisut.', d: 'Kehitämme ja toteutamme paremmat toimintatavat.' },
+  { k: 'Grow.', t: 'Oikeat tulokset.', d: 'Rakennamme pohjan kasvulle ja jatkuvalle kehitykselle.' },
+];
+
+const BUILDER_PATH: Step[] = [
   { k: 'Work.', t: 'Tee oikeaa työtä.', d: 'Tee oikeaa työtä oikeissa yrityksissä. Ansaitse työlläsi ja kasvata osaamistasi.' },
   { k: 'Build.', t: 'Rakenna näyttöä.', d: 'Osallistu yritysten kehittämiseen. Toteuta projekteja, ratkaise ongelmia ja rakenna omaa näyttöäsi.' },
   { k: 'Grow.', t: 'Kasvata mahdollisuuksiasi.', d: 'Kehitä omia projekteja ja löydä osaavia ihmisiä, joiden kanssa voit rakentaa jotain uutta – vaikka yhteisen yrityksen.' },
 ];
 
-function Path() {
+/** Kolmen kortin portaat. Sama moduuli yrityksille ja tekijöille. */
+function Steps({ steps, label }: { steps: Step[]; label: string }) {
   const [step, setStep] = useState(0);
-  return <section className="co-section" aria-labelledby="co-path-title">
-    <Eyebrow>Tekijän polku</Eyebrow>
-    <h2 id="co-path-title" className="co-h2" data-reveal>Kaikkien ei tarvitse perustaa yritystä.<br />Jokaisella pitää olla mahdollisuus rakentaa jotain merkityksellistä.</h2>
-    <div className="co-path" data-reveal>
-      <div className="co-stairs" aria-hidden="true">
-        {PATH.map((p, i) => <span key={p.k} className={`co-stairs__step${i <= step ? ' is-on' : ''}`} style={{ '--h': `${(i + 1) * 33}%` } as CSSProperties} />)}
-        <span className="co-stairs__climber" style={{ '--s': step } as CSSProperties} />
-      </div>
-      <div className="co-path__tabs" role="tablist" aria-label="Tekijän polku">
-        {PATH.map((p, i) => <button key={p.k} type="button" role="tab" aria-selected={step === i}
-          className={`co-path__tab${step === i ? ' is-on' : ''}`} onClick={() => setStep(i)} onMouseEnter={() => setStep(i)}>
-          <span className="co-path__n">0{i + 1}</span>
-          <span className="co-path__k">{p.k}</span>
-          <span className="co-path__t">{p.t}</span>
-          <span className="co-path__d">{p.d}</span>
-        </button>)}
-      </div>
+  return <div className="co-path" data-reveal>
+    <div className="co-stairs" aria-hidden="true">
+      {steps.map((p, i) => <span key={p.k} className={`co-stairs__step${i <= step ? ' is-on' : ''}`} style={{ '--h': `${(i + 1) * 33}%` } as CSSProperties} />)}
+      <span className="co-stairs__climber" style={{ '--s': step } as CSSProperties} />
     </div>
-    <p className="co-source" data-reveal>Yrittäjyys on mahdollisuus, ei vaatimus eikä automaattinen osa asiakasprojektia.</p>
+    <div className="co-path__tabs" role="tablist" aria-label={label}>
+      {steps.map((p, i) => <button key={p.k} type="button" role="tab" aria-selected={step === i}
+        className={`co-path__tab${step === i ? ' is-on' : ''}`} onClick={() => setStep(i)} onMouseEnter={() => setStep(i)}>
+        <span className="co-path__n">0{i + 1}</span>
+        <span className="co-path__k">{p.k}</span>
+        <span className="co-path__t">{p.t}</span>
+        <span className="co-path__d">{p.d}</span>
+      </button>)}
+    </div>
+  </div>;
+}
+
+function Path() {
+  return <section className="co-section" aria-labelledby="co-path-title">
+    <Eyebrow>Yrityksille</Eyebrow>
+    <h2 id="co-path-title" className="co-h2" data-reveal>Uudet ihmiset. Uudet ideat.<br /><span className="co-blue-text">Parempi yritys.</span></h2>
+    <p className="co-lead" data-reveal>Uudistuminen ei tapahdu yksin. Yhdistämme osaavat tekijät ja olemassa olevat yritykset rakentamaan uusia ratkaisuja oikeisiin tarpeisiin.</p>
+    <Steps steps={BUSINESS_PATH} label="Näin uudistus etenee" />
   </section>;
 }
 
@@ -422,6 +435,32 @@ function Benefits() {
   </section>;
 }
 
+// --- Tekijöille: Work. Build. Grow. ------------------------------------------------------
+
+const BUILDER_POINTS = [
+  'Mahdollisuus osallistua oikeisiin yritysprojekteihin',
+  'Mahdollisuus kehittää osaamista ja rakentaa näyttöä',
+  'Mahdollisuus tavata muita osaavia tekijöitä',
+  'Mahdollisuus rakentaa omia projekteja ja perustaa uusia yrityksiä yhdessä',
+];
+const BUILDER_HREF = `mailto:${EMAIL}?subject=${encodeURIComponent('Haluan mukaan tekijäksi')}`;
+
+function Builders() {
+  return <section id="tekijoille" className="co-section" aria-labelledby="co-build-title">
+    <Eyebrow>Tekijöille · Work. Build. Grow.</Eyebrow>
+    <h2 id="co-build-title" className="co-h2" data-reveal>Kaikkien ei tarvitse perustaa yritystä.<br />Jokaisella pitää olla mahdollisuus rakentaa jotain merkityksellistä.</h2>
+    <p className="co-lead" data-reveal>Gettoworkin toinen puoli on osaajaverkosto. Se tuo yrityksiin oikeat tekijät – ja tekijöille oikeita mahdollisuuksia.</p>
+    <Steps steps={BUILDER_PATH} label="Tekijän polku" />
+    <ul className="co-checks co-builders" data-reveal>
+      {BUILDER_POINTS.map((t, i) => <li key={t} style={d(i + 1)}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" /></svg>{t}</li>)}
+    </ul>
+    <div className="co-actions" data-reveal>
+      <a className="co-btn" href={BUILDER_HREF}>Haluan mukaan tekijäksi <span aria-hidden="true">→</span></a>
+    </div>
+    <p className="co-source" data-reveal>Yrittäjyys on mahdollisuus, ei vaatimus. Emme lupaa tekijöille omistusosuuksia asiakasyrityksistä.</p>
+  </section>;
+}
+
 // --- 15. Verkosto ------------------------------------------------------------------------------
 
 function Network() {
@@ -481,13 +520,13 @@ function Closing() {
       <span lang="en">We don’t need more startups.</span>
       <span lang="en" className="co-blue-text">We need more restarts.</span>
     </h2>
-    <p className="co-closing__sub" data-reveal>Vanhoille yrityksille uusi tulevaisuus. Tunnetko yrityksen, joka ansaitsee seuraavan vaiheen?</p>
+    <p className="co-closing__sub" data-reveal>Vanha yritys. Uusi vaihde. Aloitetaan Restart-kartoituksella: selvitämme, mikä toimii, mikä ei ja mitä kannattaa kehittää ensimmäisenä.</p>
     <div className="co-actions" data-reveal>
-      <a className="co-btn co-btn--primary" href={TALK_HREF}>Kerro yrityksestäsi <span aria-hidden="true">→</span></a>
+      <a className="co-btn co-btn--primary" href={TALK_HREF}>Pyydä Restart-kartoitus <span aria-hidden="true">→</span></a>
       <a className="co-btn" href={HOME_PATH} onClick={e => interceptClick(e, HOME_PATH, { rs: { view: 'intro', step: 0 } })}>Tee Restart-testi</a>
     </div>
     <div className="co-closing__foot" data-reveal>
-      <span lang="en">Work. Build. Grow.</span>
+      <span lang="en">Connect. Build. Grow.</span>
       <span lang="en">One for many. Many for one.</span>
       <span lang="en">Forget jobs. Get to work.</span>
     </div>

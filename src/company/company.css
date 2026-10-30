@@ -306,3 +306,9 @@
 .co-benefit__d { margin-top: 12px !important; color: var(--muted); }
 .co-benefit.is-blue .co-benefit__d { color: rgb(255 255 255 / 0.9); }
 .co-closing__foot { gap: 12px 32px; }
+
+/* Avauksen kaksirivinen otsikko ja tekijöiden lista */
+.co-hero__title--two { font-size: clamp(46px, 5.8vw, 86px); line-height: 0.98; }
+.co-builders { margin-top: 40px !important; display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 32px !important; max-width: 900px; }
+@media (max-width: 760px) { .co-builders { grid-template-columns: 1fr; } }
+.co-builders.is-in svg path { stroke-dashoffset: 0; }
