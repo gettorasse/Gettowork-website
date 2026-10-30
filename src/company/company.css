@@ -316,26 +316,34 @@
 /* Puhelimessa matalammat portaat (tämä sääntö tulee perussäännön jälkeen). */
 @media (max-width: 860px) { .co-stairs { height: 140px; max-width: 300px; } }
 
-/* --- Täysleveät taustakaistat --- */
-.co-band { position: relative; margin-top: clamp(130px, 20vh, 230px); }
-.co-band > .co-section { padding-top: clamp(100px, 14vh, 160px); padding-bottom: clamp(100px, 14vh, 160px); }
-.co-band + .co-section { padding-top: clamp(130px, 20vh, 230px); }
 
-/* Tekijöille: valkoinen kaista, tummansininen teksti, sininen korostus. */
-.co-band--white {
-  --muted: rgb(8 14 48 / 0.66); --line: rgb(8 14 48 / 0.14); --blue-soft: #1270e0;
-  background: #fff; color: var(--navy);
+/* --- Luvut: selkeä väliotsikko jokaisen osa-alueen alkuun --- */
+.co-chapter { position: relative; display: flex; align-items: flex-end; gap: 22px; padding-top: 26px; margin-bottom: clamp(44px, 6vh, 72px); }
+.co-chapter::before, .co-chapter::after { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px; }
+.co-chapter::before { background: var(--line); }
+.co-chapter::after { background: var(--blue); transform: scaleX(0); transform-origin: left; transition: transform 1200ms cubic-bezier(.4,0,.2,1) 100ms; }
+.co-chapter.is-in::after { transform: scaleX(0.22); }
+.co-chapter__n { font-family: var(--font-heading); font-size: clamp(64px, 8vw, 120px); line-height: 0.78; letter-spacing: -0.045em; color: var(--blue); opacity: 0; transform: translateY(24px); transition: opacity 600ms ease 200ms, transform 800ms cubic-bezier(.2,.7,.2,1) 200ms; }
+.co-chapter__name { display: flex; flex-direction: column; gap: 6px; padding-bottom: 4px; opacity: 0; transform: translateY(14px); transition: opacity 600ms ease 380ms, transform 700ms cubic-bezier(.2,.7,.2,1) 380ms; }
+.co-chapter__k { font-family: var(--font-heading); font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); }
+.co-chapter__t { font-family: var(--font-heading); font-size: clamp(18px, 1.8vw, 24px); letter-spacing: 0.08em; text-transform: uppercase; color: #fff; }
+.co-chapter__of { margin-left: auto; padding-bottom: 6px; font-family: var(--font-heading); font-size: 13px; letter-spacing: 0.18em; color: var(--muted); opacity: 0; transition: opacity 600ms ease 500ms; }
+.co-chapter.is-in .co-chapter__n, .co-chapter.is-in .co-chapter__name, .co-chapter.is-in .co-chapter__of { opacity: 1; transform: none; }
+@media (max-width: 560px) { .co-chapter { gap: 16px; } .co-chapter__of { display: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .co-chapter__n, .co-chapter__name, .co-chapter__of { opacity: 1; transform: none; transition: none; }
+  .co-chapter::after { transform: scaleX(0.22); transition: none; }
 }
-.co-band--white .co-eyebrow { color: var(--blue); }
-.co-band--white .co-source { color: rgb(8 14 48 / 0.5); }
+.co-section[id] { scroll-margin-top: 40px; }
 
+/* --- Tekijöille: oma polku (tumma tausta kuten muualla) --- */
 .co-journey { position: relative; list-style: none; padding: 0; margin-top: 64px !important; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; padding-top: 44px; }
 .co-journey__line { position: absolute; left: 0; right: 0; top: 9px; height: 2px; background: var(--line); }
 .co-journey__line::after { content: ""; position: absolute; inset: 0; background: var(--blue); transform: scaleX(0); transform-origin: left; transition: transform 1600ms cubic-bezier(.4,0,.2,1) 200ms; }
 .co-journey.is-in .co-journey__line::after { transform: none; }
 .co-journey__step { position: relative; display: flex; flex-direction: column; gap: 10px; opacity: 0; transform: translateY(18px); transition: opacity 600ms ease, transform 700ms cubic-bezier(.2,.7,.2,1); transition-delay: var(--d); }
 .co-journey.is-in .co-journey__step { opacity: 1; transform: none; }
-.co-journey__dot { position: absolute; top: -44px; left: 0; width: 20px; height: 20px; border-radius: 50%; background: #fff; border: 2px solid var(--line); transition: background-color 300ms, border-color 300ms; transition-delay: var(--d); }
+.co-journey__dot { position: absolute; top: -44px; left: 0; width: 20px; height: 20px; border-radius: 50%; background: var(--navy); border: 2px solid rgb(255 255 255 / 0.4); transition: background-color 300ms, border-color 300ms; transition-delay: var(--d); }
 .co-journey.is-in .co-journey__dot { background: var(--blue); border-color: var(--blue); }
 .co-journey__k { font-family: var(--font-heading); font-size: clamp(56px, 6.4vw, 92px); line-height: 0.9; letter-spacing: -0.035em; text-transform: uppercase; }
 .co-journey__step:last-of-type .co-journey__k { color: var(--blue); }
@@ -347,24 +355,10 @@
   .co-journey__line::after { transform: scaleY(0); transform-origin: top; }
   .co-journey__dot { top: 8px; left: -40px; }
 }
+@media (prefers-reduced-motion: reduce) { .co-journey__step { opacity: 1; transform: none; } .co-journey__line::after { transform: none; } }
 
 .co-builders-wrap { display: grid; grid-template-columns: 1.5fr 1fr; gap: 40px; align-items: end; margin-top: 72px; padding-top: 44px; border-top: 1px solid var(--line); }
 @media (max-width: 860px) { .co-builders-wrap { grid-template-columns: 1fr; } }
-.co-band--white .co-builders { margin-top: 0 !important; grid-template-columns: 1fr !important; }
-.co-band--white .co-checks li { color: var(--navy); }
-.co-band--white .co-checks svg { background: var(--blue); stroke: #fff; }
-.co-builders-cta { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; padding: 30px; background: var(--navy); color: #fff; }
+.co-builders-wrap .co-builders { margin-top: 0 !important; grid-template-columns: 1fr !important; }
+.co-builders-cta { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; }
 .co-builders-cta__t { font-family: var(--font-heading); font-size: clamp(24px, 2.4vw, 32px); line-height: 1.1; }
-.co-band--white a:focus-visible { outline-color: var(--navy); }
-
-/* Lopetus: kirkkaan sininen kaista. */
-.co-band--blue { --muted: rgb(255 255 255 / 0.85); --line: rgb(255 255 255 / 0.35); background: var(--blue); }
-.co-band--blue .co-closing { padding-bottom: 70px; }
-.co-band--blue .co-blue-text { color: var(--navy); text-shadow: none; }
-.co-band--blue .co-closing__rings span { border-color: rgb(255 255 255 / 0.35); }
-.co-band--blue .co-closing__rings span + span { border-color: #fff; box-shadow: none; }
-.co-band--blue .co-btn { border-color: #fff; }
-.co-band--blue .co-btn--primary { background: #fff; color: var(--navy); box-shadow: none; }
-.co-band--blue .co-btn--primary:hover { background: var(--navy); color: #fff; border-color: var(--navy); }
-.co-band--blue .co-btn:not(.co-btn--primary):hover { background: rgb(255 255 255 / 0.15); }
-.co-band--blue .co-closing__foot { color: #fff; border-top-color: rgb(255 255 255 / 0.4); }

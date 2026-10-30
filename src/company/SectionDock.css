@@ -1,0 +1,119 @@
+/* Osmo Supply "Section Anchor Dock" Gettoworkin väreillä: valkoinen pilleri,
+   tummansininen teksti ja kirkkaan sininen ilmaisin aktiiviselle luvulle. */
+
+.section-dock {
+  z-index: 90;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  position: fixed;
+  bottom: 2em;
+  left: 0;
+  right: 0;
+  font-family: var(--font-heading);
+  font-size: 15px;
+}
+
+/* Valikon ollessa auki dock ei jää sen päälle. */
+body[data-menu-status="open"] .section-dock__pill { visibility: hidden; }
+
+.section-dock__pill {
+  color: #080e30;
+  background-color: #fff;
+  border-radius: 1.5em;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgb(0 0 0 / 0.35);
+}
+
+.section-dock__toggle {
+  white-space: nowrap;
+  appearance: none;
+  background-color: #0000;
+  border: none;
+  color: inherit;
+  font: inherit;
+  padding: .85em 1.5em;
+  display: block;
+  cursor: pointer;
+}
+
+.section-dock__label-wrap {
+  height: 1.5em;
+  display: block;
+  position: relative;
+  overflow: hidden;
+}
+
+.section-dock__link-num {
+  color: #080e308c;
+  margin-right: .6em;
+  font-size: .75em;
+  line-height: 1;
+  display: inline-block;
+  position: relative;
+  bottom: .05em;
+}
+
+[data-section-dock-link][data-active] .section-dock__link-num {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.section-dock__label {
+  line-height: 1.5;
+  display: block;
+}
+
+.section-dock__list {
+  opacity: 0;
+  visibility: hidden;
+  width: max-content;
+  padding: .5em;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.section-dock__indicator {
+  z-index: 1;
+  pointer-events: none;
+  background-color: #1480ff;
+  border-radius: 100em;
+  width: 2em;
+  height: 2em;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.section-dock__items {
+  flex-flow: column;
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+  display: flex;
+}
+
+.section-dock__link {
+  z-index: 2;
+  white-space: nowrap;
+  color: inherit;
+  border-radius: 100em;
+  padding: .5em 1em;
+  text-decoration: none;
+  transition-property: color;
+  transition-duration: .3s;
+  transition-timing-function: ease;
+  display: block;
+  position: relative;
+}
+
+[data-section-dock-link][data-active] {
+  color: #fff;
+}
+
+.section-dock__toggle:focus-visible,
+.section-dock__link:focus-visible { outline: 2px solid #1480ff; outline-offset: 2px; }
+
+/* Matalilla näytöillä luettelo tiivistyy, jotta kaikki luvut mahtuvat. */
+@media (max-height: 760px) { .section-dock__link { padding: .38em 1em; } }
+@media (max-width: 560px) { .section-dock { bottom: 1.2em; font-size: 14px; } }

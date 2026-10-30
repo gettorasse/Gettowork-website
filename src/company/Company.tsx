@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { HOME_PATH, interceptClick } from '../router.ts';
+import { SectionDock, type DockItem } from './SectionDock.tsx';
 import './company.css';
 
 // "Tietoa yrityksestä" – Gettowork, the restart company. Sisältö perustuu esitykseen
@@ -67,6 +68,41 @@ function Eyebrow({ children }: { children: ReactNode }) {
   return <p className="co-eyebrow" data-reveal>{children}</p>;
 }
 
+// Luvut: jokainen osa-alue alkaa selkeällä väliotsikolla, ja sama luettelo ohjaa alareunan dockia.
+const CHAPTERS = [
+  { id: 'filosofia', label: 'Filosofia' },
+  { id: 'miksi-nyt', label: 'Miksi nyt' },
+  { id: 'kaksi-maailmaa', label: 'Kaksi maailmaa' },
+  { id: 'restart-ajattelu', label: 'Restart-ajattelu' },
+  { id: 'mita-teemme', label: 'Mitä Gettowork on' },
+  { id: 'yrityksille', label: 'Yrityksille' },
+  { id: 'kenelle', label: 'Kenelle Restart sopii' },
+  { id: 'playbook', label: 'Restart playbook' },
+  { id: 'yhteistyo', label: 'Ensimmäinen kauppa' },
+  { id: 'esimerkki', label: 'Miltä Restart näyttää' },
+  { id: 'hyodyt', label: 'Mitä asiakas saa' },
+  { id: 'tekijoille', label: 'Tekijöille' },
+  { id: 'verkosto', label: 'Verkosto' },
+  { id: 'pelisaannot', label: 'Vastuu ja reiluus' },
+] as const satisfies readonly DockItem[];
+type ChapterId = (typeof CHAPTERS)[number]['id'];
+const DOCK_ITEMS: DockItem[] = [...CHAPTERS];
+
+/** Luvun väliotsikko: viiva, iso numero ja luvun nimi. */
+function Chapter({ id }: { id: ChapterId }) {
+  const [ref, inView] = useInView<HTMLDivElement>(0.6);
+  const i = CHAPTERS.findIndex(c => c.id === id);
+  const n = String(i + 1).padStart(2, '0');
+  return <div ref={ref} className={`co-chapter${inView ? ' is-in' : ''}`}>
+    <span className="co-chapter__n" aria-hidden="true">{n}</span>
+    <span className="co-chapter__name">
+      <span className="co-chapter__k">Luku {n}</span>
+      <span className="co-chapter__t">{CHAPTERS[i].label}</span>
+    </span>
+    <span className="co-chapter__of" aria-hidden="true">{n} / {CHAPTERS.length}</span>
+  </div>;
+}
+
 /** Euroluku, joka laskee näkyviin tullessaan. */
 function Euro({ to }: { to: number }) {
   return <><CountUp to={to} /><span className="co-unit">&nbsp;€</span></>;
@@ -95,6 +131,7 @@ export function Company() {
     <Network />
     <Fairness />
     <Closing />
+    <SectionDock items={DOCK_ITEMS} />
   </main>;
 }
 
@@ -112,7 +149,7 @@ function Hero({ headingRef }: { headingRef: React.RefObject<HTMLHeadingElement |
       <p className="co-hero__motto" style={d(10)}>One for many. Many for one.</p>
     </div>
     <Orbit />
-    <a className="co-scroll" href="#co-category" aria-label="Vieritä alas">
+    <a className="co-scroll" href="#filosofia" aria-label="Vieritä alas">
       <span aria-hidden="true" />
     </a>
   </section>;
@@ -133,8 +170,8 @@ function Orbit() {
 // --- 02. Filosofia ----------------------------------------------------------------
 
 function Category() {
-  return <section id="co-category" className="co-section" aria-labelledby="co-cat-title">
-    <Eyebrow>Filosofia</Eyebrow>
+  return <section id="filosofia" className="co-section" aria-labelledby="co-cat-title">
+    <Chapter id="filosofia" />
     <h2 id="co-cat-title" className="co-h2 co-strike" data-reveal>
       Ei <s style={d(2)}>konsulttitoimisto</s>. Ei <s style={d(4)}>rekrytointialusta</s>. Ei <s style={d(6)}>startup-yhteisö</s>.{' '}
       <span className="co-pop" style={d(10)}>Restart company.</span>
@@ -155,8 +192,8 @@ function Category() {
 // --- 03. Miksi nyt -------------------------------------------------------------------
 
 function WhyNow() {
-  return <section className="co-section" aria-labelledby="co-why-title">
-    <Eyebrow>Miksi nyt</Eyebrow>
+  return <section id="miksi-nyt" className="co-section" aria-labelledby="co-why-title">
+    <Chapter id="miksi-nyt" />
     <h2 id="co-why-title" className="co-h2" data-reveal>Suomi on täynnä yrityksiä, joilla on menneisyys. <span className="co-blue-text">Mutta myös tulevaisuus.</span></h2>
     <p className="co-lead" data-reveal>Uusi teknologia muuttaa työskentelyä nopeammin kuin moni yritys ehtii uudistua. Samaan aikaan tuhansilla suomalaisilla yrityksillä on edessään sukupolvenvaihdos, kasvuhaaste tai tarve uudistaa toimintaansa.</p>
     <div className="co-grid">
@@ -188,8 +225,8 @@ function Dots() {
 // --- 04. Kaksi maailmaa ------------------------------------------------------------
 
 function TwoWorlds() {
-  return <section className="co-section" aria-labelledby="co-two-title">
-    <Eyebrow>Kaksi maailmaa</Eyebrow>
+  return <section id="kaksi-maailmaa" className="co-section" aria-labelledby="co-two-title">
+    <Chapter id="kaksi-maailmaa" />
     <h2 id="co-two-title" className="co-h2" data-reveal>Yhdellä on yritys.<br />Toisella keinot uudistaa se.</h2>
     <p className="co-lead" data-reveal>Gettowork yhdistää olemassa olevan liiketoiminnan ja uuden ajan osaamisen.</p>
     <div className="co-worlds" data-reveal>
@@ -222,8 +259,8 @@ const MODES = {
 
 function StartupVsRestart() {
   const [mode, setMode] = useState<keyof typeof MODES>('restart');
-  return <section className="co-section" aria-labelledby="co-svr-title">
-    <Eyebrow>Restart-ajattelu</Eyebrow>
+  return <section id="restart-ajattelu" className="co-section" aria-labelledby="co-svr-title">
+    <Chapter id="restart-ajattelu" />
     <h2 id="co-svr-title" className="co-h2" data-reveal>Ei aloiteta <span className="co-blue-text">nollasta.</span></h2>
     <p className="co-lead" data-reveal>Startup rakentaa liiketoiminnan alusta. Restart kehittää liiketoimintaa, joka on jo olemassa.</p>
     <div className="co-toggle" role="tablist" aria-label="Vertailu" data-reveal>
@@ -246,8 +283,8 @@ const ROLES = [
 ];
 
 function Roles() {
-  return <section className="co-section" aria-labelledby="co-roles-title">
-    <Eyebrow>Mitä Gettowork on</Eyebrow>
+  return <section id="mita-teemme" className="co-section" aria-labelledby="co-roles-title">
+    <Chapter id="mita-teemme" />
     <h2 id="co-roles-title" className="co-h2" data-reveal>Uudistamisen mahdollistaja.<br />Ei vain neuvonantaja.</h2>
     <p className="co-lead" data-reveal>Kolme roolia. Yksi tavoite.</p>
     <ol className="co-roles">
@@ -297,8 +334,8 @@ function Steps({ steps, label }: { steps: Step[]; label: string }) {
 }
 
 function Path() {
-  return <section className="co-section" aria-labelledby="co-path-title">
-    <Eyebrow>Yrityksille</Eyebrow>
+  return <section id="yrityksille" className="co-section" aria-labelledby="co-path-title">
+    <Chapter id="yrityksille" />
     <h2 id="co-path-title" className="co-h2" data-reveal>Uudet ihmiset. Uudet ideat.<br /><span className="co-blue-text">Parempi yritys.</span></h2>
     <p className="co-lead" data-reveal>Uudistuminen ei tapahdu yksin. Yhdistämme osaavat tekijät ja olemassa olevat yritykset rakentamaan uusia ratkaisuja oikeisiin tarpeisiin.</p>
     <Steps steps={BUSINESS_PATH} label="Näin uudistus etenee" />
@@ -310,8 +347,8 @@ function Path() {
 function ForWhom() {
   const yes = ['Toimivaa liiketoimintaa ja olemassa olevaa kysyntää', 'Kehittämätöntä kasvupotentiaalia', 'Omistajia, jotka haluavat uudistaa', 'Mahdollisuuksia parantaa kannattavuutta ja toimintaa'];
   const no = ['Yrityksiä ilman realistista kysyntää', 'Hallitsemattomia taloudellisia riskejä', 'Muutosta, johon johto ei sitoudu', 'Projekteja, joissa tuloksia ei voida mitata'];
-  return <section className="co-section" aria-labelledby="co-who-title">
-    <Eyebrow>Kenelle Restart sopii</Eyebrow>
+  return <section id="kenelle" className="co-section" aria-labelledby="co-who-title">
+    <Chapter id="kenelle" />
     <h2 id="co-who-title" className="co-h2" data-reveal>Tylsä on hyvä.<br />Rikkinäinen ei.</h2>
     <p className="co-lead" data-reveal>Etsimme yrityksiä, joilla on jo jotain arvokasta: asiakkaita, kysyntää, osaamista ja mahdollisuus kasvaa.</p>
     <div className="co-grid">
@@ -338,8 +375,8 @@ const PHASES = [
 
 function Playbook() {
   const [ref, inView] = useInView<HTMLDivElement>(0.35);
-  return <section className="co-section" aria-labelledby="co-play-title">
-    <Eyebrow>Restart playbook</Eyebrow>
+  return <section id="playbook" className="co-section" aria-labelledby="co-play-title">
+    <Chapter id="playbook" />
     <h2 id="co-play-title" className="co-h2" data-reveal>180 päivää.<br /><span className="co-blue-text">Todellisia muutoksia.</span></h2>
     <p className="co-lead" data-reveal>Ei konsulttiraporttia. Käytännön kehittämistä.</p>
     <div ref={ref} className={`co-timeline${inView ? ' is-in' : ''}`}>
@@ -364,8 +401,8 @@ const MODEL = [
 ];
 
 function Partnership() {
-  return <section className="co-section" aria-labelledby="co-part-title">
-    <Eyebrow>Ensimmäinen kauppa</Eyebrow>
+  return <section id="yhteistyo" className="co-section" aria-labelledby="co-part-title">
+    <Chapter id="yhteistyo" />
     <h2 id="co-part-title" className="co-h2" data-reveal>Ei tarvita yritysostoa.<br />Tarvitaan yritys, joka haluaa kehittyä.</h2>
     <div className="co-flow" data-reveal>
       <div className="co-flow__node"><p className="co-label">Yritys</p><p>Tuo olemassa olevan liiketoiminnan, asiakkaat ja kehitystarpeen.</p></div>
@@ -391,8 +428,8 @@ function Partnership() {
 // --- 12. Miltä Restart näyttää (kuvitteellinen esimerkki) ---------------------------
 
 function Example() {
-  return <section className="co-section" aria-labelledby="co-ex-title">
-    <Eyebrow>Miltä Restart näyttää?</Eyebrow>
+  return <section id="esimerkki" className="co-section" aria-labelledby="co-ex-title">
+    <Chapter id="esimerkki" />
     <h2 id="co-ex-title" className="co-h2" data-reveal>Pieni huoltoyritys.<br /><span className="co-blue-text">Suuri kehityspotentiaali.</span></h2>
     <div className="co-grid">
       <div className="co-stat" data-reveal style={d(1)}>
@@ -422,8 +459,8 @@ const BENEFITS = [
 ];
 
 function Benefits() {
-  return <section className="co-section" aria-labelledby="co-ben-title">
-    <Eyebrow>Mitä asiakas saa?</Eyebrow>
+  return <section id="hyodyt" className="co-section" aria-labelledby="co-ben-title">
+    <Chapter id="hyodyt" />
     <h2 id="co-ben-title" className="co-h2" data-reveal>Parempi yritys.<br />Useampi mahdollisuus.</h2>
     <div className="co-benefits">
       {BENEFITS.map((b, i) => <div key={b.k} className={`co-benefit${i === 2 ? ' is-blue' : ''}`} data-reveal style={d(i)}>
@@ -447,9 +484,8 @@ const BUILDER_HREF = `mailto:${EMAIL}?subject=${encodeURIComponent('Haluan mukaa
 
 function Builders() {
   const [ref, inView] = useInView<HTMLOListElement>(0.35);
-  return <div className="co-band co-band--white">
-    <section id="tekijoille" className="co-section" aria-labelledby="co-build-title">
-      <Eyebrow>Tekijöille</Eyebrow>
+  return <section id="tekijoille" className="co-section" aria-labelledby="co-build-title">
+      <Chapter id="tekijoille" />
       <h2 id="co-build-title" className="co-h2" data-reveal>Kaikkien ei tarvitse alkaa yrittäjiksi,<br />jotta voisi rakentaa jotain merkityksellistä.</h2>
       <p className="co-lead" data-reveal>Gettoworkin toinen puoli on osaajaverkosto. Se tuo yrityksiin oikeat tekijät – ja tekijöille oikeita mahdollisuuksia.</p>
 
@@ -474,8 +510,7 @@ function Builders() {
         </div>
       </div>
       <p className="co-source" data-reveal>Yrittäjyys on mahdollisuus, ei vaatimus. Emme lupaa tekijöille omistusosuuksia asiakasyrityksistä.</p>
-    </section>
-  </div>;
+    </section>;
 }
 
 // --- 15. Verkosto ------------------------------------------------------------------------------
@@ -484,7 +519,8 @@ function Network() {
   const [ref, inView] = useInView<HTMLDivElement>(0.35);
   const nodes = [[50, 50], [18, 26], [82, 22], [22, 78], [80, 76], [50, 12], [50, 90], [8, 52], [92, 50]];
   const links = [[0, 1], [0, 2], [0, 3], [0, 4], [1, 5], [2, 5], [3, 6], [4, 6], [1, 7], [3, 7], [2, 8], [4, 8]];
-  return <section className="co-section" aria-labelledby="co-net-title">
+  return <section id="verkosto" className="co-section" aria-labelledby="co-net-title">
+    <Chapter id="verkosto" />
     <div className="co-net">
       <div>
         <Eyebrow>One for many. Many for one.</Eyebrow>
@@ -516,8 +552,8 @@ const RULES = [
 ];
 
 function Fairness() {
-  return <section className="co-section" aria-labelledby="co-fair-title">
-    <Eyebrow>Vastuu ja reiluus</Eyebrow>
+  return <section id="pelisaannot" className="co-section" aria-labelledby="co-fair-title">
+    <Chapter id="pelisaannot" />
     <h2 id="co-fair-title" className="co-h2" data-reveal>Uuden ajan tekemistä.<br />Selkeillä pelisäännöillä.</h2>
     <div className="co-rules">
       {RULES.map((r, i) => <div key={r.t} className="co-rule" data-reveal style={d(i)}>
@@ -531,7 +567,7 @@ function Fairness() {
 // --- 19. Lopetus ---------------------------------------------------------------------------
 
 function Closing() {
-  return <div className="co-band co-band--blue"><section className="co-closing" aria-labelledby="co-close-title">
+  return <section className="co-closing" data-section-dock-hide aria-labelledby="co-close-title">
     <div className="co-closing__rings" aria-hidden="true"><span /><span /></div>
     <h2 id="co-close-title" className="co-closing__title" data-reveal>
       <span lang="en">We don’t need more startups.</span>
@@ -547,5 +583,5 @@ function Closing() {
       <span lang="en">One for many. Many for one.</span>
       <span lang="en">Forget jobs. Get to work.</span>
     </div>
-  </section></div>;
+  </section>;
 }
