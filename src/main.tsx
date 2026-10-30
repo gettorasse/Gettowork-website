@@ -55,7 +55,7 @@ function App() {
     {/* Kaikki sivun sisältö yhdessä kääreessä: valikko avautuu sen alta (UnderlayNav). */}
     <div data-main className="underlay-main">
     {/* Tausta pysyy samana koko ajan: etusivu, kysymykset ja tulos vaihtuvat sen päällä. */}
-    <BackgroundVideo character={character} />
+    <BackgroundVideo character={character} mode={route === 'home' && view !== 'intro' ? 'loop' : 'scrub'} />
     <div className={`stage-dim${dim ? ' is-on' : ''}${question ? ' is-soft' : ''}`} aria-hidden="true" />
     <div className={`stage-floor${question ? ' is-on' : ''}`} aria-hidden="true" />
     <div className={`stage-top${dim ? ' is-on' : ''}${question ? ' is-soft' : ''}`} aria-hidden="true" />
