@@ -428,7 +428,7 @@ type CaseMode = 'before' | 'after';
 
 const INFO = ['Asiakkaat', 'Tarjoukset', 'Tilaukset', 'Aikataulut', 'Laskutus', 'Viestit'];
 /** Ennen: tieto hajallaan (vasen %, ylä %, kierto). */
-const SCATTER = [[6, 10, -9], [58, 4, 7], [30, 40, -4], [70, 52, 11], [4, 70, 6], [44, 78, -12]];
+const SCATTER = [[6, 10, -9], [52, 5, 7], [26, 38, -4], [54, 54, 11], [4, 68, 6], [38, 80, -12]];
 
 const DAY = [
   { k: 'myynti', t: 'Myynti ja asiakkaat', before: 2, after: 6 },
