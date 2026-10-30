@@ -450,7 +450,7 @@ function Builders() {
   return <div className="co-band co-band--white">
     <section id="tekijoille" className="co-section" aria-labelledby="co-build-title">
       <Eyebrow>Tekijöille</Eyebrow>
-      <h2 id="co-build-title" className="co-h2" data-reveal>Kaikkien ei tarvitse perustaa yritystä.<br />Jokaisella pitää olla mahdollisuus rakentaa jotain merkityksellistä.</h2>
+      <h2 id="co-build-title" className="co-h2" data-reveal>Kaikkien ei tarvitse alkaa yrittäjiksi,<br />jotta voisi rakentaa jotain merkityksellistä.</h2>
       <p className="co-lead" data-reveal>Gettoworkin toinen puoli on osaajaverkosto. Se tuo yrityksiin oikeat tekijät – ja tekijöille oikeita mahdollisuuksia.</p>
 
       {/* Tekijän polku vaakasuorana matkana: viiva piirtyy ja vaiheet syttyvät järjestyksessä. */}
