@@ -129,11 +129,11 @@ function Category() {
     <Eyebrow>Uusi kategoria</Eyebrow>
     <h2 id="co-cat-title" className="co-h2 co-strike" data-reveal>
       Ei <s style={d(2)}>startup</s>. Ei <s style={d(5)}>työnvälityspalvelu</s>.{' '}
-      <span className="co-pop" style={d(9)}>Restart.</span>
+      <span className="co-pop" style={d(9)}>Restart company.</span>
     </h2>
     <div className="co-grid co-grid--wide">
       <div className="co-card co-card--glass" data-reveal style={d(1)}>
-        <p className="co-card__big">Rakennamme vanhasta uutta. Jotain aitoa.</p>
+        <p className="co-card__big">Gettowork on The Restart Company. Rakennamme vanhasta uutta – jotain aitoa.</p>
         <p className="co-muted">Oikeita yrityksiä. Oikeita tekijöitä. Oikeaa omistajuutta.</p>
       </div>
       <div className="co-card co-card--blue" data-reveal style={d(3)}>

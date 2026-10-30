@@ -79,7 +79,7 @@
 .co-orbit__planet {
   position: absolute; top: -34px; left: 50%; width: 68px; height: 68px; margin-left: -34px; border-radius: 50%;
   display: grid; place-items: center; background: #fff; color: var(--navy); font-family: var(--font-heading); font-size: 30px;
-  box-shadow: 0 0 0 6px rgb(20 128 255 / 0.25), var(--glow); animation: co-spin 30s linear infinite reverse;
+  animation: co-spin 30s linear infinite reverse;
 }
 .co-block { position: absolute; border-radius: 12px; background: var(--blue); box-shadow: var(--glow); }
 .co-block--a { width: 54px; height: 54px; right: 4%; bottom: 14%; animation: co-float 7s ease-in-out infinite; }
@@ -141,15 +141,18 @@
 @keyframes co-card-in { from { opacity: 0; transform: translateY(16px) rotateX(18deg); } to { opacity: 1; transform: none; } }
 
 /* --- 6. Roolit --- */
-.co-roles { list-style: none; padding: 0; margin-top: 44px !important; display: flex; flex-direction: column; gap: 12px; }
-.co-role { position: relative; display: grid; grid-template-columns: 80px minmax(0, 280px) 1fr; align-items: center; gap: 20px; padding: 26px 28px; border-radius: 20px; background: rgb(255 255 255 / 0.05); border: 1px solid var(--line); overflow: hidden; }
-.co-role::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 4px; background: var(--blue); box-shadow: var(--glow); transform: scaleY(0); transform-origin: top; transition: transform 700ms ease; transition-delay: calc(var(--d) + 300ms); }
-.co-role.is-in::before { transform: scaleY(1); }
-.co-role:hover { border-color: rgb(20 128 255 / 0.6); }
-.co-role__n { font-family: var(--font-heading); font-size: 34px; color: var(--blue); text-shadow: 0 0 20px rgb(20 128 255 / 0.6); }
-.co-role__t { font-family: var(--font-heading); font-size: 22px; text-transform: uppercase; letter-spacing: 0.02em; }
-.co-role__d { color: var(--muted); }
-@media (max-width: 760px) { .co-role { grid-template-columns: 56px 1fr; } .co-role__d { grid-column: 2; } }
+.co-roles { list-style: none; padding: 0; margin-top: 52px !important; border-bottom: 1px solid var(--line); }
+.co-role { position: relative; display: grid; grid-template-columns: 140px minmax(0, 1fr) minmax(0, 1fr); align-items: baseline; gap: 24px; padding: 34px 0; }
+.co-role::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: rgb(255 255 255 / 0.35); transform: scaleX(0); transform-origin: left; transition: transform 900ms cubic-bezier(.6,0,.2,1); transition-delay: var(--d); }
+.co-role.is-in::before { transform: scaleX(1); }
+.co-role::after { content: ""; position: absolute; inset: 0 -24px; z-index: -1; background: var(--blue); transform: scaleY(0); transform-origin: bottom; transition: transform 350ms cubic-bezier(.4,0,.2,1); }
+.co-role:hover::after { transform: scaleY(1); }
+.co-role__n { font-family: var(--font-heading); font-size: clamp(56px, 6vw, 84px); line-height: 0.8; letter-spacing: -0.04em; color: var(--blue); transition: color 250ms; }
+.co-role__t { font-family: var(--font-heading); font-size: clamp(26px, 3vw, 40px); line-height: 1.05; letter-spacing: -0.01em; }
+.co-role__d { color: var(--muted); font-size: 19px; transition: color 250ms; }
+.co-role:hover .co-role__n, .co-role:hover .co-role__d { color: #fff; }
+.co-roles { isolation: isolate; }
+@media (max-width: 760px) { .co-role { grid-template-columns: 1fr; gap: 10px; padding: 28px 0; } .co-role::after { inset: 0 -12px; } }
 
 /* --- 7. Polku ja portaat --- */
 .co-path { display: grid; grid-template-columns: 300px 1fr; gap: 40px; align-items: end; margin-top: 44px; }
@@ -251,10 +254,10 @@
 .co-motto strong { font-family: var(--font-heading); font-weight: 500; color: var(--blue-soft); }
 
 /* --- 12. Reiluus --- */
-.co-rules { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 40px; }
+.co-rules { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 48px; margin-top: 44px; }
 @media (max-width: 760px) { .co-rules { grid-template-columns: 1fr; } }
-.co-rule { padding: 24px 26px; border-radius: 20px; border: 1px solid var(--line); border-left: 4px solid var(--blue); background: rgb(255 255 255 / 0.04); }
-.co-rule__t { font-family: var(--font-heading); font-size: 19px; text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 6px !important; }
+.co-rule { padding: 26px 0 30px; border-top: 1px solid rgb(255 255 255 / 0.35); }
+.co-rule__t { font-family: var(--font-heading); font-size: clamp(22px, 2.2vw, 28px); line-height: 1.1; margin-bottom: 10px !important; }
 
 /* --- 13. Lopetus --- */
 .co-closing { position: relative; max-width: 1160px; margin: 0 auto; padding: clamp(110px, 16vh, 180px) 24px 90px; }
