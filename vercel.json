@@ -27,6 +27,14 @@
     {
       "source": "/tietosuoja/",
       "destination": "/index.html"
+    },
+    {
+      "source": "/tietoa",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/tietoa/",
+      "destination": "/index.html"
     }
   ]
 }

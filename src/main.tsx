@@ -9,6 +9,7 @@ import { initLogoStackLoader } from './logoLoader.ts';
 import { HOME_PATH, isLegacyPath, routeFromPath, type Route } from './router.ts';
 import { About } from './restart-score/About.tsx';
 import { Privacy } from './restart-score/Privacy.tsx';
+import { Company } from './company/Company.tsx';
 import { RestartScore } from './restart-score/RestartScore.tsx';
 import { useRestartScore } from './restart-score/useRestartScore.ts';
 
@@ -34,7 +35,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    document.title = route === 'about' ? 'Kysely · gettowork' : route === 'privacy' ? 'Tietosuojaseloste · gettowork' : 'gettowork';
+    document.title = route === 'about' ? 'Kysely · gettowork' : route === 'privacy' ? 'Tietosuojaseloste · gettowork' : route === 'company' ? 'Tietoa yrityksestä · gettowork' : 'gettowork';
     window.scrollTo(0, 0);
   }, [route]);
 
@@ -59,7 +60,7 @@ function App() {
     <div className={`stage-floor${question ? ' is-on' : ''}`} aria-hidden="true" />
     <div className={`stage-top${dim ? ' is-on' : ''}${question ? ' is-soft' : ''}`} aria-hidden="true" />
     <CharacterSwitch value={character} onChange={chooseCharacter} visible={route === 'home' && view === 'intro'} />
-    {route === 'about' ? <About onStart={startFromAbout} /> : route === 'privacy' ? <Privacy /> : <RestartScore rs={rs} />}
+    {route === 'about' ? <About onStart={startFromAbout} /> : route === 'privacy' ? <Privacy /> : route === 'company' ? <Company /> : <RestartScore rs={rs} />}
     </div>
     <CookieBanner />
   </>;

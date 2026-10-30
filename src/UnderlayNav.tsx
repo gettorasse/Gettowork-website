@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { HOME_PATH, PRIVACY_PATH, interceptClick, type Route } from './router.ts';
+import { COMPANY_PATH, HOME_PATH, PRIVACY_PATH, interceptClick, type Route } from './router.ts';
 import './UnderlayNav.css';
 
 // Osmo Supply "Fixed Underlay Navigation" Reactiin sovitettuna. Valikko on kiinteästi
@@ -205,6 +205,10 @@ export function UnderlayNav({ route }: { route: Route }) {
           <li data-reveal-l>
             <a href={HOME_PATH} onClick={toHome} aria-current={route === 'home' ? 'page' : undefined}
               className={`underlay-nav__link-large${route === 'home' ? ' w--current' : ''}`}><span className="underlay-nav__link-label">Tee testi</span></a>
+          </li>
+          <li data-reveal-l>
+            <a href={COMPANY_PATH} onClick={go(COMPANY_PATH)} aria-current={route === 'company' ? 'page' : undefined}
+              className={`underlay-nav__link-large${route === 'company' ? ' w--current' : ''}`}><span className="underlay-nav__link-label">Tietoa yrityksestä</span></a>
           </li>
           <li data-reveal-l>
             <a href={IDEA_HREF} onClick={closeAfter} className="underlay-nav__link-large"><span className="underlay-nav__link-label">Kerro ideastasi</span></a>
