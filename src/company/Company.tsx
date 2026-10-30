@@ -446,19 +446,36 @@ const BUILDER_POINTS = [
 const BUILDER_HREF = `mailto:${EMAIL}?subject=${encodeURIComponent('Haluan mukaan tekijäksi')}`;
 
 function Builders() {
-  return <section id="tekijoille" className="co-section" aria-labelledby="co-build-title">
-    <Eyebrow>Tekijöille · Work. Build. Grow.</Eyebrow>
-    <h2 id="co-build-title" className="co-h2" data-reveal>Kaikkien ei tarvitse perustaa yritystä.<br />Jokaisella pitää olla mahdollisuus rakentaa jotain merkityksellistä.</h2>
-    <p className="co-lead" data-reveal>Gettoworkin toinen puoli on osaajaverkosto. Se tuo yrityksiin oikeat tekijät – ja tekijöille oikeita mahdollisuuksia.</p>
-    <Steps steps={BUILDER_PATH} label="Tekijän polku" />
-    <ul className="co-checks co-builders" data-reveal>
-      {BUILDER_POINTS.map((t, i) => <li key={t} style={d(i + 1)}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" /></svg>{t}</li>)}
-    </ul>
-    <div className="co-actions" data-reveal>
-      <a className="co-btn" href={BUILDER_HREF}>Haluan mukaan tekijäksi <span aria-hidden="true">→</span></a>
-    </div>
-    <p className="co-source" data-reveal>Yrittäjyys on mahdollisuus, ei vaatimus. Emme lupaa tekijöille omistusosuuksia asiakasyrityksistä.</p>
-  </section>;
+  const [ref, inView] = useInView<HTMLOListElement>(0.35);
+  return <div className="co-band co-band--white">
+    <section id="tekijoille" className="co-section" aria-labelledby="co-build-title">
+      <Eyebrow>Tekijöille</Eyebrow>
+      <h2 id="co-build-title" className="co-h2" data-reveal>Kaikkien ei tarvitse perustaa yritystä.<br />Jokaisella pitää olla mahdollisuus rakentaa jotain merkityksellistä.</h2>
+      <p className="co-lead" data-reveal>Gettoworkin toinen puoli on osaajaverkosto. Se tuo yrityksiin oikeat tekijät – ja tekijöille oikeita mahdollisuuksia.</p>
+
+      {/* Tekijän polku vaakasuorana matkana: viiva piirtyy ja vaiheet syttyvät järjestyksessä. */}
+      <ol ref={ref} className={`co-journey${inView ? ' is-in' : ''}`} aria-label="Tekijän polku">
+        <span className="co-journey__line" aria-hidden="true" />
+        {BUILDER_PATH.map((p, i) => <li key={p.k} className="co-journey__step" style={{ '--d': `${300 + i * 500}ms` } as CSSProperties}>
+          <span className="co-journey__dot" aria-hidden="true" />
+          <span className="co-journey__k">{p.k}</span>
+          <span className="co-journey__t">{p.t}</span>
+          <span className="co-journey__d">{p.d}</span>
+        </li>)}
+      </ol>
+
+      <div className="co-builders-wrap">
+        <ul className="co-checks co-builders" data-reveal>
+          {BUILDER_POINTS.map((t, i) => <li key={t} style={d(i + 1)}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" /></svg>{t}</li>)}
+        </ul>
+        <div className="co-builders-cta" data-reveal>
+          <p className="co-builders-cta__t">Haluatko mukaan tekijäksi?</p>
+          <a className="co-btn co-btn--primary" href={BUILDER_HREF}>Ota yhteyttä <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+      <p className="co-source" data-reveal>Yrittäjyys on mahdollisuus, ei vaatimus. Emme lupaa tekijöille omistusosuuksia asiakasyrityksistä.</p>
+    </section>
+  </div>;
 }
 
 // --- 15. Verkosto ------------------------------------------------------------------------------
@@ -514,7 +531,7 @@ function Fairness() {
 // --- 19. Lopetus ---------------------------------------------------------------------------
 
 function Closing() {
-  return <section className="co-closing" aria-labelledby="co-close-title">
+  return <div className="co-band co-band--blue"><section className="co-closing" aria-labelledby="co-close-title">
     <div className="co-closing__rings" aria-hidden="true"><span /><span /></div>
     <h2 id="co-close-title" className="co-closing__title" data-reveal>
       <span lang="en">We don’t need more startups.</span>
@@ -530,5 +547,5 @@ function Closing() {
       <span lang="en">One for many. Many for one.</span>
       <span lang="en">Forget jobs. Get to work.</span>
     </div>
-  </section>;
+  </section></div>;
 }
