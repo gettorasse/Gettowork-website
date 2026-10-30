@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import { BackgroundVideo, type Character } from './BackgroundVideo.tsx';
 import { CharacterSwitch, loadCharacter, saveCharacter } from './CharacterSwitch.tsx';
+import { VideoToggle, loadVideoPaused, saveVideoPaused } from './VideoToggle.tsx';
 import { UnderlayNav } from './UnderlayNav.tsx';
 import { CookieBanner } from './CookieBanner.tsx';
 import { initLogoStackLoader } from './logoLoader.ts';
@@ -21,6 +22,8 @@ function App() {
   const rs = useRestartScore();
   const [character, setCharacter] = useState<Character>(loadCharacter);
   const chooseCharacter = (c: Character) => { setCharacter(c); saveCharacter(c); };
+  const [videoPaused, setVideoPaused] = useState(loadVideoPaused);
+  const toggleVideo = () => setVideoPaused(p => { saveVideoPaused(!p); return !p; });
 
   useEffect(() => {
     if (route === 'home') rs.syncFromHistory(window.history.state, true);
@@ -49,17 +52,19 @@ function App() {
   const view = rs.assessment.view;
   const dim = route !== 'home' || view === 'result';
   const question = route === 'home' && view === 'question';
+  const videoMode = route === 'home' && view !== 'intro' ? 'loop' : 'scrub';
 
   return <>
     <UnderlayNav route={route} />
     {/* Kaikki sivun sisältö yhdessä kääreessä: valikko avautuu sen alta (UnderlayNav). */}
     <div data-main className="underlay-main">
     {/* Tausta pysyy samana koko ajan: etusivu, kysymykset ja tulos vaihtuvat sen päällä. */}
-    <BackgroundVideo character={character} mode={route === 'home' && view !== 'intro' ? 'loop' : 'scrub'} />
+    <BackgroundVideo character={character} mode={videoMode} paused={videoPaused} />
     <div className={`stage-dim${dim ? ' is-on' : ''}${question ? ' is-soft' : ''}`} aria-hidden="true" />
     <div className={`stage-floor${question ? ' is-on' : ''}`} aria-hidden="true" />
     <div className={`stage-top${dim ? ' is-on' : ''}${question ? ' is-soft' : ''}`} aria-hidden="true" />
     <CharacterSwitch value={character} onChange={chooseCharacter} visible={route === 'home' && view === 'intro'} />
+    <VideoToggle paused={videoPaused} onToggle={toggleVideo} visible={videoMode === 'loop'} />
     {route === 'about' ? <About onStart={startFromAbout} /> : route === 'privacy' ? <Privacy /> : route === 'company' ? <Company /> : <RestartScore rs={rs} />}
     </div>
     <CookieBanner />

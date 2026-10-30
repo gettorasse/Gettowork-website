@@ -90,6 +90,18 @@ a:focus-visible, button:focus-visible { outline: 2px solid white; outline-offset
 @media (prefers-reduced-motion: reduce) { .background-video, .character-switch__thumb, .character-switch__option { transition: none; } }
 @media print { .character-switch { display: none !important; } }
 
+/* Taustavideon toisto / pysäytys testin aikana (samassa kohdassa kuin hahmokytkin etusivulla). */
+.video-toggle { position: fixed; right: 40px; bottom: 32px; z-index: 8; display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 20px 0 16px; border: 1px solid rgb(255 255 255 / 0.7); border-radius: 9999px; background: rgb(8 14 48 / 0.45); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); color: #fff; font-family: var(--font-heading); font-size: 15px; cursor: pointer; transition: opacity 300ms ease, background-color 200ms ease, color 200ms ease; }
+.video-toggle:hover { background: #fff; color: #080e30; }
+.video-toggle:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+.video-toggle svg { width: 18px; height: 18px; fill: currentColor; }
+.video-toggle.is-hidden { opacity: 0; pointer-events: none; }
+@media (max-width: 768px) {
+  .video-toggle { right: 16px; bottom: max(16px, env(safe-area-inset-bottom)); min-height: 44px; width: 44px; padding: 0; justify-content: center; }
+  .video-toggle__text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+}
+@media print { .video-toggle { display: none !important; } }
+
 /* Evästebanneri: valkoinen kortti vasemmassa alakulmassa, siniset painikkeet. */
 .cookie-banner {
   position: fixed; left: 28px; bottom: 28px; z-index: 90; width: min(420px, calc(100vw - 24px));

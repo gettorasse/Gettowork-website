@@ -63,7 +63,7 @@ const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)'
  * - loop (testi käynnissä): pidempi video pyörii itsestään 0,8-nopeudella, ristiinhäivytettynä.
  * Hahmon vaihto häivyttää videot ristiin; toisen hahmon videot ladataan vasta, kun se valitaan.
  */
-export function BackgroundVideo({ character, mode }: { character: Character; mode: 'scrub' | 'loop' }) {
+export function BackgroundVideo({ character, mode, paused = false }: { character: Character; mode: 'scrub' | 'loop'; paused?: boolean }) {
   const [mounted, setMounted] = useState<Character[]>([character]);
   const [ready, setReady] = useState<Record<Character, boolean>>({ woman: false, man: false });
   const [loopMounted, setLoopMounted] = useState<Character[]>([]);
@@ -141,23 +141,25 @@ export function BackgroundVideo({ character, mode }: { character: Character; mod
   const looping = mode === 'loop' && loopReady[shown] && !reducedMotion();
 
   // Looppi käynnistyy alusta, kun se tulee näkyviin, ja pysähtyy häivytyksen jälkeen.
+  // Käyttäjä voi pysäyttää sen (paused); jatkaessa toisto jatkuu samasta kohdasta.
+  const playingLoop = useRef<Character | null>(null);
   useEffect(() => {
     const timers: number[] = [];
     (Object.keys(loopRefs.current) as Character[]).forEach(c => {
       const video = loopRefs.current[c];
       if (!video) return;
       if (looping && c === shown) {
-        if (video.paused) {
-          video.currentTime = 0;
-          video.playbackRate = LOOP_RATE;
-          video.play().catch(() => {});
-        }
+        if (playingLoop.current !== c) { video.currentTime = 0; playingLoop.current = c; }
+        video.playbackRate = LOOP_RATE;
+        if (paused) video.pause();
+        else if (video.paused) video.play().catch(() => {});
       } else if (!video.paused) {
         timers.push(window.setTimeout(() => video.pause(), 700));
       }
     });
+    if (!looping) playingLoop.current = null;
     return () => timers.forEach(t => window.clearTimeout(t));
-  }, [looping, shown]);
+  }, [looping, shown, paused]);
 
   return <div className="video-backdrop" aria-hidden="true">
     {mounted.map(c => (
