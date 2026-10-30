@@ -174,7 +174,7 @@
 .co-path__tab.is-on { background: var(--blue); border-color: var(--blue); box-shadow: var(--glow); transform: translateY(-6px); }
 .co-path__n { font-size: 13px; color: var(--muted); }
 .co-path__tab.is-on .co-path__n { color: rgb(255 255 255 / 0.85); }
-.co-path__k { font-family: var(--font-heading); font-size: clamp(32px, 3.4vw, 44px); line-height: 1; text-transform: uppercase; }
+.co-path__k { font-family: var(--font-heading); font-size: clamp(28px, 2.7vw, 38px); overflow-wrap: anywhere; line-height: 1; text-transform: uppercase; }
 .co-path__t { font-family: var(--font-heading); font-size: 18px; }
 .co-path__d { color: var(--muted); font-size: 16px; }
 .co-path__tab.is-on .co-path__d { color: rgb(255 255 255 / 0.9); }
