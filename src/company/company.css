@@ -426,3 +426,18 @@
 .co-day__seg { border-radius: 12px; }
 .co-day__key { border-radius: 4px; }
 .co-day__legend { font-size: 14px; }
+
+/* --- Get to Work: From prompt to done (marraskuu 2026) --- */
+.co-hero__actions { opacity: 0; animation: co-rise 900ms cubic-bezier(.2,.7,.2,1) forwards; animation-delay: calc(var(--d, 0ms) + 300ms); }
+.co-h3 { margin-top: 48px !important; font-family: var(--font-heading); font-size: clamp(26px, 3.2vw, 44px); line-height: 1.15; letter-spacing: -0.02em; }
+.co-strike--gap { margin-top: 72px !important; }
+.co-lead--gap { margin-top: 80px !important; }
+.co-lead--tight { margin-bottom: 22px !important; }
+.co-checks--anim.is-in svg path { stroke-dashoffset: 0; }
+.co-builders-wrap > div { min-width: 0; }
+
+.co-places { list-style: none; padding: 0; margin-top: 52px !important; display: flex; flex-wrap: wrap; gap: 14px 18px; }
+.co-places li { font-family: var(--font-heading); font-size: clamp(32px, 5vw, 72px); line-height: 1; letter-spacing: -0.03em; text-transform: uppercase; padding: 0.12em 0.32em; border: 1px solid var(--line); border-radius: 0.3em; }
+.co-places li:nth-child(odd) { background: rgb(255 255 255 / 0.04); }
+.co-places .co-places__more { border-color: transparent; color: var(--blue); text-transform: none; font-size: clamp(22px, 2.6vw, 36px); align-self: center; background: none !important; }
+@media (prefers-reduced-motion: reduce) { .co-hero__actions { opacity: 1; animation: none; } }
