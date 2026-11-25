@@ -6,11 +6,11 @@
   "rewrites": [
     {
       "source": "/kysely",
-      "destination": "/index.html"
+      "destination": "/kysely/index.html"
     },
     {
       "source": "/kysely/",
-      "destination": "/index.html"
+      "destination": "/kysely/index.html"
     },
     {
       "source": "/restart-score",
@@ -22,19 +22,19 @@
     },
     {
       "source": "/tietosuoja",
-      "destination": "/index.html"
+      "destination": "/tietosuoja/index.html"
     },
     {
       "source": "/tietosuoja/",
-      "destination": "/index.html"
+      "destination": "/tietosuoja/index.html"
     },
     {
       "source": "/tietoa",
-      "destination": "/index.html"
+      "destination": "/tietoa/index.html"
     },
     {
       "source": "/tietoa/",
-      "destination": "/index.html"
+      "destination": "/tietoa/index.html"
     }
   ]
 }

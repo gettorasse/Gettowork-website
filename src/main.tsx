@@ -38,7 +38,8 @@ function App() {
   }, []);
 
   useEffect(() => {
-    document.title = route === 'about' ? 'Kysely · gettowork' : route === 'privacy' ? 'Tietosuojaseloste · gettowork' : route === 'company' ? 'Tietoa yrityksestä · gettowork' : 'gettowork';
+    // Samat otsikot kuin scripts/static-pages.mjs:n tekstiversioissa.
+    document.title = route === 'about' ? 'Tietoa testistä · Get to Work' : route === 'privacy' ? 'Tietosuojaseloste · Get to Work' : route === 'company' ? 'Tietoa yrityksestä · Get to Work' : 'Restart-testi: Minkälainen yrittäjä olet? · Get to Work';
     window.scrollTo(0, 0);
   }, [route]);
 
