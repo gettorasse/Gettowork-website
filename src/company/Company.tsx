@@ -238,7 +238,9 @@ function PromptDemo() {
 
   const choose = (i: number) => { setTouched(true); setEx(i); setRun(r => r + 1); };
 
-  return <div ref={ref} className={`co-prompt is-stage-${stage}`} data-reveal>
+  // Huom: data-reveal on erillisessä kääreessä. Reactin className-päivitys poistaisi muuten
+  // näkyviin tulon is-in-luokan, ja koko esitys katoaisi vaiheen vaihtuessa.
+  return <div data-reveal><div ref={ref} className={`co-prompt is-stage-${stage}`}>
     <ol className="co-prompt__stages" aria-hidden="true">
       {['Prompt.', 'Plan.', 'Done.'].map((k, i) => <li key={k} lang="en" className={stage >= i ? 'is-on' : ''}>{k}</li>)}
     </ol>
@@ -256,7 +258,7 @@ function PromptDemo() {
       {PROMPTS.map((p, i) => <button key={p.chip} type="button" className={`co-chip${i === ex ? ' is-on' : ''}`} aria-pressed={i === ex} onClick={() => choose(i)}>{p.chip}</button>)}
     </div>
     <p className="co-source">Esimerkki. Jokainen suunnitelma ja hinta tehdään tarpeen mukaan.</p>
-  </div>;
+  </div></div>;
 }
 
 const PARTS = [
