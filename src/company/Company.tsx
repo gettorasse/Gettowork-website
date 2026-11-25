@@ -127,57 +127,58 @@ function Orbit() {
 
 // --- 01. Miksi --------------------------------------------------------------------------
 
-const MATCH_NEEDS = ['Kuorman purku', 'Inventaario', 'Siivous', 'Myymälätyö'];
-const MATCH_PEOPLE = ['Opiskelija', 'Alanvaihtaja', 'Kokenut tekijä', 'Osa-aikainen'];
-/** Kuvitteelliset parit: tarve i ↔ tekijä MATCH_PAIR[i]. */
-const MATCH_PAIR = [2, 0, 3, 1];
-const MATCH_Y = [18, 39, 61, 82];
+const BRIDGE_PLANKS = 10;
 
-/** Kohtaamiskartta: ensin tarpeet ja tekijät eivät kohtaa, sitten Get to Work yhdistää ne pareiksi. */
-function MatchMap() {
-  const [ref, inView] = useInView<HTMLDivElement>(0.4);
-  const [linked, setLinked] = useState(false);
-  const [hover, setHover] = useState<number | null>(null);
-  const [auto, setAuto] = useState(0);
+/** Kaksi rantaa ja silta: yritykset ja tekijät ovat eri puolilla, ja vierittäessä väliin rakentuu
+ *  palikka kerrallaan Get to Work -silta. Kun silta on valmis, sen yli kulkee liikettä molempiin suuntiin. */
+function Bridge() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [count, setCount] = useState(0);
   useEffect(() => {
-    if (!inView) return;
-    if (reduced()) { setLinked(true); return; }
-    const t = window.setTimeout(() => setLinked(true), 1300);
-    return () => window.clearTimeout(t);
-  }, [inView]);
-  useEffect(() => {
-    if (!linked || hover !== null || reduced()) return;
-    const t = window.setInterval(() => setAuto(a => (a + 1) % MATCH_NEEDS.length), 2200);
-    return () => window.clearInterval(t);
-  }, [linked, hover]);
-  const cur = linked ? (hover ?? auto) : null;
-  const pickPerson = (j: number) => setHover(MATCH_PAIR.indexOf(j));
+    const el = ref.current;
+    if (!el) return;
+    if (reduced()) { setCount(BRIDGE_PLANKS); return; }
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const rect = el.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const p = Math.max(0, Math.min(1, (vh * 0.85 - rect.top) / (vh * 0.5)));
+      setCount(Math.round(p * BRIDGE_PLANKS));
+    };
+    const onScroll = () => { if (!frame) frame = requestAnimationFrame(update); };
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    return () => { cancelAnimationFrame(frame); window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onScroll); };
+  }, []);
+  const full = count >= BRIDGE_PLANKS;
 
-  return <div className="co-match-wrap" data-reveal>
+  return <div className="co-bridge-wrap" data-reveal>
     <div className="co-match-head">
       <p><span className="co-label">Yritykset</span>Tekemistä, johon ei riitä aikaa, osaamista tai tekijöitä.</p>
       <p><span className="co-label">Tekijät</span>Haluavat tehdä töitä, mutta oikeita mahdollisuuksia on vaikea löytää.</p>
     </div>
-    <div ref={ref} className={`co-match${linked ? ' is-linked' : ''}${cur !== null ? ' has-active' : ''}`} onMouseLeave={() => setHover(null)}>
-      <svg className="co-match__lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-        {MATCH_Y.map((y, i) => <path key={`n${i}`} className={`co-match__path${cur === i ? ' is-on' : ''}`} pathLength={1}
-          d={`M 31 ${y} C 41 ${y}, 41 50, 50 50`} style={{ '--i': i } as CSSProperties} />)}
-        {MATCH_Y.map((y, j) => <path key={`p${j}`} className={`co-match__path${cur !== null && MATCH_PAIR[cur] === j ? ' is-on' : ''}`} pathLength={1}
-          d={`M 50 50 C 59 50, 59 ${y}, 69 ${y}`} style={{ '--i': j + 4 } as CSSProperties} />)}
-      </svg>
-      {MATCH_NEEDS.map((t, i) => <button key={t} type="button" className={`co-match__node co-match__node--l${cur === i ? ' is-on' : ''}`}
-        style={{ top: `${MATCH_Y[i]}%` }} onMouseEnter={() => setHover(i)} onFocus={() => setHover(i)} onClick={() => setHover(i)}>
-        <span>{t}</span><i aria-hidden="true" />
-      </button>)}
-      {MATCH_PEOPLE.map((t, j) => <button key={t} type="button" className={`co-match__node co-match__node--r${cur !== null && MATCH_PAIR[cur] === j ? ' is-on' : ''}`}
-        style={{ top: `${MATCH_Y[j]}%` }} onMouseEnter={() => pickPerson(j)} onFocus={() => pickPerson(j)} onClick={() => pickPerson(j)}>
-        <i aria-hidden="true" /><span>{t}</span>
-      </button>)}
-      <div className="co-match__hub" aria-hidden="true"><span className="co-match__q">?</span><span className="co-match__g">Get to Work</span></div>
+    <div ref={ref} className={`co-bridge${full ? ' is-full' : ''}`} aria-hidden="true">
+      <div className="co-bridge__shore co-bridge__shore--l">
+        <span className="co-bridge__label">Yritykset</span>
+        <span className="co-bridge__icons co-bridge__icons--l">{Array.from({ length: 6 }, (_, i) => <i key={i} />)}</span>
+      </div>
+      <div className="co-bridge__gap">
+        <div className="co-bridge__deck">
+          {Array.from({ length: BRIDGE_PLANKS }, (_, i) => <span key={i} className={`co-bridge__plank${i < count ? ' is-in' : ''}`} />)}
+          <span className="co-bridge__walker co-bridge__walker--a" />
+          <span className="co-bridge__walker co-bridge__walker--b" />
+        </div>
+        <span className="co-bridge__name">Get to Work</span>
+        <div className="co-bridge__water"><span /><span /></div>
+      </div>
+      <div className="co-bridge__shore co-bridge__shore--r">
+        <span className="co-bridge__label">Tekijät</span>
+        <span className="co-bridge__icons co-bridge__icons--r">{Array.from({ length: 5 }, (_, i) => <i key={i} />)}</span>
+      </div>
     </div>
-    <p className="co-match__cap" aria-live="polite">
-      {cur === null ? 'Tarpeet ja tekijät eivät löydä toisiaan.' : <>Esimerkki: <strong>{MATCH_NEEDS[cur]}</strong> ↔ <strong>{MATCH_PEOPLE[MATCH_PAIR[cur]]}</strong></>}
-    </p>
+    <p className="co-bridge__cap" aria-live="polite">{full ? 'Get to Work yhdistää yritykset ja tekijät.' : 'Yritykset ja tekijät eivät löydä toisiaan.'}</p>
   </div>;
 }
 
@@ -186,7 +187,7 @@ function Why() {
     <Chapter id="miksi" />
     <h2 id="co-why-title" className="co-h2" data-reveal>Maailma muuttuu nopeasti.<br /><span className="co-blue-text">Työn hankinta ei.</span></h2>
     <p className="co-lead" data-reveal>Tapa, jolla yritykset hankkivat työvoimaa ja järjestävät työnsä, ei ole muuttunut läheskään yhtä nopeasti.</p>
-    <MatchMap />
+    <Bridge />
     <p className="co-statement" data-reveal><strong>Näiden kahden kohtaamisen pitäisi olla paljon helpompaa.</strong> Siksi rakennamme Get to Workia.</p>
   </section>;
 }

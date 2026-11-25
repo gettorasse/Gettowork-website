@@ -440,42 +440,66 @@
 
 /* --- Interaktiiviset esitykset (marraskuu 2026) --- */
 
-/* 01 Kohtaamiskartta */
-.co-match-wrap { margin-top: 48px; }
+/* 01 Otsikkorivi (yritykset / tekijät) */
 .co-match-head { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 18px; }
 .co-match-head p { max-width: 380px; color: var(--muted); font-size: 16px; }
 .co-match-head p:last-child { justify-self: end; text-align: right; }
 .co-match-head .co-label { display: block; margin-bottom: 6px; }
-.co-match { position: relative; height: clamp(280px, 30vw, 380px); border: 1px solid var(--line); border-radius: 24px; background: rgb(255 255 255 / 0.02); overflow: hidden; }
-.co-match__lines { position: absolute; inset: 0; width: 100%; height: 100%; }
-.co-match__path { fill: none; stroke: rgb(255 255 255 / 0.28); stroke-width: 1.5; vector-effect: non-scaling-stroke; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 900ms cubic-bezier(.4,0,.2,1), stroke 300ms, stroke-width 300ms, opacity 300ms; transition-delay: calc(var(--i) * 90ms), 0ms, 0ms, 0ms; }
-.co-match.is-linked .co-match__path { stroke-dashoffset: 0; }
-.co-match.has-active .co-match__path { opacity: 0.35; }
-.co-match .co-match__path.is-on { stroke: var(--blue); stroke-width: 3; opacity: 1; filter: drop-shadow(0 0 6px rgb(20 128 255 / 0.8)); }
-.co-match__node { position: absolute; transform: translateY(-50%); display: flex; align-items: center; gap: 10px; padding: 8px 0; border: 0; background: none; color: var(--muted); font: inherit; font-family: var(--font-heading); font-size: clamp(13px, 1.4vw, 17px); cursor: pointer; transition: color 250ms; }
-.co-match__node--l { right: 69%; justify-content: flex-end; text-align: right; }
-.co-match__node--r { left: 69%; text-align: left; }
-.co-match__node i { flex: none; width: 12px; height: 12px; border-radius: 50%; border: 2px solid rgb(255 255 255 / 0.5); background: var(--navy); transition: background-color 250ms, border-color 250ms, transform 250ms; }
-.co-match__node--l { margin-right: -6px; }
-.co-match__node--r { margin-left: -6px; }
-.co-match__node.is-on { color: #fff; }
-.co-match__node.is-on i { background: var(--blue); border-color: var(--blue); transform: scale(1.3); }
-.co-match__node:focus-visible { outline: 2px solid #fff; outline-offset: 4px; border-radius: 6px; }
-.co-match__hub { position: absolute; left: 50%; top: 50%; display: grid; place-items: center; width: clamp(84px, 9vw, 118px); aspect-ratio: 1; border-radius: 50%; transform: translate(-50%, -50%); border: 1px dashed rgb(255 255 255 / 0.4); color: var(--muted); font-family: var(--font-heading); text-align: center; transition: background-color 600ms, border-color 600ms, box-shadow 600ms, color 600ms; }
-.co-match__hub > span { grid-area: 1 / 1; transition: opacity 400ms, transform 500ms cubic-bezier(.3,1.4,.5,1); }
-.co-match__q { font-size: 34px; }
-.co-match__g { padding: 0 8px; font-size: clamp(12px, 1.2vw, 15px); line-height: 1.1; opacity: 0; transform: scale(0.6); }
-.co-match.is-linked .co-match__hub { background: var(--blue); border: 1px solid var(--blue); color: #fff; box-shadow: var(--glow); }
-.co-match.is-linked .co-match__q { opacity: 0; transform: scale(0.4); }
-.co-match.is-linked .co-match__g { opacity: 1; transform: none; }
-.co-match__cap { margin-top: 14px !important; min-height: 1.5em; color: var(--muted); font-size: 15px; text-align: center; }
-.co-match__cap strong { color: #fff; font-weight: 500; }
 @media (max-width: 640px) {
   .co-match-head { grid-template-columns: 1fr; gap: 12px; }
   .co-match-head p:last-child { justify-self: start; text-align: left; }
-  .co-match { height: 300px; }
-  .co-match__node { font-size: 12px; gap: 6px; }
-  .co-match__hub { width: 76px; }
+}
+
+/* 01 Kaksi rantaa ja silta */
+.co-bridge-wrap { margin-top: 48px; }
+.co-bridge { position: relative; display: grid; grid-template-columns: 26% 1fr 26%; align-items: end; height: clamp(220px, 24vw, 290px); padding: 0 0 0; border-radius: 24px; overflow: hidden; }
+.co-bridge__shore { position: relative; z-index: 1; height: 62%; padding: 18px; border-radius: 20px 20px 0 0; background: var(--navy-2); border: 1px solid rgb(255 255 255 / 0.18); border-bottom: 0; display: flex; flex-direction: column; justify-content: space-between; transition: border-color 600ms; }
+.co-bridge.is-full .co-bridge__shore { border-color: rgb(20 128 255 / 0.55); }
+.co-bridge__label { font-family: var(--font-heading); font-size: clamp(13px, 1.4vw, 18px); letter-spacing: 0.12em; text-transform: uppercase; }
+.co-bridge__shore--l { border-top-right-radius: 4px; }
+.co-bridge__shore--r { border-top-left-radius: 4px; }
+.co-bridge__shore--r .co-bridge__label { text-align: right; }
+.co-bridge__icons { display: flex; flex-wrap: wrap; gap: 8px; }
+.co-bridge__icons--r { justify-content: flex-end; }
+.co-bridge__icons--l i { width: 18px; height: 22px; border-radius: 4px; background: rgb(255 255 255 / 0.14); border: 1px solid rgb(255 255 255 / 0.25); }
+.co-bridge__icons--r i { width: 18px; height: 18px; border-radius: 50%; background: rgb(255 255 255 / 0.18); border: 1px solid rgb(255 255 255 / 0.3); }
+.co-bridge.is-full .co-bridge__icons i { background: rgb(20 128 255 / 0.55); border-color: var(--blue); transition: background-color 500ms, border-color 500ms; }
+.co-bridge__gap { position: relative; height: 100%; }
+/* Kansi on rantojen yläreunan tasolla. */
+.co-bridge__deck { position: absolute; z-index: 2; left: 0; right: 0; bottom: calc(62% - 16px); height: 16px; display: flex; gap: 3px; }
+/* Pilarit nousevat, kun silta on valmis. */
+.co-bridge__gap::before, .co-bridge__gap::after { content: ""; position: absolute; bottom: 0; width: 6px; height: calc(62% - 16px); border-radius: 3px 3px 0 0; background: linear-gradient(var(--blue), rgb(20 128 255 / 0.15)); transform: scaleY(0); transform-origin: bottom; transition: transform 600ms cubic-bezier(.3,1.3,.5,1) 200ms; }
+.co-bridge__gap::before { left: calc(33% - 3px); }
+.co-bridge__gap::after { left: calc(67% - 3px); }
+.co-bridge.is-full .co-bridge__gap::before, .co-bridge.is-full .co-bridge__gap::after { transform: none; }
+.co-bridge__plank { flex: 1; border-radius: 4px; background: var(--blue); box-shadow: 0 0 12px rgb(20 128 255 / 0.5); opacity: 0; transform: translateY(-70px) rotate(-6deg); transition: transform 550ms cubic-bezier(.3,1.4,.5,1), opacity 200ms; }
+.co-bridge__plank:nth-child(even) { transform: translateY(-90px) rotate(5deg); }
+.co-bridge__plank.is-in { opacity: 1; transform: none; }
+.co-bridge__walker { position: absolute; bottom: 100%; width: 12px; height: 12px; margin-bottom: 4px; border-radius: 50%; background: #fff; opacity: 0; }
+.co-bridge.is-full .co-bridge__walker { opacity: 1; transition: opacity 400ms 300ms; }
+.co-bridge.is-full .co-bridge__walker--a { animation: co-walk-r 4.5s ease-in-out infinite; }
+.co-bridge.is-full .co-bridge__walker--b { background: var(--blue-soft); animation: co-walk-l 5.2s ease-in-out 1.2s infinite; }
+@keyframes co-walk-r { from { left: 0; } to { left: calc(100% - 12px); } }
+@keyframes co-walk-l { from { left: calc(100% - 12px); } to { left: 0; } }
+.co-bridge__name { position: absolute; z-index: 2; left: 50%; bottom: calc(62% - 56px); transform: translate(-50%, 8px) scale(0.85); padding: 6px 14px; border-radius: 9999px; background: var(--blue); box-shadow: var(--glow); font-family: var(--font-heading); font-size: clamp(12px, 1.3vw, 15px); white-space: nowrap; opacity: 0; transition: opacity 400ms, transform 600ms cubic-bezier(.3,1.5,.5,1); }
+.co-bridge.is-full .co-bridge__name { opacity: 1; transform: translate(-50%, 0); }
+.co-bridge__water { position: absolute; left: 0; right: 0; bottom: 0; height: 38%; overflow: hidden; }
+.co-bridge__water span { position: absolute; left: -50%; width: 200%; height: 2px; background: repeating-linear-gradient(90deg, rgb(255 255 255 / 0.22) 0 26px, transparent 26px 44px); animation: co-water 6s linear infinite; }
+.co-bridge__water span:first-child { top: 45%; }
+.co-bridge__water span:last-child { top: 75%; animation-duration: 9s; animation-direction: reverse; opacity: 0.6; }
+@keyframes co-water { to { translate: 44px 0; } }
+.co-bridge__cap { margin-top: 14px !important; min-height: 1.5em; color: var(--muted); font-size: 15px; text-align: center; }
+@media (max-width: 640px) {
+  .co-bridge { grid-template-columns: 24% 1fr 24%; height: 240px; }
+  .co-bridge__shore { padding: 12px 10px; }
+  .co-bridge__label { font-size: 11px; letter-spacing: 0.06em; }
+  .co-bridge__icons { gap: 5px; }
+  .co-bridge__icons--l i, .co-bridge__icons--r i { width: 12px; height: 14px; }
+  .co-bridge__icons--r i { height: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .co-bridge__plank, .co-bridge__name { transition: none; }
+  .co-bridge__water span, .co-bridge__walker { animation: none !important; }
 }
 
 /* 02 Prompt-esitys */
