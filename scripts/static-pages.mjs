@@ -30,10 +30,10 @@ const footer = `<footer><p>© 2026 Gettowork Oy · Y-tunnus 3196576-1 · Espoo, 
 const PAGES = [
   {
     path: '/',
-    title: 'Yrittäjätesti: Minkälainen yrittäjä olet? · Get to Work',
-    description: 'Voisiko ongelmat johtua sinusta? Tee yrittäjätesti ja selvitä 10 minuutissa, minkälainen yrittäjä olet. Löydät syyt yrityksesi ongelmiin ja näet, mitä kannattaa parantaa ja mihin keskittyä.',
-    body: `<h1>Voisiko ongelmat johtua sinusta?</h1>
-<p>Testaa, minkälainen yrittäjä olet. Löydät syyt yrityksesi ongelmiin ja näet, mitä sinun kannattaa parantaa ja mihin keskittyä.</p>
+    title: 'Yrittäjätesti: Testaa, minkälainen yrittäjä sinä olet · Get to Work',
+    description: 'Testaa, minkälainen yrittäjä sinä olet. Voisiko yrityksesi ongelmat johtua sinusta? Yrittäjätesti vie noin 10 minuuttia: löydät syyt ja näet, mitä sinun kannattaa parantaa ja mihin keskittyä.',
+    body: `<h1>Testaa, minkälainen yrittäjä sinä olet.</h1>
+<p>Voisiko yrityksesi ongelmat johtua sinusta? Löydät syyt ja näet, mitä sinun kannattaa parantaa ja mihin keskittyä.</p>
 ${list(['Miksi kiire ei lopu?', 'Onko hinnoittelu kohdallaan?', 'Mistä seuraavat asiakkaat?', 'Mihin aikani oikeasti menee?'])}
 <p>Yrittäjätestissä on 72 lyhyttä väittämää 12 osa-alueelta. Testi vie noin 10 minuuttia, ja tuloksen näet heti: pisteet, tasosi ja yrittäjätyyppisi. <a href="/kysely">Lue lisää testistä</a>.</p>
 <p>Get to Work tekee työn tekemisestä helpompaa. <a href="/tietoa">Tietoa yrityksestä</a>.</p>`,
