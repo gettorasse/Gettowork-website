@@ -31,9 +31,9 @@ const PAGES = [
   {
     path: '/',
     title: 'Yrittäjätesti: Minkälainen yrittäjä olet? · Get to Work',
-    description: 'Voisiko yrityksesi ongelmat olla sinusta kiinni? Useimman pk-yrityksen menestys ja ongelmat kumpuavat yrittäjästä itsestään. Tee yrittäjätesti ja selvitä 10 minuutissa, minkälainen yrittäjä olet.',
-    body: `<h1>Voisiko yrityksesi ongelmat olla sinusta kiinni?</h1>
-<p>Useimman pk-yrityksen menestys ja ongelmat kumpuavat yrittäjästä itsestään. Testaa, minkälainen yrittäjä sinä olet.</p>
+    description: 'Voisiko ongelmat johtua sinusta? Tee yrittäjätesti ja selvitä 10 minuutissa, minkälainen yrittäjä olet. Löydät syyt yrityksesi ongelmiin ja näet, mitä kannattaa parantaa ja mihin keskittyä.',
+    body: `<h1>Voisiko ongelmat johtua sinusta?</h1>
+<p>Testaa, minkälainen yrittäjä olet. Löydät syyt yrityksesi ongelmiin ja näet, mitä sinun kannattaa parantaa ja mihin keskittyä.</p>
 ${list(['Miksi kiire ei lopu?', 'Onko hinnoittelu kohdallaan?', 'Mistä seuraavat asiakkaat?', 'Mihin aikani oikeasti menee?'])}
 <p>Yrittäjätestissä on 72 lyhyttä väittämää 12 osa-alueelta. Testi vie noin 10 minuuttia, ja tuloksen näet heti: pisteet, tasosi ja yrittäjätyyppisi. <a href="/kysely">Lue lisää testistä</a>.</p>
 <p>Get to Work tekee työn tekemisestä helpompaa. <a href="/tietoa">Tietoa yrityksestä</a>.</p>`,
@@ -84,7 +84,7 @@ ${list(['Miksi kiire ei lopu?', 'Onko hinnoittelu kohdallaan?', 'Mistä seuraava
   {
     path: '/kysely',
     title: 'Tietoa testistä · Get to Work',
-    description: 'Yrittäjätesti: mitkä yrityksesi vahvuudet ja ongelmat kumpuavat sinusta? 12 osa-aluetta, 72 väittämää, noin 10 minuuttia. Kolme tasoa: Itsensätyöllistäjä, Pyörittäjä ja Omistaja.',
+    description: 'Yrittäjätesti: voisiko ongelmat johtua sinusta? Löydä syyt ja se, mihin keskittyä. 12 osa-aluetta, 72 väittämää, noin 10 minuuttia. Kolme tasoa: Itsensätyöllistäjä, Pyörittäjä ja Omistaja.',
     body: `<p>Yrittäjätesti</p>
 <h1>Minkälainen yrittäjä olet?</h1>
 <p>72 lyhyttä väittämää yrityksesi arjesta. Saat pisteet, tasosi, yrittäjätyyppisi ja tiedon siitä, mistä kannattaa aloittaa.</p>
@@ -176,7 +176,7 @@ Get to Work yhdistää tekoälyn, älykkään työnsuunnittelun ja luotettavien 
 ## Sivut
 
 - [Tietoa yrityksestä](${SITE}/tietoa): mitä Get to Work tekee ja miksi
-- [Yrittäjätesti](${SITE}/): voisiko yrityksesi ongelmat olla sinusta kiinni? 72 väittämän itsearvio yrittäjälle
+- [Yrittäjätesti](${SITE}/): voisiko ongelmat johtua sinusta? 72 väittämän itsearvio yrittäjälle
 - [Tietoa testistä](${SITE}/kysely): testin osa-alueet ja tasot
 - [Tietosuojaseloste](${SITE}/tietosuoja)
 

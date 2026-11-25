@@ -17,10 +17,10 @@ type ViewProps = { rs: RestartScoreState; focusRef: FocusRef };
 type Ok = Extract<Evaluation, { ok: true }>;
 
 // Otsikko kahdella rivillä; kumpikin rivi pysyy yhtenä rivinä ja skaalautuu leveyden mukaan.
-const TITLE_1 = 'Voisiko yrityksesi ongelmat';
-const TITLE_2 = 'olla sinusta kiinni?';
+const TITLE_1 = 'Voisiko ongelmat';
+const TITLE_2 = 'johtua sinusta?';
 const TITLE = `${TITLE_1} ${TITLE_2}`;
-const SUBTITLE = 'Useimman pk-yrityksen menestys ja ongelmat kumpuavat yrittäjästä itsestään. Testaa, minkälainen yrittäjä sinä olet.';
+const SUBTITLE = 'Testaa, minkälainen yrittäjä olet. Löydät syyt yrityksesi ongelmiin ja näet, mitä sinun kannattaa parantaa ja mihin keskittyä.';
 const TYPED = `${TITLE} ${SUBTITLE}`;
 const QUESTION_PILLS = ['Miksi kiire ei lopu?', 'Onko hinnoittelu kohdallaan?', 'Mistä seuraavat asiakkaat?', 'Mihin aikani oikeasti menee?'];
 let typedOnce = false;
