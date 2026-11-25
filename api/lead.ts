@@ -1,4 +1,4 @@
-// Vercel-funktio: vastaanottaa Restart Score -lomakkeen ja lisää rivin Notion-tietokantaan.
+// Vercel-funktio: vastaanottaa yrittäjätestin lomakkeen ja lisää rivin Notion-tietokantaan.
 // Avaimet ovat Vercelin ympäristömuuttujissa, eivät sivun koodissa:
 //   NOTION_TOKEN        – Notion-integraation salainen avain
 //   NOTION_DATABASE_ID  – tietokanta, joka on jaettu integraatiolle

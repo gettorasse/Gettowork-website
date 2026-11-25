@@ -11,7 +11,7 @@ export function About({ onStart }: { onStart: () => void }) {
 
   return <main lang="fi" className="rs-stage rs-stage--panel">
     <article className="rs-panel rs-about">
-      <p className="rs-eyebrow">Restart Score</p>
+      <p className="rs-eyebrow">Yrittäjätesti</p>
       <h1 ref={headingRef} tabIndex={-1} className="rs-h1">Minkälainen yrittäjä olet?</h1>
       <p className="rs-lead">{TOTAL_Q} lyhyttä väittämää yrityksesi arjesta. Saat pisteet, tasosi, yrittäjätyyppisi ja tiedon siitä, mistä kannattaa aloittaa.</p>
       <p className="rs-facts">12 osa-aluetta <span aria-hidden="true">·</span> {TOTAL_Q} väittämää <span aria-hidden="true">·</span> noin 10 minuuttia <span aria-hidden="true">·</span> tulos heti</p>

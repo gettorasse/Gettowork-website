@@ -19,7 +19,7 @@ const template = readFileSync(new URL('index.html', dist), 'utf8');
 const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const list = items => `<ul>${items.map(i => `<li>${i}</li>`).join('')}</ul>`;
 const nav = `<nav aria-label="Sivut"><ul>
-<li><a href="/">Restart-testi</a></li>
+<li><a href="/">Yrittäjätesti</a></li>
 <li><a href="/tietoa">Tietoa yrityksestä</a></li>
 <li><a href="/kysely">Tietoa testistä</a></li>
 <li><a href="/tietosuoja">Tietosuojaseloste</a></li>
@@ -30,12 +30,12 @@ const footer = `<footer><p>© 2026 Gettowork Oy · Y-tunnus 3196576-1 · Espoo, 
 const PAGES = [
   {
     path: '/',
-    title: 'Restart-testi: Minkälainen yrittäjä olet? · Get to Work',
-    description: 'Tee Get to Workin Restart-testi: 72 lyhyttä väittämää yrityksesi arjesta. Saat pisteet, tasosi, yrittäjätyyppisi ja tiedon siitä, mistä kannattaa aloittaa.',
-    body: `<h1>Minkälainen yrittäjä olet?</h1>
-<p>Tee testi ja selvitä, kuinka hyvin yrityksesi toimii.</p>
+    title: 'Yrittäjätesti: Minkälainen yrittäjä olet? · Get to Work',
+    description: 'Voisiko yrityksesi ongelmat olla sinusta kiinni? Useimman pk-yrityksen menestys ja ongelmat kumpuavat yrittäjästä itsestään. Tee yrittäjätesti ja selvitä 10 minuutissa, minkälainen yrittäjä olet.',
+    body: `<h1>Voisiko yrityksesi ongelmat olla sinusta kiinni?</h1>
+<p>Useimman pk-yrityksen menestys ja ongelmat kumpuavat yrittäjästä itsestään. Testaa, minkälainen yrittäjä sinä olet.</p>
 ${list(['Miksi kiire ei lopu?', 'Onko hinnoittelu kohdallaan?', 'Mistä seuraavat asiakkaat?', 'Mihin aikani oikeasti menee?'])}
-<p>Restart-testissä on 72 lyhyttä väittämää 12 osa-alueelta. Testi vie noin 10 minuuttia, ja tuloksen näet heti: pisteet, tasosi ja yrittäjätyyppisi. <a href="/kysely">Lue lisää testistä</a>.</p>
+<p>Yrittäjätestissä on 72 lyhyttä väittämää 12 osa-alueelta. Testi vie noin 10 minuuttia, ja tuloksen näet heti: pisteet, tasosi ja yrittäjätyyppisi. <a href="/kysely">Lue lisää testistä</a>.</p>
 <p>Get to Work tekee työn tekemisestä helpompaa. <a href="/tietoa">Tietoa yrityksestä</a>.</p>`,
   },
   {
@@ -84,8 +84,8 @@ ${list(['Miksi kiire ei lopu?', 'Onko hinnoittelu kohdallaan?', 'Mistä seuraava
   {
     path: '/kysely',
     title: 'Tietoa testistä · Get to Work',
-    description: 'Restart-testi: 12 osa-aluetta, 72 väittämää, noin 10 minuuttia. Kolme tasoa: Itsensätyöllistäjä, Pyörittäjä ja Omistaja.',
-    body: `<p>Restart Score</p>
+    description: 'Yrittäjätesti: mitkä yrityksesi vahvuudet ja ongelmat kumpuavat sinusta? 12 osa-aluetta, 72 väittämää, noin 10 minuuttia. Kolme tasoa: Itsensätyöllistäjä, Pyörittäjä ja Omistaja.',
+    body: `<p>Yrittäjätesti</p>
 <h1>Minkälainen yrittäjä olet?</h1>
 <p>72 lyhyttä väittämää yrityksesi arjesta. Saat pisteet, tasosi, yrittäjätyyppisi ja tiedon siitä, mistä kannattaa aloittaa.</p>
 <p>12 osa-aluetta · 72 väittämää · noin 10 minuuttia · tulos heti</p>
@@ -108,10 +108,10 @@ ${list(['Riskit ja ennakointi (Toiveikas)', 'Suunta (Haaveilija)', 'Oma aika ja 
   {
     path: '/tietosuoja',
     title: 'Tietosuojaseloste · Get to Work',
-    description: 'Näin Get to Work käsittelee tietoja, jotka jätät Restart Score -testin yhteydessä.',
+    description: 'Näin Get to Work käsittelee tietoja, jotka jätät yrittäjätestin yhteydessä.',
     body: `<p>Päivitetty 28.10.2026</p>
 <h1>Tietosuojaseloste</h1>
-<p>Näin käsittelemme tietoja, jotka jätät Restart Score -testin yhteydessä.</p>
+<p>Näin käsittelemme tietoja, jotka jätät yrittäjätestin yhteydessä.</p>
 <h2>Rekisterinpitäjä</h2>
 <p>Get to Work, Rasmus Rautavirta. Yhteydenotot: <a href="mailto:${EMAIL}">${EMAIL}</a></p>
 <h2>Mitä tietoja keräämme</h2>
@@ -176,7 +176,7 @@ Get to Work yhdistää tekoälyn, älykkään työnsuunnittelun ja luotettavien 
 ## Sivut
 
 - [Tietoa yrityksestä](${SITE}/tietoa): mitä Get to Work tekee ja miksi
-- [Restart-testi](${SITE}/): 72 väittämän itsearvio yrittäjälle
+- [Yrittäjätesti](${SITE}/): voisiko yrityksesi ongelmat olla sinusta kiinni? 72 väittämän itsearvio yrittäjälle
 - [Tietoa testistä](${SITE}/kysely): testin osa-alueet ja tasot
 - [Tietosuojaseloste](${SITE}/tietosuoja)
 

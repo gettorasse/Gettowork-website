@@ -11,7 +11,7 @@ export function Privacy() {
     <article className="rs-panel rs-about">
       <p className="rs-eyebrow">Päivitetty 28.10.2026</p>
       <h1 ref={headingRef} tabIndex={-1} className="rs-h1">Tietosuojaseloste</h1>
-      <p className="rs-lead">Näin käsittelemme tietoja, jotka jätät Restart Score -testin yhteydessä.</p>
+      <p className="rs-lead">Näin käsittelemme tietoja, jotka jätät yrittäjätestin yhteydessä.</p>
 
       <section className="rs-section">
         <h2 className="rs-h2">Rekisterinpitäjä</h2>

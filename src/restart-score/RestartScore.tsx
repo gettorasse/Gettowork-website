@@ -16,8 +16,11 @@ type FocusRef = RefObject<HTMLElement | null>;
 type ViewProps = { rs: RestartScoreState; focusRef: FocusRef };
 type Ok = Extract<Evaluation, { ok: true }>;
 
-const TITLE = 'Minkälainen yrittäjä olet?';
-const SUBTITLE = 'Tee testi ja selvitä, kuinka hyvin yrityksesi toimii.';
+// Otsikko kahdella rivillä; kumpikin rivi pysyy yhtenä rivinä ja skaalautuu leveyden mukaan.
+const TITLE_1 = 'Voisiko yrityksesi ongelmat';
+const TITLE_2 = 'olla sinusta kiinni?';
+const TITLE = `${TITLE_1} ${TITLE_2}`;
+const SUBTITLE = 'Useimman pk-yrityksen menestys ja ongelmat kumpuavat yrittäjästä itsestään. Testaa, minkälainen yrittäjä sinä olet.';
 const TYPED = `${TITLE} ${SUBTITLE}`;
 const QUESTION_PILLS = ['Miksi kiire ei lopu?', 'Onko hinnoittelu kohdallaan?', 'Mistä seuraavat asiakkaat?', 'Mihin aikani oikeasti menee?'];
 let typedOnce = false;
@@ -50,7 +53,7 @@ function Notices({ rs }: { rs: RestartScoreState }) {
 
 function Intro({ rs, focusRef }: ViewProps) {
   const skip = typedOnce;
-  const { displayed, done } = useTypewriter(TYPED, 38, 600, skip);
+  const { displayed, done } = useTypewriter(TYPED, 28, 600, skip);
   const [pillsVisible, setPillsVisible] = useState(skip);
   useEffect(() => { if (done) typedOnce = true; }, [done]);
   useEffect(() => { if (skip) return; const t = setTimeout(() => setPillsVisible(true), 400); return () => clearTimeout(t); }, [skip]);
@@ -70,10 +73,11 @@ function Intro({ rs, focusRef }: ViewProps) {
         <h1 ref={focusRef as RefObject<HTMLHeadingElement | null>} tabIndex={-1} className="rs-home-title">
           <span className="sr-only">{TYPED}</span>
           {/* Näkymätön kopio varaa tilan, jottei sivu hypi kirjoituksen aikana. */}
-          <span className="rs-home-title__ghost" aria-hidden="true"><span className="rs-home-title__big">{TITLE}</span> <span className="rs-home-title__sub">{SUBTITLE}</span></span>
+          <span className="rs-home-title__ghost" aria-hidden="true"><span className="rs-home-title__big">{TITLE_1}</span><span className="rs-home-title__big">{TITLE_2}</span> <span className="rs-home-title__sub">{SUBTITLE}</span></span>
           <span className="rs-home-title__typed" aria-hidden="true">
             {/* Kursori kulkee aina kirjoitettavan rivin lopussa, joten se ei hyppää omalle rivilleen. */}
-            <span className="rs-home-title__big">{displayed.slice(0, TITLE.length)}{!done && !onSub && caret}</span>
+            <span className="rs-home-title__big">{displayed.slice(0, TITLE_1.length)}{!done && displayed.length <= TITLE_1.length && caret}</span>
+            {displayed.length > TITLE_1.length && <span className="rs-home-title__big">{displayed.slice(TITLE_1.length + 1, TITLE.length)}{!done && !onSub && caret}</span>}
             {onSub && <span className="rs-home-title__sub">{displayed.slice(TITLE.length + 1)}{!done && caret}</span>}
           </span>
         </h1>
@@ -219,7 +223,7 @@ function Result({ rs, focusRef }: ViewProps) {
 
   return <main lang="fi" className="rs-stage rs-stage--panel">
     <article className="rs-panel rs-result">
-      <p className="rs-eyebrow">Restart Score · {completed}</p>
+      <p className="rs-eyebrow">Yrittäjätesti · {completed}</p>
       <p className="rs-hero__label">Yrittäjätyyppisi</p>
       <h1 ref={focusRef as RefObject<HTMLHeadingElement | null>} tabIndex={-1} className="rs-archetype">{arch.name}</h1>
       <p className="rs-hero__weakest">Heikoin osa-alue · {LEVER_BY_ID[ev.dominant].name}</p>

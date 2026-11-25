@@ -649,5 +649,5 @@ export const PLAN_LIBRARY: Record<PId, PlanEntry> = {
 };
 
 export const CONTACT_EMAIL = 'rasmus@gettowork.fi';
-export const CONTACT_SUBJECT = 'Gettowork Restart Score – keskustelu tuloksesta';
-export const CONTACT_BODY = 'Hei, haluaisin keskustella Restart Score -arviosta ja yritykseni seuraavista kehitysaskelista.';
+export const CONTACT_SUBJECT = 'Get to Work yrittäjätesti – keskustelu tuloksesta';
+export const CONTACT_BODY = 'Hei, haluaisin keskustella yrittäjätestin tuloksestani ja seuraavista askelista.';
