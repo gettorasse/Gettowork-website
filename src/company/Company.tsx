@@ -280,6 +280,7 @@ function Partners() {
         <span className="co-use__d">{p.d}</span>
       </li>)}
     </ul>
+    <p className="co-motto" data-reveal><strong>Myös myynnin ja projektien osaajat.</strong> Käytännön töiden lisäksi etsimme osaajia vaativampiin tehtäviin.</p>
     <div className="co-actions co-actions--gap" data-reveal>
       <a className="co-btn co-btn--primary" href={PARTNER_HREF}>Liity kumppaniksi <span aria-hidden="true">→</span></a>
     </div>

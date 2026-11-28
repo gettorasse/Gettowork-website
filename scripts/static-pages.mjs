@@ -68,7 +68,7 @@ ${list(['Miksi kiire ei lopu?', 'Onko hinnoittelu kohdallaan?', 'Mistä seuraava
 <p>Perinteinen henkilöstöpalvelu kysyy, millaisen työntekijän tarvitset. Get to Work kysyy, mitä pitäisi saada tehtyä.</p>
 
 <h2>Enemmän työtä. Vähemmän tyhjäkäyntiä.</h2>
-<p>Henkilöstöyritys saa lisää keikkoja, erikoistunut yritys uusia asiakkaita, työpaikka tuloa vapaasta työajasta, ja tekijä lisää työtä ilman työpaikan vaihtoa. <a href="mailto:${EMAIL}?subject=Kumppaniksi">Liity kumppaniksi</a></p>
+<p>Henkilöstöyritys saa lisää keikkoja, erikoistunut yritys uusia asiakkaita, työpaikka tuloa vapaasta työajasta, ja tekijä lisää työtä ilman työpaikan vaihtoa. Käytännön töiden lisäksi etsimme myös myynnin ja projektien osaajia vaativampiin tehtäviin. <a href="mailto:${EMAIL}?subject=Kumppaniksi">Liity kumppaniksi</a></p>
 
 <h2>Selvät vastuut. Ihminen päättää.</h2>
 <p>Tekijän työnantaja on aina hänen oma työnantajansa tai henkilöstöpalvelu, ja vastuut sovitaan ennen aloitusta. Kumppaneilla on tehtävään sopiva osaaminen sekä tarvittavat luvat ja vakuutukset. Teknologia auttaa löytämään oikeat tekijät, mutta valinnan tekee aina ihminen.</p>
