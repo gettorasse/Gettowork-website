@@ -57,3 +57,7 @@
 /* Vaalealla sivulla ylävalikon logo ja valikkopainike tummina. */
 .underlay-nav--light .underlay-nav__header, .underlay-nav--light .underlay-nav__toggle { color: #080e30; }
 .underlay-nav--light .underlay-nav__logo-img { filter: brightness(0) saturate(100%) invert(6%) sepia(38%) saturate(4683%) hue-rotate(226deg) brightness(92%) contrast(105%); }
+/* Vaalea liukuväri navigaation taakse: valkoinen ylhäällä, läpinäkyvä alhaalla. */
+.underlay-nav--light .underlay-nav__header::before { content: ''; position: absolute; inset: 0 0 -36px 0; z-index: -1; pointer-events: none;
+  background: linear-gradient(to bottom, #fff 0%, rgb(255 255 255 / 0.94) 45%, rgb(255 255 255 / 0.6) 72%, rgb(255 255 255 / 0) 100%); transition: opacity 300ms ease; }
+body[data-menu-status="open"] .underlay-nav--light .underlay-nav__header::before { opacity: 0; }
