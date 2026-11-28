@@ -1,0 +1,189 @@
+/* Tietoa-sivu, Airtasker-henkinen ilme. Otsikot: tiivis ja raskas (Anton Formulan tilalla),
+   leipäteksti Manrope. Värit: Get to Workin sininen #1480ff, syvä laivastonsininen #0b1450
+   ja vaaleansininen pinta. */
+.at {
+  --navy: #0b1450;
+  --ink: #0b1450;
+  --blue: #1480ff;
+  --blue-soft: #1470e6;
+  --line: rgb(11 20 80 / 0.12);
+  --muted: rgb(11 20 80 / 0.68);
+  --tint: #eef4ff;
+  --lime: #e2f59a;
+  --glow: 0 10px 28px rgb(20 128 255 / 0.28);
+  --at-head: 'Anton', 'Impact', 'Arial Narrow', sans-serif;
+  --at-body: 'Manrope', var(--font-body);
+  position: relative; z-index: 1; min-height: 100vh; overflow: hidden;
+  background: #fff; color: var(--ink); font-family: var(--at-body); font-size: 18px; line-height: 1.5;
+}
+.at *, .at *::before, .at *::after { box-sizing: border-box; }
+.at p, .at h1, .at h2, .at h3, .at ol, .at ul, .at figure { margin: 0; }
+.at [tabindex="-1"]:focus { outline: none; }
+.at a:focus-visible, .at button:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.at img { display: block; max-width: 100%; }
+.at .co-prompt, .at .co-chip, .at .co-label, .at .co-prompt__k, .at .co-prompt__stages li, .at .co-share__k, .at .co-share__bar span { font-family: var(--at-body); }
+.at .co-prompt__text { font-family: var(--at-body); font-weight: 600; }
+
+.at-wrap { max-width: 1180px; margin: 0 auto; padding: 0 20px; }
+@media (min-width: 768px) { .at-wrap { padding: 0 40px; } }
+.at-band { padding: clamp(72px, 10vw, 128px) 0; }
+.at-band--blue { background: var(--blue); color: #fff; }
+.at-band--tint { background: #f6f9ff; }
+.at-split { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(36px, 5vw, 80px); align-items: center; }
+.at-split--rev > :first-child { order: 0; }
+@media (max-width: 900px) { .at-split { grid-template-columns: 1fr; } .at-split--rev > :first-child { order: 1; } }
+
+.at-h2 { font-family: var(--at-head); font-weight: 400; font-size: clamp(40px, 6vw, 76px); line-height: 1.02; letter-spacing: -0.005em; }
+.at-h3 { margin-top: clamp(64px, 8vw, 96px) !important; font-family: var(--at-head); font-weight: 400; font-size: clamp(32px, 4.4vw, 56px); line-height: 1.05; }
+.at-ink { color: var(--ink); }
+.at-lead { max-width: 640px; margin-top: 22px !important; font-size: clamp(18px, 1.6vw, 20px); color: var(--muted); }
+.at-lead--on-blue { color: rgb(255 255 255 / 0.92); }
+.at-strong { font-weight: 700; color: #fff; }
+.at-small { margin-top: 14px !important; font-size: 14px; color: var(--muted); }
+.at-kicker { font-size: 13px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgb(255 255 255 / 0.8); }
+.at-kicker--blue { color: var(--blue); }
+
+.at-btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5em; min-height: 58px; padding: 0 30px; border-radius: 9999px; border: 0; font-family: var(--at-body); font-size: 18px; font-weight: 700; text-decoration: none; transition: transform 150ms, background-color 200ms, box-shadow 200ms; }
+.at-btn:hover { transform: translateY(-2px); }
+.at-btn--pri { background: var(--blue); color: #fff; box-shadow: 0 8px 22px rgb(20 128 255 / 0.35); }
+.at-btn--pri:hover { background: #0e6fe6; }
+.at-btn--soft { background: #eef4ff; color: var(--blue); }
+.at-btn--white { margin-top: 28px; background: #fff; color: var(--blue); }
+.at-btn--wide { min-width: min(100%, 300px); }
+.at-btn--block { display: flex; width: 100%; max-width: 720px; margin-top: 36px; }
+
+/* --- Avaus: tummansininen kortti ja 3D-hahmot --- */
+.at-hero { padding: 104px 16px 0; }
+@media (min-width: 768px) { .at-hero { padding: 112px 32px 0; } }
+.at-hero__card { position: relative; max-width: 1240px; margin: 0 auto; min-height: min(78vh, 720px); border-radius: 32px; overflow: hidden; display: grid; place-items: center;
+  background: radial-gradient(60% 70% at 50% 110%, rgb(20 128 255 / 0.55), transparent 70%), var(--ink); color: #fff; text-align: center; }
+.at-hero__inner { position: relative; z-index: 2; padding: clamp(48px, 7vw, 88px) clamp(20px, 6vw, 80px); max-width: 860px; }
+.at-hero__title { margin-top: 14px !important; font-family: var(--at-head); font-weight: 400; font-size: clamp(54px, 9.5vw, 132px); line-height: 0.94; text-transform: uppercase; transform: rotate(-3deg); }
+.at-hero__title span { display: inline-block; opacity: 0; animation: at-pop 700ms cubic-bezier(.2,1.3,.4,1) forwards; }
+.at-hero__accent { color: var(--blue); animation-delay: 200ms !important; text-shadow: 0 0 40px rgb(20 128 255 / 0.5); }
+@keyframes at-pop { from { opacity: 0; transform: translateY(30px) scale(0.92); } to { opacity: 1; transform: none; } }
+.at-hero__sub { margin-top: 30px !important; font-size: clamp(18px, 2vw, 22px); font-weight: 600; }
+.at-hero__btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 30px; }
+.at-hero__foot { margin-top: 26px !important; font-size: 15px; font-weight: 600; color: rgb(255 255 255 / 0.7); }
+.at-hero__fig { position: absolute; bottom: -2%; z-index: 1; height: 88%; width: auto; filter: drop-shadow(0 20px 30px rgb(0 0 0 / 0.35)); opacity: 0; animation: at-rise 900ms cubic-bezier(.2,.8,.2,1) 300ms forwards; }
+.at-hero__fig--l { left: 2%; }
+.at-hero__fig--r { right: 3%; animation-delay: 450ms; }
+@keyframes at-rise { from { opacity: 0; transform: translateY(60px); } to { opacity: 1; transform: none; } }
+@media (max-width: 1080px) { .at-hero__fig { height: 52%; opacity: 0; animation-name: at-rise-soft; } .at-hero__fig--l { left: -6%; } .at-hero__fig--r { right: -6%; } }
+@keyframes at-rise-soft { from { opacity: 0; transform: translateY(60px); } to { opacity: 0.35; transform: none; } }
+@media (max-width: 640px) { .at-hero__fig { display: none; } .at-hero__card { min-height: 0; } .at-btn--wide { width: 100%; } }
+
+/* --- Kuva ja kelluvat kortit --- */
+.at-media { position: relative; padding: 28px 18px 34px; }
+.at-media__img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 24px; box-shadow: 0 24px 48px rgb(11 20 80 / 0.22); }
+.at-media--tall .at-media__img { aspect-ratio: 4 / 5; }
+.at-float { position: absolute; display: flex; flex-direction: column; min-width: 230px; border-radius: 16px; background: #fff; color: var(--ink); box-shadow: 0 16px 36px rgb(11 20 80 / 0.22); overflow: hidden; animation: at-bob 6s ease-in-out infinite; }
+.at-float__k { padding: 10px 16px; background: #f1f3f8; font-size: 14px; font-weight: 600; }
+.at-float__row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 16px 14px; }
+.at-float__v { font-size: 15px; }
+.at-float__row b { font-family: var(--at-head); font-weight: 400; font-size: 28px; letter-spacing: 0.01em; }
+.at-float--tr { top: 0; right: 0; }
+.at-pill { position: absolute; display: inline-flex; align-items: center; gap: 10px; padding: 12px 20px 12px 14px; border-radius: 9999px; font-size: 16px; font-weight: 600; color: var(--ink); box-shadow: 0 10px 24px rgb(11 20 80 / 0.16); animation: at-bob 7s ease-in-out -2s infinite; }
+.at-pill small { margin-left: 8px; font-size: 13px; font-weight: 500; color: var(--muted); }
+.at-pill__i { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: rgb(255 255 255 / 0.65); }
+.at-pill--lime { background: var(--lime); }
+.at-pill--soft { background: #e9f1ff; }
+.at-pill--ml { left: 0; bottom: 8px; }
+.at-pill--br { right: 4px; bottom: 6px; }
+.at-pill--b1 { right: 0; bottom: 84px; }
+.at-pill--b2 { right: 18px; bottom: 22px; animation-delay: -4s; }
+@keyframes at-bob { 50% { transform: translateY(-8px); } }
+@media (max-width: 560px) { .at-float { min-width: 0; right: 6px; } .at-pill { font-size: 14px; } }
+.at-icon { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+
+/* --- Mitä teemme: listakortit, välilehdet ja esimerkkityöt --- */
+.at-listbox { display: grid; gap: 14px; margin-top: 40px; padding: 16px; border-radius: 28px; background: var(--tint); max-width: 860px; }
+.at-listcard { display: flex; align-items: center; gap: 22px; padding: 16px; border-radius: 18px; background: #fff; transition: transform 200ms, box-shadow 200ms; }
+.at-listcard:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgb(11 20 80 / 0.1); }
+.at-listcard__img { flex: none; width: 96px; height: 96px; border-radius: 14px; overflow: hidden; background: linear-gradient(160deg, #dbe9ff, #f5f9ff); }
+.at-listcard__img img { width: 100%; height: 150%; object-fit: cover; object-position: top; }
+.at-listcard b { display: block; font-size: clamp(20px, 2vw, 24px); font-weight: 600; }
+.at-listcard small { display: block; margin-top: 4px; font-size: 16px; color: var(--muted); }
+.at-note { margin-top: 22px !important; max-width: 860px; font-size: 17px; color: var(--muted); }
+.at-note b { color: var(--ink); }
+.at-tabs { display: flex; flex-wrap: wrap; gap: 6px 28px; margin-top: 32px; }
+.at-tab { display: inline-flex; align-items: center; gap: 10px; padding: 12px 2px; border: 0; border-bottom: 3px solid var(--ink); background: none; color: var(--ink); font-family: var(--at-body); font-size: 17px; font-weight: 500; cursor: pointer; }
+.at-tab .at-icon { width: 22px; height: 22px; color: var(--blue); }
+.at-tab.is-on { border-bottom-color: var(--blue); color: var(--blue); }
+.at-jobs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 26px; }
+@media (max-width: 640px) { .at-jobs { grid-template-columns: 1fr; } }
+.at-job { display: flex; flex-direction: column; gap: 8px; min-height: 180px; padding: 24px; border-radius: 22px; border: 1px solid #dbe6fb; background: #f5f9ff; animation: at-card 450ms ease both; }
+@keyframes at-card { from { opacity: 0; transform: translateY(12px); } }
+.at-job__c { font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.at-job__t { font-size: clamp(20px, 2vw, 26px); font-weight: 600; line-height: 1.2; }
+.at-job__f { align-self: flex-start; margin-top: auto; padding: 8px 16px; border-radius: 9999px; background: #fff; font-size: 15px; font-weight: 600; }
+.at-star { color: #ff8a00; }
+
+/* --- Näin se toimii --- */
+.at-steps { list-style: none; padding: 0; margin-top: 40px !important; display: grid; gap: 22px; max-width: 760px; }
+.at-steps li { display: flex; gap: 20px; align-items: flex-start; }
+.at-steps__n { flex: none; display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; background: #dbe9ff; color: var(--blue); font-size: 20px; font-weight: 700; }
+.at-steps b { display: block; padding-top: 8px; font-size: clamp(20px, 2vw, 24px); font-weight: 600; }
+.at-steps small { display: block; margin-top: 4px; font-size: 16px; color: var(--muted); }
+.at .co-prompt { margin-top: 48px; background: #fff; box-shadow: 0 16px 40px rgb(11 20 80 / 0.08); }
+
+/* --- Kumppaneille --- */
+.at-ticks { list-style: none; padding: 0; margin-top: 26px !important; display: grid; gap: 14px; }
+.at-ticks li { display: flex; align-items: center; gap: 14px; font-size: 19px; }
+.at-ticks svg { flex: none; width: 22px; height: 22px; fill: none; stroke: #fff; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.at-profile { display: grid; grid-template-columns: 220px 1fr; gap: 28px; align-items: center; margin-top: clamp(56px, 7vw, 88px); padding: 22px; border-radius: 28px; background: #fff; color: var(--ink); max-width: 860px; box-shadow: 0 20px 48px rgb(11 20 80 / 0.25); }
+@media (max-width: 640px) { .at-profile { grid-template-columns: 1fr; } }
+.at-profile__img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 18px; }
+.at-profile__tag { font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue); }
+.at-profile__name { margin-top: 6px !important; font-family: var(--at-head); font-size: clamp(32px, 4vw, 46px); line-height: 1; text-transform: uppercase; }
+.at-profile__spec { margin-top: 14px !important; font-weight: 700; }
+.at-badges { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+.at-badges span { padding: 10px 16px; border-radius: 9999px; background: var(--tint); font-size: 15px; font-weight: 600; }
+.at-profile__note { margin-top: 18px !important; font-size: 15px; color: var(--muted); }
+
+/* --- Luottamus --- */
+.at-trust { list-style: none; padding: 0; margin-top: 32px !important; display: grid; gap: 22px; }
+.at-trust li { display: flex; gap: 18px; align-items: flex-start; }
+.at-trust__i { flex: none; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 12px; background: var(--tint); color: var(--blue); }
+.at-trust__i .at-icon { width: 22px; height: 22px; }
+.at-trust b { display: block; font-size: 20px; font-weight: 700; }
+.at-trust small { display: block; margin-top: 4px; font-size: 16px; color: var(--muted); }
+.at-tagline { margin-top: 30px !important; font-family: var(--at-head); font-size: 28px; color: var(--blue); }
+
+/* --- Visio --- */
+.at .at-wide { margin-top: 40px; border-radius: 28px; overflow: hidden; box-shadow: 0 24px 48px rgb(11 20 80 / 0.18); }
+.at-wide img { width: 100%; aspect-ratio: 21 / 9; object-fit: cover; }
+.at-share { display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(24px, 4vw, 56px); align-items: center; margin-top: 24px; padding: clamp(22px, 3vw, 40px); border-radius: 28px; background: #fff; box-shadow: 0 12px 32px rgb(11 20 80 / 0.06); }
+@media (max-width: 760px) { .at-share { grid-template-columns: 1fr; } }
+.at-share__big { margin-top: 10px !important; font-family: var(--at-head); font-size: clamp(30px, 3.6vw, 46px); line-height: 1.05; }
+.at .co-share__bar { background: var(--tint); }
+.at-mv { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 24px; }
+@media (max-width: 760px) { .at-mv { grid-template-columns: 1fr; } }
+.at-mv__card { padding: 30px; border-radius: 24px; background: #fff; box-shadow: 0 12px 32px rgb(11 20 80 / 0.06); }
+.at-mv__card p + p { margin-top: 10px !important; font-family: var(--at-head); font-size: clamp(26px, 2.8vw, 36px); line-height: 1.1; }
+.at-mv__card--blue { background: var(--blue); color: #fff; box-shadow: var(--glow); }
+
+/* --- Lopetus --- */
+.at-close { padding: 24px 16px clamp(110px, 12vw, 140px); }
+@media (min-width: 768px) { .at-close { padding: 32px 32px 140px; } }
+.at-close__card { position: relative; max-width: 1240px; margin: 0 auto; border-radius: 32px; overflow: hidden; background: var(--ink); color: #fff; text-align: center; }
+.at-close__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.32; }
+.at-close__inner { position: relative; padding: clamp(64px, 9vw, 120px) clamp(20px, 6vw, 80px); }
+.at-close__title { max-width: 900px; margin: 0 auto !important; font-family: var(--at-head); font-weight: 400; font-size: clamp(44px, 7vw, 96px); line-height: 0.98; text-transform: uppercase; }
+
+/* Dock vaalealla sivulla */
+.at .section-dock__pill { box-shadow: 0 8px 24px rgb(11 20 80 / 0.16); border: 1px solid var(--line); }
+
+@media (prefers-reduced-motion: reduce) {
+  .at *, .at *::before, .at *::after { animation: none !important; transition: none !important; }
+  .at-hero__title span, .at-hero__fig { opacity: 1 !important; }
+  .at [data-reveal] { opacity: 1 !important; transform: none !important; }
+}
+
+@media (max-width: 640px) {
+  .at-profile__img { max-width: 200px; aspect-ratio: 1; }
+  .at-tabs { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-left: -20px; margin-right: -20px; padding: 0 20px; }
+  .at-tabs::-webkit-scrollbar { display: none; }
+  .at-tab { flex: none; }
+  .at-hero__title { font-size: clamp(44px, 13vw, 60px); }
+}

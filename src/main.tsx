@@ -10,7 +10,7 @@ import { initLogoStackLoader } from './logoLoader.ts';
 import { HOME_PATH, isLegacyPath, routeFromPath, type Route } from './router.ts';
 import { About } from './restart-score/About.tsx';
 import { Privacy } from './restart-score/Privacy.tsx';
-import { Company } from './company/Company.tsx';
+import { Company } from './company/CompanyAt.tsx';
 import { RestartScore } from './restart-score/RestartScore.tsx';
 import { useRestartScore } from './restart-score/useRestartScore.ts';
 
