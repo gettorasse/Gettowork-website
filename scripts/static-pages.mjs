@@ -81,7 +81,7 @@ ${list(['Miksi kiire ei lopu?', 'Onko hinnoittelu kohdallaan?', 'Mistä seuraava
 
 <h2>Mitä pitäisi saada tehtyä?</h2>
 <p>Selitä tarpeesi. Get to Work saa sen tehtyä.</p>
-<p><a href="mailto:${EMAIL}?subject=Ty%C3%B6tilaus">Kerro, mitä tarvitset</a> · <a href="mailto:${EMAIL}?subject=Kumppaniksi">Liity kumppaniksi</a></p>
+<p><a href="mailto:${EMAIL}?subject=Ty%C3%B6tilaus">Kerro tarpeesi ilmaiseksi</a> · <a href="mailto:${EMAIL}?subject=Kumppaniksi">Ansaitse Get to Workissa</a></p>
 <p>Prompt to done.</p>`,
   },
   {

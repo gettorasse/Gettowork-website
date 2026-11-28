@@ -130,8 +130,8 @@ function Hero({ headingRef }: { headingRef: React.RefObject<HTMLHeadingElement |
         </h1>
         <p className="at-hero__sub">Selitä tarpeesi. Saat tarjoukset. Työ tehdään.</p>
         <div className="at-hero__btns">
-          <a className="at-btn at-btn--pri at-btn--wide" href={ORDER_HREF}>Kerro tarpeesi</a>
-          <a className="at-btn at-btn--soft at-btn--wide" href={PARTNER_HREF}>Liity kumppaniksi</a>
+          <a className="at-btn at-btn--pri at-btn--wide" href={ORDER_HREF}>Kerro tarpeesi ilmaiseksi</a>
+          <a className="at-btn at-btn--soft at-btn--wide" href={PARTNER_HREF}>Ansaitse Get to Workissa</a>
         </div>
         <p className="at-hero__foot" lang="en">Prompt to done.</p>
       </div>
@@ -343,8 +343,8 @@ function Closing() {
       <div className="at-close__inner">
         <h2 id="at-close-title" className="at-close__title">Selitä tarpeesi. Get to Work saa sen tehtyä.</h2>
         <div className="at-hero__btns">
-          <a className="at-btn at-btn--pri at-btn--wide" href={ORDER_HREF}>Kerro tarpeesi</a>
-          <a className="at-btn at-btn--soft at-btn--wide" href={PARTNER_HREF}>Liity kumppaniksi</a>
+          <a className="at-btn at-btn--pri at-btn--wide" href={ORDER_HREF}>Kerro tarpeesi ilmaiseksi</a>
+          <a className="at-btn at-btn--soft at-btn--wide" href={PARTNER_HREF}>Ansaitse Get to Workissa</a>
         </div>
         <p className="at-hero__foot" lang="en">Prompt to done.</p>
       </div>
