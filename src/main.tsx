@@ -39,7 +39,7 @@ function App() {
 
   useEffect(() => {
     // Samat otsikot kuin scripts/static-pages.mjs:n tekstiversioissa.
-    document.title = route === 'about' ? 'Tietoa testistä · Get to Work' : route === 'privacy' ? 'Tietosuojaseloste · Get to Work' : route === 'company' ? 'Tietoa yrityksestä · Get to Work' : 'Yrittäjätesti: Testaa, minkälainen yrittäjä sinä olet · Get to Work';
+    document.title = route === 'about' ? 'Tietoa testistä · Get to Work' : route === 'privacy' ? 'Tietosuojaseloste · Get to Work' : route === 'company' ? 'Tietoa yrityksestä · Get to Work' : 'Yrittäjätesti: Pyöritätkö sinä yritystä vai pyörittääkö se sinua? · Get to Work';
     window.scrollTo(0, 0);
   }, [route]);
 
