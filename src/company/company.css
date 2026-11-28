@@ -611,3 +611,49 @@
   .co-match__path, .co-prompt__card, .co-puzzle__piece, .co-stack__block { transition: none; }
   .co-side, .co-place, .co-side__points li, .co-place__tasks li, .co-week__cell.is-on, .co-grow__bar, .co-place__art * { animation: none !important; opacity: 1; transform: none; }
 }
+
+/* --- Uudistus 11/2026: käyttötarkoitukset, tilanteet, koneisto ja osaamisen jakaminen --- */
+.co-label--gap { margin-top: 72px !important; }
+.co-h3--big { margin-top: 96px !important; max-width: 900px; font-size: clamp(28px, 3.4vw, 44px); line-height: 1.08; letter-spacing: -0.015em; }
+.co-card__foot { margin-top: 18px !important; }
+.co-compare { margin-top: 8px; }
+.co-compare + .co-lead { margin-top: 32px !important; }
+.co-places--tight { margin-top: 0 !important; }
+.co-checks--sm li { align-items: flex-start; font-size: 17px; line-height: 1.35; }
+.co-checks--sm svg { margin-top: -1px; }
+.co-trust { margin-top: 32px; max-width: 900px; }
+
+.co-uses { list-style: none; padding: 0; margin-top: 48px !important; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 900px) { .co-uses { grid-template-columns: 1fr; } }
+.co-use { position: relative; display: flex; flex-direction: column; gap: 12px; padding: 28px; border-radius: 24px; border: 1px solid var(--line); background: rgb(255 255 255 / 0.04); overflow: hidden; transition: border-color 300ms, background-color 300ms, transform 300ms; }
+.co-use:hover { border-color: rgb(20 128 255 / 0.7); background: rgb(20 128 255 / 0.1); transform: translateY(-4px); }
+.co-use__n { font-family: var(--font-heading); font-size: clamp(48px, 5vw, 72px); line-height: 0.8; letter-spacing: -0.04em; color: var(--blue); text-shadow: 0 0 30px rgb(20 128 255 / 0.5); }
+.co-use__t { margin-top: 10px; font-family: var(--font-heading); font-size: clamp(24px, 2.4vw, 30px); line-height: 1.08; }
+.co-use__d { color: var(--muted); font-size: 17px; }
+.co-use__tag { align-self: flex-start; margin-top: auto; padding: 6px 12px; border-radius: 9999px; border: 1px solid rgb(125 187 255 / 0.4); color: var(--blue-soft); font-family: var(--font-heading); font-size: 13px; letter-spacing: 0.04em; }
+
+.co-situations { list-style: none; padding: 0; margin-top: 24px !important; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 1000px) { .co-situations { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .co-situations { grid-template-columns: 1fr; } }
+.co-situations li { position: relative; padding: 20px 20px 20px 46px; border-radius: 18px; background: #fff; color: var(--navy); font-family: var(--font-heading); font-size: 17px; line-height: 1.25; }
+.co-situations li::before { content: ""; position: absolute; left: 20px; top: 26px; width: 12px; height: 12px; border-radius: 50%; background: var(--blue); box-shadow: 0 0 12px rgb(20 128 255 / 0.7); }
+
+.co-machine { list-style: none; padding: 0; margin-top: 0 !important; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; border-radius: 22px; overflow: hidden; border: 1px solid var(--line); background: var(--line); }
+@media (max-width: 860px) { .co-machine { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 520px) { .co-machine { grid-template-columns: 1fr; } }
+.co-machine li { display: flex; gap: 14px; align-items: baseline; padding: 22px; background: var(--navy); font-family: var(--font-heading); font-size: 18px; line-height: 1.25; transition: background-color 250ms; }
+.co-machine li:hover { background: #10205e; }
+.co-machine li span { flex: none; font-size: 13px; letter-spacing: 0.1em; color: var(--blue-soft); }
+
+.co-share { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; align-items: end; height: 240px; }
+.co-share__day { display: flex; flex-direction: column; gap: 10px; height: 100%; }
+.co-share__k { font-family: var(--font-heading); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); text-align: center; }
+.co-share__bar { position: relative; flex: 1; display: flex; align-items: flex-end; justify-content: center; padding: 12px 4px; border-radius: 14px; background: rgb(255 255 255 / 0.08); border: 1px solid var(--line); transform: scaleY(0.15); transform-origin: bottom; opacity: 0.3; transition: transform 700ms cubic-bezier(.2,.8,.2,1), opacity 400ms, background-color 400ms; transition-delay: calc(var(--i) * 160ms); }
+.co-share__bar span { writing-mode: vertical-rl; transform: rotate(180deg); font-family: var(--font-heading); font-size: 14px; letter-spacing: 0.06em; color: rgb(255 255 255 / 0.85); white-space: nowrap; }
+.co-share.is-in .co-share__bar { transform: none; opacity: 1; }
+.co-share__day.is-other .co-share__bar { background: var(--blue); border-color: var(--blue); box-shadow: var(--glow); transition-delay: 900ms; }
+.co-share__day.is-other .co-share__k { color: var(--blue-soft); }
+@media (prefers-reduced-motion: reduce) { .co-share__bar { transform: none; opacity: 1; transition: none; } }
+/* Korjaus: co-side-in päättyi elementin omaan opacity: 0 -arvoon, jolloin listat jäivät näkymättömiksi. */
+@keyframes co-item-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.co-side__points li, .co-place__tasks li { animation-name: co-item-in; }

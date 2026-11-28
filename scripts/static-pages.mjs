@@ -41,45 +41,50 @@ ${list(['Miksi kiire ei lopu?', 'Onko hinnoittelu kohdallaan?', 'Mistä seuraava
   {
     path: '/tietoa',
     title: 'Tietoa yrityksestä · Get to Work',
-    description: 'Get to Work tekee työn tekemisestä helpompaa. Sinä kerrot, mitä pitää tehdä. Me selvitämme, miten se saadaan tehdyksi, kuka sen tekee ja mitä se maksaa. From prompt to done.',
-    body: `<p>Get to Work / From prompt to done</p>
-<h1>Tehdään työn tekemisestä helpompaa.</h1>
-<p>Sinä kerrot, mitä pitää tehdä. Me selvitämme, miten se saadaan tehdyksi, kuka sen tekee ja mitä se maksaa.</p>
-<p><a href="mailto:${EMAIL}?subject=Ty%C3%B6tilaus">Kerro mitä pitää tehdä</a></p>
+    description: 'Get to Work yhdistää työt ja tekijät. Autamme yrityksiä saamaan asioita tehdyksi: kerro, mitä pitäisi saada tehtyä, niin autamme löytämään ja järjestämään siihen sopivat ihmiset ja resurssit.',
+    body: `<p>Get to Work / Yhdistämme työt ja tekijät</p>
+<h1>Mitä pitäisi saada tehtyä?</h1>
+<p>Get to Work auttaa yrityksiä saamaan asioita tehdyksi. Yhdistämme yritysten tarpeet osaaviin ihmisiin ja käytännön ratkaisuihin.</p>
+<p><a href="mailto:${EMAIL}?subject=Ty%C3%B6tilaus">Kerro, mitä tarvitset</a></p>
 
-<h2>Maailma muuttuu nopeasti. Työn hankinta ei.</h2>
-<p>Tapa, jolla yritykset hankkivat työvoimaa ja järjestävät työnsä, ei ole muuttunut läheskään yhtä nopeasti.</p>
-<p>Yrityksillä on jatkuvasti tekemistä, johon ei riitä aikaa, osaamista tai tekijöitä. Samalla ympärillämme on valtavasti ihmisiä, jotka haluaisivat tehdä töitä, mutta joille oikeiden mahdollisuuksien löytäminen on vaikeaa.</p>
-<p>Me uskomme, että näiden kahden kohtaamisen pitäisi olla paljon helpompaa. Siksi rakennamme Get to Workia.</p>
+<h2>Paljon tekemätöntä työtä. Valtavasti käyttämätöntä osaamista.</h2>
+<p>Yrityksillä on jatkuvasti töitä, joihin niiden omat resurssit eivät riitä. Samalla ympärillämme on valtavasti ihmisiä, osaamista ja työkapasiteettia, jota voitaisiin hyödyntää paremmin.</p>
+<p>Me tuomme nämä yhteen. Emme myy kaikkea kaikille. Autamme yrityksiä saamaan työt tehdyksi.</p>
 
-<h2>Mitä jos työn voisi vain tilata?</h2>
-<p>Get to Work on uudenlainen tapa saada asioita tehdyksi. Sen sijaan, että yritys etsii työntekijöitä, kilpailuttaa palveluntarjoajia tai suunnittelee itse työn toteutuksen, se voi yksinkertaisesti kertoa, mitä pitäisi saada aikaan. Meidän tehtävämme on selvittää, miten.</p>
+<h2>Jokainen yritys tarvitsee joskus apukäsiä.</h2>
+<p>Joskus tarvitset ylimääräisen tekijän. Joskus kokonaisen tiimin. Joskus haluat vain, että joku hoitaa tietyn asian puolestasi. Get to Work auttaa löytämään tarpeeseesi sopivan ratkaisun.</p>
 <ol>
-<li><strong>Prompt.</strong> Kerro, mitä pitää tehdä.</li>
-<li><strong>Plan.</strong> Me selvitämme, miten työ saadaan tehdyksi, kuka sen tekee ja mitä se maksaa.</li>
-<li><strong>Done.</strong> Luotettavat toteutuskumppanit tekevät työn, ja me huolehdimme kokonaisuudesta.</li>
+<li><strong>Lisää tekijöitä.</strong> Töitä on enemmän kuin omat resurssit riittävät. Autamme löytämään oikeat ihmiset yrityksesi avuksi, muutamasta tunnista useisiin kuukausiin.</li>
+<li><strong>Työ tai projekti tehtäväksi.</strong> Autamme määrittelemään tarvittavat resurssit ja löytämään sopivan toteuttajan tai tiimin.</li>
+<li><strong>Jatkuvaa apua.</strong> Autamme järjestämään jatkuvan ratkaisun toistuviin käytännön tehtäviin.</li>
 </ol>
-<p>Yhdistämme tekoälyn, älykkään työnsuunnittelun ja luotettavien toteutuskumppaneiden osaamisen yhdeksi helposti käytettäväksi palveluksi.</p>
+<p>Yksi palvelu. Lukemattomia käyttötarkoituksia. Nämä ovat kolme esimerkkiä saman palvelun käytöstä, eivät kolme erillistä tuotetta.</p>
+<p>Tyypillisiä työympäristöjä ovat varastot, tuotanto, myymälät, toimitilat, tapahtumat, kiinteistöt ja palveluyritykset. Keskitymme pienten ja keskisuurten yritysten fyysisiin ja käytännönläheisiin töihin, jotka voi määritellä, hinnoitella ja toteuttaa selkeästi. Emme tarjoa juridisia, lääketieteellisiä tai sijoituspalveluita, vaativia luvanvaraisia tai turvallisuuskriittisiä töitä emmekä kokonaisia korkean riskin rakennusurakoita.</p>
 
-<h2>Enemmän mahdollisuuksia. Vähemmän esteitä.</h2>
-<p>Haluamme rakentaa uudenlaisia mahdollisuuksia sekä yrityksille että työntekijöille.</p>
-<p><strong>Yrityksille</strong> se tarkoittaa joustavampaa tapaa hankkia työtä ilman, että jokaiseen tarpeeseen täytyy palkata uusia ihmisiä.</p>
-<p><strong>Tekijöille</strong> se tarkoittaa mahdollisuutta päästä näyttämään osaamistaan, kartuttamaan kokemustaan ja osallistumaan oikeisiin työprojekteihin.</p>
-<p>Hyvän työn tekeminen ei aina edellytä pitkää työhistoriaa tai täydellistä ansioluetteloa. Kun tehtävät suunnitellaan hyvin, ohjeet ovat selkeät ja oikeat ihmiset työskentelevät yhdessä, saadaan aikaan paljon enemmän.</p>
-<p><a href="mailto:${EMAIL}?subject=Haluan%20mukaan%20tekij%C3%A4ksi">Haluan mukaan tekijäksi</a></p>
+<h2>Kerro, mitä pitää tehdä. Me järjestämme loput.</h2>
+<p>Perinteinen henkilöstövuokraus kysyy, millaisen työntekijän tarvitset. Get to Work kysyy, mitä pitäisi saada tehtyä.</p>
+<ol>
+<li><strong>Kerro, mitä tarvitset.</strong> Kuvaile työ, tehtävä tai tilanne, johon yrityksesi tarvitsee apua.</li>
+<li><strong>Löydämme ratkaisun.</strong> Get to Work auttaa löytämään sopivat ihmiset, resurssit ja toteutustavan.</li>
+<li><strong>Saadaan homma tehtyä.</strong> Hyväksy ratkaisu ja seuraa työn etenemistä.</li>
+</ol>
+<p>Nyt kerrot tarpeen sähköpostilla tai puhelimessa, ja teemme ehdotuksen: työn kuvaus, tekijät, aikataulu ja hinta-arvio. Tavoitteena on, että tarpeen voi kertoa tekstillä tai puheella, tekoäly auttaa muodostamaan ehdotuksen ja työn etenemistä voi seurata alustalla. Rakennamme tätä parhaillaan.</p>
 
-<h2>Tavallista työtä. Uudella tavalla.</h2>
-<p>Meitä kiinnostavat erityisesti yritykset, jotka pitävät arjen pyörimässä: varastot, tuotantolaitokset, kaupat, toimitilat ja lukemattomat muut työympäristöt, joissa asioiden täytyy tapahtua oikeassa maailmassa.</p>
-<p>Emme usko, että kaikki ongelmat ratkaistaan rakentamalla lisää ohjelmistoja. Joskus tarvitaan vain oikeat ihmiset oikeaan paikkaan, selkeä suunnitelma ja joku, joka huolehtii kokonaisuudesta. Teknologian tehtävä on tehdä tästä mahdollisimman yksinkertaista.</p>
+<h2>People powered. AI assisted.</h2>
+<p>Työn tekevät ihmiset. Teknologia auttaa meitä löytämään oikeat tekijät, järjestämään resurssit ja tekemään koko prosessista mahdollisimman yksinkertaisen. Varsinaisen työn tekevät tehtävään sopivat kumppanit ja heidän työntekijänsä.</p>
+<p>Rakennamme hallinnoitua verkostoa luotettavista yrityksistä, palveluntarjoajista ja osaavista tekijöistä. Edellytämme kumppaneilta tehtävään sopivaa osaamista sekä tarvittavia lupia ja vakuutuksia. Tiedät, kuka työn tekee ja mitä palveluun sisältyy, ja vastuut sovitaan selvästi ennen työn aloitusta.</p>
 
-<h2>Yksi työ kerrallaan.</h2>
-<p>Get to Work on vasta rakentumassa. Aloitamme tekemällä yksittäisten töiden tilaamisesta helpompaa. Samalla opimme, miten työtä voidaan suunnitella, organisoida ja toteuttaa paremmin.</p>
-<p>Pitkällä aikavälillä tavoitteemme on rakentaa alusta, jonka kautta yritykset voivat hankkia tarvitsemaansa työtä yhtä helposti kuin ne ostavat muitakin palveluita.</p>
-<p>Ei turhaa monimutkaisuutta. Ei loputtomia rekrytointiprosesseja jokaista yksittäistä tarvetta varten. Vain selkeä tarve, toimiva ratkaisu ja tehty työ.</p>
+<h2>Enemmän mahdollisuuksia. Vähemmän käyttämätöntä osaamista.</h2>
+<p>Pitkän aikavälin visiomme on mahdollistaa osaamisen ja työkapasiteetin jakaminen yritysten välillä. Esimerkiksi työntekijä voi tehdä neljä päivää omaa työtään ja viidennen päivän toisen yrityksen avuksi ilman, että hänen tarvitsee ryhtyä freelanceriksi tai vaihtaa työpaikkaa. Tällainen toiminta perustuu aina vapaaehtoisuuteen, asianmukaisiin sopimuksiin ja selkeästi sovittuihin vastuisiin.</p>
 
-<h2>Get to Work. From prompt to done.</h2>
-<p>Kerro, mitä pitää saada tehdyksi. Me selvitämme, miten se tehdään, kuka sen tekee ja mitä se maksaa.</p>
-<p><a href="mailto:${EMAIL}?subject=Ty%C3%B6tilaus">Kerro mitä pitää tehdä</a></p>`,
+<h2>Maailma, jossa asiat saadaan tehtyä.</h2>
+<p><strong>Missio:</strong> Tehdä työn ostamisesta, järjestämisestä ja tekemisestä helpompaa.</p>
+<p><strong>Visio:</strong> Yritysten tarpeet ja ihmisten osaaminen löytävät toisensa mahdollisimman helposti.</p>
+<p>Get to Work on vasta rakentumassa. Aloitamme yksi työ kerrallaan.</p>
+
+<h2>Mitä pitäisi saada tehtyä?</h2>
+<p>Kerro, millaista apua yrityksesi tarvitsee. Autamme löytämään ja järjestämään siihen sopivat ihmiset ja resurssit.</p>
+<p><a href="mailto:${EMAIL}?subject=Ty%C3%B6tilaus">Kerro, mitä tarvitset</a> · <a href="mailto:${EMAIL}?subject=Haluan%20mukaan%20tekij%C3%A4ksi">Haluan mukaan tekijäksi</a></p>`,
   },
   {
     path: '/kysely',
@@ -169,13 +174,13 @@ ${PAGES.map(p => `  <url><loc>${SITE}${p.path === '/' ? '/' : p.path}</loc><last
 
 writeFileSync(new URL('llms.txt', dist), `# Get to Work
 
-> Get to Work (Gettowork Oy, Espoo) tekee työn tekemisestä helpompaa. Yritys kertoo, mitä pitää saada tehdyksi, ja Get to Work selvittää, miten se tehdään, kuka sen tekee ja mitä se maksaa. From prompt to done.
+> Get to Work (Gettowork Oy, Espoo) yhdistää työt ja tekijät. Se auttaa yrityksiä saamaan asioita tehdyksi: yritys kertoo, mitä pitäisi saada tehtyä, ja Get to Work auttaa löytämään ja järjestämään siihen sopivat ihmiset, osaamisen ja resurssit.
 
-Get to Work yhdistää tekoälyn, älykkään työnsuunnittelun ja luotettavien toteutuskumppaneiden osaamisen yhdeksi palveluksi. Se palvelee erityisesti yrityksiä, jotka pitävät arjen pyörimässä: varastoja, tuotantolaitoksia, kauppoja ja toimitiloja. Tekijöille se tarjoaa mahdollisuuden osallistua oikeisiin työprojekteihin ja kartuttaa kokemusta.
+Get to Work on teknologia-avusteinen, hallinnoitu yritysten välinen työn ja palveluiden alusta. Työn tekevät hyväksytyt kumppanit ja heidän työntekijänsä; teknologia auttaa tarpeen määrittelyssä, tekijöiden löytämisessä ja työn järjestämisessä. Painopiste on pienten ja keskisuurten yritysten fyysisissä ja käytännönläheisissä töissä: varastot, tuotanto, myymälät, toimitilat, tapahtumat ja kiinteistöt.
 
 ## Sivut
 
-- [Tietoa yrityksestä](${SITE}/tietoa): mitä Get to Work tekee ja miksi
+- [Tietoa yrityksestä](${SITE}/tietoa): mitä Get to Work tekee, miten se toimii ja mihin se pyrkii
 - [Yrittäjätesti](${SITE}/): voisiko ongelmat johtua sinusta? 72 väittämän itsearvio yrittäjälle
 - [Tietoa testistä](${SITE}/kysely): testin osa-alueet ja tasot
 - [Tietosuojaseloste](${SITE}/tietosuoja)

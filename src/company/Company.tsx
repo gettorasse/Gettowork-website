@@ -2,8 +2,8 @@ import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { SectionDock, type DockItem } from './SectionDock.tsx';
 import './company.css';
 
-// "Tietoa yrityksestä" – Get to Work: tehdään työn tekemisestä helpompaa. From prompt to done.
-// Sisältö perustuu Rasmuksen tekstiin (marraskuu 2026). Animaatiot ovat CSS:ää ja SVG:tä;
+// "Tietoa yrityksestä" – Get to Work yhdistää tekemättömät työt ja osaavat tekijät.
+// Sisältö perustuu Rasmuksen briefiin "Brand positioning & About page update" (marraskuu 2026). Animaatiot ovat CSS:ää ja SVG:tä;
 // näkyviin tulo IntersectionObserverilla.
 
 const EMAIL = 'rasmus@gettowork.fi';
@@ -47,11 +47,12 @@ const d = (n: number) => ({ '--d': `${n * 90}ms` } as CSSProperties);
 
 // Luvut: jokainen osa-alue alkaa selkeällä väliotsikolla, ja sama luettelo ohjaa alareunan dockia.
 const CHAPTERS = [
-  { id: 'miksi', label: 'Miksi' },
-  { id: 'tilaa-tyo', label: 'Tilaa työ' },
-  { id: 'mahdollisuudet', label: 'Mahdollisuudet' },
-  { id: 'tavallista-tyota', label: 'Tavallista työtä' },
-  { id: 'yksi-tyo-kerrallaan', label: 'Yksi työ kerrallaan' },
+  { id: 'tarkoitus', label: 'Tarkoitus' },
+  { id: 'mita-teemme', label: 'Mitä teemme' },
+  { id: 'nain-se-toimii', label: 'Näin se toimii' },
+  { id: 'ihmiset-ja-teknologia', label: 'Ihmiset ja teknologia' },
+  { id: 'parempi-tapa', label: 'Parempi tapa' },
+  { id: 'visio', label: 'Visio' },
 ] as const satisfies readonly DockItem[];
 type ChapterId = (typeof CHAPTERS)[number]['id'];
 const DOCK_ITEMS: DockItem[] = [...CHAPTERS];
@@ -81,11 +82,12 @@ export function Company() {
 
   return <main ref={root} lang="fi" className="co">
     <Hero headingRef={headingRef} />
-    <Why />
-    <Order />
-    <Opportunities />
-    <EverydayWork />
-    <OneJob />
+    <Purpose />
+    <WhatWeDo />
+    <HowItWorks />
+    <PeopleTech />
+    <BetterWay />
+    <Vision />
     <Closing />
     <SectionDock items={DOCK_ITEMS} />
   </main>;
@@ -96,120 +98,147 @@ export function Company() {
 function Hero({ headingRef }: { headingRef: React.RefObject<HTMLHeadingElement | null> }) {
   return <section className="co-hero" aria-labelledby="co-hero-title">
     <div className="co-hero__text">
-      <p className="co-eyebrow co-eyebrow--lit is-in">Get to Work <span aria-hidden="true">/</span> <span lang="en">From prompt to done</span></p>
+      <p className="co-eyebrow co-eyebrow--lit is-in">Get to Work <span aria-hidden="true">/</span> Yhdistämme työt ja tekijät</p>
       <h1 id="co-hero-title" ref={headingRef} tabIndex={-1} className="co-hero__title co-hero__title--two">
-        <span className="co-hero__word" style={d(1)}>Tehdään työn tekemisestä</span>
-        <span className="co-hero__word co-hero__word--own" style={d(4)}>helpompaa.</span>
+        <span className="co-hero__word" style={d(1)}>Mitä pitäisi</span>
+        <span className="co-hero__word co-hero__word--own" style={d(4)}>saada tehtyä?</span>
       </h1>
-      <p className="co-hero__lead" style={d(8)}>Sinä kerrot, mitä pitää tehdä. Me selvitämme, miten se saadaan tehdyksi, kuka sen tekee ja mitä se maksaa.</p>
+      <p className="co-hero__lead" style={d(8)}>Get to Work auttaa yrityksiä saamaan asioita tehdyksi. Yhdistämme yritysten tarpeet osaaviin ihmisiin ja käytännön ratkaisuihin.</p>
       <div className="co-actions co-hero__actions" style={d(10)}>
-        <a className="co-btn co-btn--primary" href={ORDER_HREF}>Kerro mitä pitää tehdä <span aria-hidden="true">→</span></a>
+        <a className="co-btn co-btn--primary" href={ORDER_HREF}>Kerro, mitä tarvitset <span aria-hidden="true">→</span></a>
       </div>
     </div>
     <Orbit />
-    <a className="co-scroll" href="#miksi" aria-label="Vieritä alas">
+    <a className="co-scroll" href="#tarkoitus" aria-label="Vieritä alas">
       <span aria-hidden="true" />
     </a>
   </section>;
 }
 
-function Orbit() {
-  return <div className="co-orbit" aria-hidden="true">
-    <div className="co-orbit__ring co-orbit__ring--1" />
-    <div className="co-orbit__ring co-orbit__ring--2" />
-    <div className="co-orbit__ring co-orbit__ring--3"><span className="co-orbit__dot co-orbit__dot--small" /></div>
-    <div className="co-orbit__core" />
-    <div className="co-orbit__spin"><span className="co-orbit__planet">G</span></div>
-    <span className="co-block co-block--a" />
-    <span className="co-block co-block--b" />
-  </div>;
-}
+// --- 01. Tarkoitus ----------------------------------------------------------------------
 
-// --- 01. Miksi --------------------------------------------------------------------------
-
-const BRIDGE_PLANKS = 10;
-
-/** Kaksi rantaa ja silta: yritykset ja tekijät ovat eri puolilla, ja vierittäessä väliin rakentuu
- *  palikka kerrallaan Get to Work -silta. Kun silta on valmis, sen yli kulkee liikettä molempiin suuntiin. */
-function Bridge() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [count, setCount] = useState(0);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    if (reduced()) { setCount(BRIDGE_PLANKS); return; }
-    let frame = 0;
-    const update = () => {
-      frame = 0;
-      const rect = el.getBoundingClientRect();
-      const vh = window.innerHeight;
-      const p = Math.max(0, Math.min(1, (vh * 0.85 - rect.top) / (vh * 0.5)));
-      setCount(Math.round(p * BRIDGE_PLANKS));
-    };
-    const onScroll = () => { if (!frame) frame = requestAnimationFrame(update); };
-    update();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
-    return () => { cancelAnimationFrame(frame); window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onScroll); };
-  }, []);
-  const full = count >= BRIDGE_PLANKS;
-
-  return <div className="co-bridge-wrap" data-reveal>
-    <div className="co-match-head">
-      <p><span className="co-label">Yritykset</span>Tekemistä, johon ei riitä aikaa, osaamista tai tekijöitä.</p>
-      <p><span className="co-label">Tekijät</span>Haluavat tehdä töitä, mutta oikeita mahdollisuuksia on vaikea löytää.</p>
-    </div>
-    <div ref={ref} className={`co-bridge${full ? ' is-full' : ''}`} aria-hidden="true">
-      <div className="co-bridge__shore co-bridge__shore--l">
-        <span className="co-bridge__label">Yritykset</span>
-        <span className="co-bridge__icons co-bridge__icons--l">{Array.from({ length: 6 }, (_, i) => <i key={i} />)}</span>
-      </div>
-      <div className="co-bridge__gap">
-        <div className="co-bridge__deck">
-          {Array.from({ length: BRIDGE_PLANKS }, (_, i) => <span key={i} className={`co-bridge__plank${i < count ? ' is-in' : ''}`} />)}
-          <span className="co-bridge__walker co-bridge__walker--a" />
-          <span className="co-bridge__walker co-bridge__walker--b" />
-        </div>
-        <span className="co-bridge__name">Get to Work</span>
-        <div className="co-bridge__water"><span /><span /></div>
-      </div>
-      <div className="co-bridge__shore co-bridge__shore--r">
-        <span className="co-bridge__label">Tekijät</span>
-        <span className="co-bridge__icons co-bridge__icons--r">{Array.from({ length: 5 }, (_, i) => <i key={i} />)}</span>
-      </div>
-    </div>
-    <p className="co-bridge__cap" aria-live="polite">{full ? 'Get to Work yhdistää yritykset ja tekijät.' : 'Yritykset ja tekijät eivät löydä toisiaan.'}</p>
-  </div>;
-}
-
-function Why() {
-  return <section id="miksi" className="co-section" aria-labelledby="co-why-title">
-    <Chapter id="miksi" />
-    <h2 id="co-why-title" className="co-h2" data-reveal>Maailma muuttuu nopeasti.<br /><span className="co-blue-text">Työn hankinta ei.</span></h2>
-    <p className="co-lead" data-reveal>Tapa, jolla yritykset hankkivat työvoimaa ja järjestävät työnsä, ei ole muuttunut läheskään yhtä nopeasti.</p>
+function Purpose() {
+  return <section id="tarkoitus" className="co-section" aria-labelledby="co-purpose-title">
+    <Chapter id="tarkoitus" />
+    <h2 id="co-purpose-title" className="co-h2" data-reveal>Paljon tekemätöntä työtä.<br /><span className="co-blue-text">Valtavasti käyttämätöntä osaamista.</span></h2>
+    <p className="co-lead" data-reveal>Yrityksillä on jatkuvasti töitä, joihin niiden omat resurssit eivät riitä. Samalla ympärillämme on valtavasti ihmisiä, osaamista ja työkapasiteettia, jota voitaisiin hyödyntää paremmin.</p>
     <Bridge />
-    <p className="co-statement" data-reveal><strong>Näiden kahden kohtaamisen pitäisi olla paljon helpompaa.</strong> Siksi rakennamme Get to Workia.</p>
+    <p className="co-statement" data-reveal><strong>Me tuomme nämä yhteen.</strong> Emme myy kaikkea kaikille. Autamme yrityksiä saamaan työt tehdyksi.</p>
   </section>;
 }
 
-// --- 02. Tilaa työ: From prompt to done -----------------------------------------------------
+// --- 02. Mitä teemme --------------------------------------------------------------------
+
+const USES = [
+  { t: 'Lisää tekijöitä.', d: 'Töitä on enemmän kuin omat resurssit riittävät. Autamme löytämään oikeat ihmiset yrityksesi avuksi.', tag: 'Muutamasta tunnista useisiin kuukausiin' },
+  { t: 'Työ tai projekti tehtäväksi.', d: 'Konkreettinen tehtävä, johon ei ole tarpeeksi aikaa, ihmisiä tai osaamista. Autamme määrittelemään resurssit ja löytämään sopivan toteuttajan tai tiimin.', tag: 'Rajattu kokonaisuus' },
+  { t: 'Jatkuvaa apua.', d: 'Toistuvat käytännön tehtävät, jotka on järkevää hoitaa ulkopuolisilla resursseilla. Autamme järjestämään jatkuvan ratkaisun.', tag: 'Toistuva, sovittu apu' },
+];
+
+const SITUATIONS = [
+  'Kiireinen kausi, eikä oma väki riitä.',
+  'Varasto pitäisi järjestää, mutta kenelläkään ei ole aikaa.',
+  'Myymälä tarvitsee ylimääräisiä tekijöitä.',
+  'Toimitilat pitäisi tyhjentää tai järjestellä uudelleen.',
+  'Tapahtumaan tarvitaan avustavaa henkilökuntaa.',
+  'Tavarat pitäisi pakata ja siirtää.',
+  'Toistuva käytännön työ haluttaisiin ulkoistaa.',
+  'Projektiin tarvitaan hetkeksi lisää ihmisiä.',
+];
+
+const PLACES = [
+  { k: 'Varastot', tasks: ['Purku ja keräily', 'Inventointi', 'Pakkaaminen ja siirrot'] },
+  { k: 'Tuotanto', tasks: ['Avustavat työt', 'Pakkaaminen', 'Järjestely ja siivous'] },
+  { k: 'Myymälät', tasks: ['Hyllytys', 'Inventointi', 'Kampanjan valmistelu'] },
+  { k: 'Toimitilat', tasks: ['Siivous ja ylläpito', 'Tyhjennys ja muutto', 'Kalusteiden kokoaminen'] },
+];
+
+function WhatWeDo() {
+  const [place, setPlace] = useState(0);
+  return <section id="mita-teemme" className="co-section" aria-labelledby="co-what-title">
+    <Chapter id="mita-teemme" />
+    <h2 id="co-what-title" className="co-h2" data-reveal>Jokainen yritys tarvitsee<br /><span className="co-blue-text">joskus apukäsiä.</span></h2>
+    <p className="co-lead" data-reveal>Joskus tarvitset ylimääräisen tekijän. Joskus kokonaisen tiimin. Joskus haluat vain, että joku hoitaa tietyn asian puolestasi. Get to Work auttaa löytämään tarpeeseesi sopivan ratkaisun.</p>
+
+    <ol className="co-uses">
+      {USES.map((u, i) => <li key={u.t} className="co-use" data-reveal style={d(i * 2)}>
+        <span className="co-use__n">0{i + 1}</span>
+        <span className="co-use__t">{u.t}</span>
+        <span className="co-use__d">{u.d}</span>
+        <span className="co-use__tag">{u.tag}</span>
+      </li>)}
+    </ol>
+    <p className="co-motto" data-reveal><strong>Yksi palvelu. Lukemattomia käyttötarkoituksia.</strong> Nämä ovat kolme esimerkkiä saman palvelun käytöstä, eivät kolme erillistä tuotetta.</p>
+
+    <h3 className="co-h3" data-reveal>Kuulostaako tutulta?</h3>
+    <ul className="co-situations">
+      {SITUATIONS.map((s, i) => <li key={s} data-reveal style={d(i % 4)}>{s}</li>)}
+    </ul>
+    <p className="co-h3 co-strike" data-reveal>
+      Ei <s style={d(2)}>rekrytointia joka kerta</s>. Ei <s style={d(4)}>monta palveluntarjoajaa</s>.{' '}
+      <span className="co-pop" style={d(8)}>Yksi paikka.</span>
+    </p>
+
+    <p className="co-label co-label--gap" data-reveal>Tyypillisiä työympäristöjä</p>
+    <div className="co-places co-places--tight" role="tablist" aria-label="Työympäristöt" data-reveal>
+      {PLACES.map((p, i) => <button key={p.k} type="button" role="tab" aria-selected={place === i}
+        className={`co-places__tab${place === i ? ' is-on' : ''}`} onClick={() => setPlace(i)}>{p.k}</button>)}
+    </div>
+    <div key={place} className="co-place" role="tabpanel">
+      <div className="co-place__art"><PlaceArt i={place} /></div>
+      <div>
+        <p className="co-label">Esimerkkitöitä</p>
+        <ul className="co-place__tasks">
+          {PLACES[place].tasks.map((t, i) => <li key={t} style={d(i + 1)}>{t}</li>)}
+        </ul>
+        <p className="co-muted co-small">…sekä tapahtumat, kiinteistöt, palveluyritykset ja muut työympäristöt.</p>
+      </div>
+    </div>
+
+    <div className="co-grid">
+      <div className="co-card co-card--glass" data-reveal style={d(1)}>
+        <p className="co-label">Keskitymme</p>
+        <ul className="co-checks co-checks--sm">
+          {['Pienten ja keskisuurten yritysten arkeen', 'Fyysisiin ja käytännönläheisiin töihin', 'Töihin, jotka voi määritellä, hinnoitella ja toteuttaa selkeästi'].map((t, i) => <li key={t} style={d(i + 1)}><Check />{t}</li>)}
+        </ul>
+      </div>
+      <div className="co-card co-card--glass" data-reveal style={d(3)}>
+        <p className="co-label">Emme tarjoa</p>
+        <ul className="co-checks co-checks--no co-checks--sm">
+          {['Juridisia, lääketieteellisiä tai sijoituspalveluita', 'Vaativia luvanvaraisia tai turvallisuuskriittisiä töitä', 'Kokonaisia korkean riskin rakennusurakoita'].map((t, i) => <li key={t} style={d(i + 1)}><Cross />{t}</li>)}
+        </ul>
+        <p className="co-muted co-small co-card__foot">Näilläkin aloilla voimme auttaa rajatuissa avustavissa tehtävissä.</p>
+      </div>
+    </div>
+  </section>;
+}
+
+const Cross = () => <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7 7 17" /></svg>;
+
+// --- 03. Näin se toimii -----------------------------------------------------------------
+
+const STEPS = [
+  { t: 'Kerro, mitä tarvitset.', d: 'Kuvaile työ, tehtävä tai tilanne, johon yrityksesi tarvitsee apua.' },
+  { t: 'Löydämme ratkaisun.', d: 'Get to Work auttaa löytämään sopivat ihmiset, resurssit ja toteutustavan.' },
+  { t: 'Saadaan homma tehtyä.', d: 'Hyväksy ratkaisu ja seuraa työn etenemistä.' },
+];
 
 const PROMPTS = [
   {
-    chip: 'Varasto', prompt: 'Tarvitsen kolme tekijää purkamaan kuorman varastolla perjantaina.',
-    plan: [['Miten', 'Purku ja hyllytys, ohjeet valmiina'], ['Kuka', '3 tekijää ja vastuuhenkilö'], ['Milloin', 'Perjantaina aamusta'], ['Hinta', 'Arvio ennen aloitusta']],
+    chip: 'Varasto', prompt: 'Varasto pitäisi järjestää ja inventoida ennen joulusesonkia.',
+    plan: [['Työ', 'Järjestely ja inventointi, ohjeet valmiina'], ['Tekijät', '3 tekijää ja vastuuhenkilö'], ['Aikataulu', 'Kaksi päivää ensi viikolla'], ['Hinta', 'Arvio ennen aloitusta']],
   },
   {
-    chip: 'Myymälä', prompt: 'Myymälään tarvitaan apua inventaarioon kuun lopussa.',
-    plan: [['Miten', 'Laskenta osastoittain valmiilla listoilla'], ['Kuka', '2 tekijää'], ['Milloin', 'Kuun viimeisenä iltana'], ['Hinta', 'Arvio ennen aloitusta']],
+    chip: 'Tapahtuma', prompt: 'Messuosastolle tarvitaan kaksi avustajaa kolmeksi päiväksi.',
+    plan: [['Työ', 'Rakennus, opastus ja purku'], ['Tekijät', '2 avustajaa'], ['Aikataulu', 'Messujen ajan'], ['Hinta', 'Arvio ennen aloitusta']],
   },
   {
     chip: 'Toimitila', prompt: 'Toimisto pitää tyhjentää ja siivota muuton jälkeen.',
-    plan: [['Miten', 'Tyhjennys, kierrätys ja loppusiivous'], ['Kuka', 'Muuttotiimi ja siivooja'], ['Milloin', 'Muuttoa seuraavana päivänä'], ['Hinta', 'Arvio ennen aloitusta']],
+    plan: [['Työ', 'Tyhjennys, kierrätys ja loppusiivous'], ['Tekijät', 'Muuttotiimi ja siivooja'], ['Aikataulu', 'Muuttoa seuraavana päivänä'], ['Hinta', 'Arvio ennen aloitusta']],
   },
 ] as const;
 
-/** Esitys (ei lomake): tarve kirjoittuu, siitä rakentuu suunnitelma ja lopuksi työ on tehty. */
+/** Esitys (ei lomake): tarve kirjoittuu, siitä rakentuu ehdotus ja lopuksi työ on tehty. */
 function PromptDemo() {
   const [ref, inView] = useInView<HTMLDivElement>(0.35);
   const [ex, setEx] = useState(0);
@@ -243,10 +272,10 @@ function PromptDemo() {
   // näkyviin tulon is-in-luokan, ja koko esitys katoaisi vaiheen vaihtuessa.
   return <div data-reveal><div ref={ref} className={`co-prompt is-stage-${stage}`}>
     <ol className="co-prompt__stages" aria-hidden="true">
-      {['Prompt.', 'Plan.', 'Done.'].map((k, i) => <li key={k} lang="en" className={stage >= i ? 'is-on' : ''}>{k}</li>)}
+      {['Kerro.', 'Ratkaisu.', 'Tehty.'].map((k, i) => <li key={k} className={stage >= i ? 'is-on' : ''}>{k}</li>)}
     </ol>
     <div className="co-prompt__box">
-      <p className="co-label">Mitä pitää tehdä?</p>
+      <p className="co-label">Mitä pitäisi saada tehtyä?</p>
       <p className="co-prompt__text" aria-label={text}><span aria-hidden="true">{text.slice(0, typed)}</span><i className="co-prompt__caret" aria-hidden="true" /></p>
     </div>
     <div className="co-prompt__plan" aria-hidden={stage < 1}>
@@ -258,119 +287,264 @@ function PromptDemo() {
     <div className="co-prompt__chips" role="group" aria-label="Esimerkkitarpeet">
       {PROMPTS.map((p, i) => <button key={p.chip} type="button" className={`co-chip${i === ex ? ' is-on' : ''}`} aria-pressed={i === ex} onClick={() => choose(i)}>{p.chip}</button>)}
     </div>
-    <p className="co-source">Esimerkki. Jokainen suunnitelma ja hinta tehdään tarpeen mukaan.</p>
+    <p className="co-source">Esimerkki tavoitellusta asiakaskokemuksesta. Jokainen ehdotus ja hinta tehdään tarpeen mukaan.</p>
   </div></div>;
 }
 
-const PARTS = [
-  { t: 'Tekoäly', d: 'Nopeuttaa tarpeen jäsentämistä ja työn suunnittelua.' },
-  { t: 'Älykäs työnsuunnittelu', d: 'Selkeät tehtävät ja ohjeet jokaiselle työlle.' },
-  { t: 'Luotettavat toteutuskumppanit', d: 'Osaavat tekijät, jotka hoitavat työn oikeassa maailmassa.' },
-];
+function HowItWorks() {
+  return <section id="nain-se-toimii" className="co-section" aria-labelledby="co-how-title">
+    <Chapter id="nain-se-toimii" />
+    <h2 id="co-how-title" className="co-h2" data-reveal>Kerro, mitä pitää tehdä.<br /><span className="co-blue-text">Me järjestämme loput.</span></h2>
 
-function Order() {
-  return <section id="tilaa-tyo" className="co-section" aria-labelledby="co-order-title">
-    <Chapter id="tilaa-tyo" />
-    <h2 id="co-order-title" className="co-h2" data-reveal>Mitä jos työn voisi<br /><span className="co-blue-text">vain tilata?</span></h2>
-    <p className="co-lead" data-reveal>Get to Work on uudenlainen tapa saada asioita tehdyksi. Sen sijaan, että yritys etsii työntekijöitä, kilpailuttaa palveluntarjoajia tai suunnittelee itse työn toteutuksen, se voi yksinkertaisesti kertoa, mitä pitäisi saada aikaan.</p>
-    <p className="co-h3 co-strike" data-reveal>
-      Ei <s style={d(2)}>rekrytointia</s>. Ei <s style={d(4)}>kilpailutusta</s>.{' '}
-      <span className="co-pop" style={d(8)}>Kerro tarve.</span>
-    </p>
-    <PromptDemo />
-    <p className="co-lead co-lead--gap" data-reveal>Yhdistämme kolme asiaa yhdeksi helposti käytettäväksi palveluksi.</p>
+    <div className="co-grid co-compare">
+      <div className="co-card co-card--glass" data-reveal style={d(1)}>
+        <p className="co-label">Perinteinen henkilöstövuokraus kysyy</p>
+        <p className="co-card__big co-muted">Millaisen työntekijän tarvitset?</p>
+      </div>
+      <div className="co-card co-card--blue" data-reveal style={d(3)}>
+        <p className="co-label">Get to Work kysyy</p>
+        <p className="co-card__big">Mitä pitäisi saada tehtyä?</p>
+      </div>
+    </div>
+    <p className="co-lead" data-reveal>Sinun ei tarvitse tietää valmiiksi, millaisen työntekijän, tiimin tai palvelun tarvitset. Riittää, että kerrot, mitä pitäisi saada tehtyä. Me autamme löytämään ja järjestämään siihen sopivan ratkaisun.</p>
+
     <ol className="co-roles">
-      {PARTS.map((r, i) => <li key={r.t} className="co-role" data-reveal style={d(i)}>
+      {STEPS.map((r, i) => <li key={r.t} className="co-role" data-reveal style={d(i)}>
         <span className="co-role__n">0{i + 1}</span>
         <span className="co-role__t">{r.t}</span>
         <span className="co-role__d">{r.d}</span>
       </li>)}
     </ol>
+
+    <PromptDemo />
+
+    <div className="co-grid">
+      <div className="co-card co-card--glass" data-reveal style={d(1)}>
+        <p className="co-label">Nyt</p>
+        <p className="co-card__big">Kerrot tarpeen sähköpostilla tai puhelimessa.</p>
+        <p className="co-muted">Selvitämme tarpeen kanssasi ja teemme ehdotuksen: työn kuvaus, tekijät, aikataulu ja hinta-arvio. Kun hyväksyt sen, järjestämme työn.</p>
+      </div>
+      <div className="co-card co-card--blue" data-reveal style={d(3)}>
+        <p className="co-label">Mihin olemme menossa</p>
+        <p className="co-card__big">Kerrot tarpeen tekstillä tai puheella.</p>
+        <p>Tekoäly auttaa ymmärtämään tarpeen, kysyy tarkentavia kysymyksiä ja muodostaa ehdotuksen. Tilauksen voi hyväksyä ja työn etenemistä seurata alustalla. Rakennamme tätä parhaillaan.</p>
+      </div>
+    </div>
   </section>;
 }
 
-// --- 03. Mahdollisuudet ---------------------------------------------------------------------
+// --- 04. Ihmiset ja teknologia ----------------------------------------------------------
 
-const SIDES = {
-  company: {
-    tab: 'Yrityksille', big: 'Joustavampi tapa hankkia työtä.',
-    points: ['Jokaiseen tarpeeseen ei tarvitse palkata uutta ihmistä', 'Työ tilataan silloin, kun sitä tarvitaan', 'Yksi kumppani huolehtii kokonaisuudesta'],
-  },
-  builder: {
-    tab: 'Tekijöille', big: 'Pääse näyttämään osaamisesi.',
-    points: ['Osallistu oikeisiin työprojekteihin', 'Kartuta kokemusta työ kerrallaan', 'Pitkää työhistoriaa ei aina tarvita'],
-  },
-} as const;
-type Side = keyof typeof SIDES;
+const MACHINE = [
+  'Ymmärtämään asiakkaan todellisen tarpeen',
+  'Määrittelemään työn ja tarvittavat resurssit',
+  'Löytämään sopivat tekijät ja kumppanit',
+  'Varmistamaan osaamisen ja saatavuuden',
+  'Muodostamaan hinnoittelun',
+  'Organisoimaan työn ja ohjeistamaan tekijät',
+  'Seuraamaan työn etenemistä',
+  'Hallitsemaan poikkeamat',
+  'Kehittämään laatua ja tehokkuutta',
+];
 
-/** Kuvitus: yritykselle viikko, johon työ tilataan tarpeen mukaan; tekijälle kasvava kokemus. */
-function SideArt({ side }: { side: Side }) {
-  if (side === 'company') {
-    const filled = [[0, 1], [1, 3], [3, 0], [3, 2], [4, 1]];
-    return <div className="co-week" aria-hidden="true">
-      {['Ma', 'Ti', 'Ke', 'To', 'Pe'].map((day, c) => <div key={day} className="co-week__col">
-        <span className="co-week__day">{day}</span>
-        {[0, 1, 2, 3].map(r => {
-          const k = filled.findIndex(([fc, fr]) => fc === c && fr === r);
-          return <span key={r} className={`co-week__cell${k >= 0 ? ' is-on' : ''}`} style={{ '--i': k } as CSSProperties} />;
-        })}
-      </div>)}
-      <span className="co-week__cap">Työ tilataan tarpeen mukaan</span>
-    </div>;
-  }
-  return <div className="co-grow" aria-hidden="true">
-    {['Ensimmäinen työ', 'Uusi ympäristö', 'Vastuuta enemmän', 'Näyttöä ja kokemusta'].map((t, i) =>
-      <span key={t} className="co-grow__bar" style={{ '--i': i, '--w': `${46 + i * 18}%` } as CSSProperties}>{t}</span>)}
+const TRUST = [
+  'Edellytämme kumppaneilta tehtävään sopivaa osaamista sekä tarvittavia lupia ja vakuutuksia',
+  'Tiedät, kuka työn tekee ja mitä palveluun sisältyy',
+  'Vastuut sovitaan selvästi ennen työn aloitusta',
+];
+
+function PeopleTech() {
+  return <section id="ihmiset-ja-teknologia" className="co-section" aria-labelledby="co-pt-title">
+    <Chapter id="ihmiset-ja-teknologia" />
+    <h2 id="co-pt-title" className="co-h2" lang="en" data-reveal>People powered.<br /><span className="co-blue-text">AI assisted.</span></h2>
+    <p className="co-lead" data-reveal>Työn tekevät ihmiset. Teknologia auttaa meitä löytämään oikeat tekijät, järjestämään resurssit ja tekemään koko prosessista mahdollisimman yksinkertaisen.</p>
+
+    <div className="co-grid">
+      <div className="co-card co-card--glass" data-reveal style={d(1)}>
+        <p className="co-label">Ihmiset</p>
+        <p className="co-card__big">Tekevät työn.</p>
+        <p className="co-muted">Varsinaisen työn tekevät tehtävään sopivat kumppanit ja heidän työntekijänsä. Meidän ei tarvitse omistaa kaikkea työvoimaa tai kalustoa, vaan hyödynnämme hyväksyttyjen kumppaneiden olemassa olevia resursseja.</p>
+      </div>
+      <div className="co-card co-card--blue" data-reveal style={d(3)}>
+        <p className="co-label">Teknologia</p>
+        <p className="co-card__big">Pyörittää koneistoa taustalla.</p>
+        <p>Teknologia ei ole tuotteemme vaan työkalumme. Sen avulla työtä voidaan järjestää nopeammin, luotettavammin ja pienemmällä hallinnolla.</p>
+      </div>
+    </div>
+
+    <p className="co-label co-label--gap" data-reveal>Rakennamme järjestelmää, joka auttaa meitä</p>
+    <ol className="co-machine">
+      {MACHINE.map((t, i) => <li key={t} data-reveal style={d(i % 3)}><span>0{i + 1}</span>{t}</li>)}
+    </ol>
+    <p className="co-motto" data-reveal><strong>Asiakkaalle</strong> tämä kaikki näkyy yksinkertaisena ja helppona palveluna.</p>
+
+    <h3 className="co-h3 co-h3--big" data-reveal>Hallinnoitu verkosto. <span className="co-blue-text">Ei avoin ilmoitustaulu.</span></h3>
+    <p className="co-lead" data-reveal>Rakennamme verkostoa luotettavista yrityksistä, palveluntarjoajista ja osaavista tekijöistä. Kehitämme omat toimintamallit kumppaneiden hyväksymiseen, osaamisen varmentamiseen, palautteen käsittelyyn ja työn laadun seurantaan.</p>
+    <div className="co-card co-card--glass co-trust" data-reveal>
+      <ul className="co-checks">
+        {TRUST.map((t, i) => <li key={t} style={d(i + 1)}><Check />{t}</li>)}
+      </ul>
+      <p className="co-muted co-card__foot">Tavoitteemme on tehdä työn ostamisesta turvallisempaa, selkeämpää ja ennustettavampaa.</p>
+    </div>
+  </section>;
+}
+
+// --- 05. Parempi tapa tehdä töitä ---------------------------------------------------------
+
+/** Kuvitus: neljä päivää omassa yrityksessä, viides toisen yrityksen avuksi. */
+function ShareWeek() {
+  const [ref, inView] = useInView<HTMLDivElement>(0.5);
+  return <div ref={ref} className={`co-share${inView ? ' is-in' : ''}`} aria-hidden="true">
+    {['Ma', 'Ti', 'Ke', 'To', 'Pe'].map((day, i) => <div key={day} className={`co-share__day${i === 4 ? ' is-other' : ''}`} style={{ '--i': i } as CSSProperties}>
+      <span className="co-share__k">{day}</span>
+      <span className="co-share__bar"><span>{i === 4 ? 'Toinen yritys' : 'Oma yritys'}</span></span>
+    </div>)}
   </div>;
 }
 
-const PIECES = ['Tehtävät suunniteltu', 'Selkeät ohjeet', 'Oikeat ihmiset'];
+const SHARE_POINTS = [
+  'Työntekijä saa lisää mahdollisuuksia, eikä hänen tarvitse ryhtyä freelanceriksi tai vaihtaa työpaikkaa',
+  'Yritys hyödyntää olemassa olevaa osaamistaan paremmin',
+  'Toinen yritys saa juuri tarvitsemansa avun',
+];
 
-function Opportunities() {
-  const [side, setSide] = useState<Side>('company');
-  const [ref, inView] = useInView<HTMLDivElement>(0.5);
-  const s = SIDES[side];
-  return <section id="mahdollisuudet" className="co-section" aria-labelledby="co-opp-title">
-    <Chapter id="mahdollisuudet" />
-    <h2 id="co-opp-title" className="co-h2" data-reveal>Enemmän mahdollisuuksia.<br /><span className="co-blue-text">Vähemmän esteitä.</span></h2>
-    <p className="co-lead" data-reveal>Haluamme rakentaa uudenlaisia mahdollisuuksia sekä yrityksille että työntekijöille.</p>
+function BetterWay() {
+  return <section id="parempi-tapa" className="co-section" aria-labelledby="co-better-title">
+    <Chapter id="parempi-tapa" />
+    <h2 id="co-better-title" className="co-h2" data-reveal>Enemmän mahdollisuuksia.<br /><span className="co-blue-text">Vähemmän käyttämätöntä osaamista.</span></h2>
+    <p className="co-lead" data-reveal>Monilla yrityksillä on hyviä työntekijöitä, joiden koko työkapasiteettia ne eivät aina tarvitse. Samaan aikaan toisilla yrityksillä on pulaa juuri samoista resursseista.</p>
 
-    <div className="co-toggle" role="tablist" aria-label="Näkökulma" data-reveal>
-      {(Object.keys(SIDES) as Side[]).map(k => <button key={k} type="button" role="tab" aria-selected={side === k}
-        className={`co-toggle__btn${side === k ? ' is-on' : ''}`} onClick={() => setSide(k)}>{SIDES[k].tab}</button>)}
-      <span className={`co-toggle__thumb${side === 'builder' ? ' is-restart' : ''}`} aria-hidden="true" />
-    </div>
-    <div key={side} className="co-side" role="tabpanel">
+    <div className="co-side" data-reveal>
       <div>
-        <p className="co-side__big">{s.big}</p>
+        <p className="co-label">Pitkän aikavälin visio</p>
+        <p className="co-side__big">Neljä päivää omassa työssä. Viides päivä toisen yrityksen avuksi.</p>
         <ul className="co-checks co-side__points">
-          {s.points.map((t, i) => <li key={t} style={d(i + 1)}><Check />{t}</li>)}
+          {SHARE_POINTS.map((t, i) => <li key={t} style={d(i + 1)}><Check />{t}</li>)}
         </ul>
-        {side === 'builder' && <a className="co-btn co-side__cta" href={BUILDER_HREF}>Haluan mukaan tekijäksi <span aria-hidden="true">→</span></a>}
       </div>
-      <SideArt side={side} />
+      <ShareWeek />
     </div>
+    <p className="co-source">Tällainen osaamisen jakaminen perustuu aina työntekijän vapaaehtoisuuteen, asianmukaisiin sopimuksiin ja selkeästi sovittuihin vastuisiin.</p>
+    <p className="co-statement" data-reveal><strong>Haluamme rakentaa työelämää, jossa olemassa oleva osaaminen pääsee paremmin käyttöön.</strong></p>
+  </section>;
+}
 
-    <p className="co-statement" data-reveal><strong>Hyvän työn tekeminen ei aina edellytä pitkää työhistoriaa tai täydellistä ansioluetteloa.</strong></p>
-    <p className="co-lead" data-reveal>Kun tehtävät suunnitellaan hyvin, ohjeet ovat selkeät ja oikeat ihmiset työskentelevät yhdessä, saadaan aikaan paljon enemmän.</p>
-    <div ref={ref} className={`co-puzzle${inView ? ' is-in' : ''}`} aria-label="Tehtävät suunniteltu, selkeät ohjeet ja oikeat ihmiset: enemmän aikaan">
-      {PIECES.map((t, i) => <span key={t} className="co-puzzle__piece" style={{ '--i': i } as CSSProperties}>{t}</span>)}
-      <span className="co-puzzle__eq" aria-hidden="true">=</span>
-      <span className="co-puzzle__result">Enemmän aikaan.</span>
+// --- 06. Visio ---------------------------------------------------------------------------------
+
+function Vision() {
+  return <section id="visio" className="co-section" aria-labelledby="co-vision-title">
+    <Chapter id="visio" />
+    <h2 id="co-vision-title" className="co-h2" data-reveal>Maailma, jossa asiat<br /><span className="co-blue-text">saadaan tehtyä.</span></h2>
+    <p className="co-lead" data-reveal>Haluamme rakentaa tulevaisuutta, jossa yrityksillä on helpompi pääsy tarvitsemiinsa resursseihin ja ihmisillä enemmän mahdollisuuksia hyödyntää osaamistaan.</p>
+    <div className="co-grid">
+      <div className="co-card co-card--glass" data-reveal style={d(1)}>
+        <p className="co-label">Missio</p>
+        <p className="co-card__big">Tehdä työn ostamisesta, järjestämisestä ja tekemisestä helpompaa.</p>
+      </div>
+      <div className="co-card co-card--blue" data-reveal style={d(3)}>
+        <p className="co-label">Visio</p>
+        <p className="co-card__big">Yritysten tarpeet ja ihmisten osaaminen löytävät toisensa mahdollisimman helposti.</p>
+      </div>
+    </div>
+    <p className="co-statement" data-reveal>Haluamme auttaa yrityksiä kasvamaan, uudistumaan ja saamaan asioita aikaan <strong>ilman, että resurssien puute on jatkuva este.</strong></p>
+    <p className="co-lead co-lead--gap" data-reveal>Get to Work on vasta rakentumassa. Aloitamme yksi työ kerrallaan ja opimme samalla, miten työtä voidaan järjestää paremmin.</p>
+    <JobStack />
+  </section>;
+}
+
+// --- Lopetus ---------------------------------------------------------------------------------
+
+function Closing() {
+  return <section className="co-closing" data-section-dock-hide aria-labelledby="co-close-title">
+    <div className="co-closing__rings" aria-hidden="true"><span /><span /></div>
+    <h2 id="co-close-title" className="co-closing__title" data-reveal>
+      <span>Mitä pitäisi</span>
+      <span className="co-blue-text">saada tehtyä?</span>
+    </h2>
+    <p className="co-closing__sub" data-reveal>Kerro, millaista apua yrityksesi tarvitsee. Autamme löytämään ja järjestämään siihen sopivat ihmiset ja resurssit.</p>
+    <div className="co-actions" data-reveal>
+      <a className="co-btn co-btn--primary" href={ORDER_HREF}>Kerro, mitä tarvitset <span aria-hidden="true">→</span></a>
+      <a className="co-btn" href={BUILDER_HREF}>Haluan mukaan tekijäksi</a>
+    </div>
+    <div className="co-closing__foot" data-reveal>
+      <span>Yhdistämme työt ja tekijät.</span>
+      <span>Yksi palvelu. Lukemattomia käyttötarkoituksia.</span>
+      <span>Get to Work.</span>
     </div>
   </section>;
 }
 
-// --- 04. Tavallista työtä ------------------------------------------------------------------
+// --- Kuvitukset ------------------------------------------------------------------------
 
-const PLACES = [
-  { k: 'Varastot', tasks: ['Kuorman purku', 'Keräily', 'Inventaario'] },
-  { k: 'Tuotanto', tasks: ['Linjan tukityöt', 'Pakkaus', 'Järjestys ja siivous'] },
-  { k: 'Kaupat', tasks: ['Hyllytys', 'Inventaario', 'Kampanjan valmistelu'] },
-  { k: 'Toimitilat', tasks: ['Siivous', 'Muutto', 'Kalusteiden kokoaminen'] },
-];
+function Orbit() {
+  return <div className="co-orbit" aria-hidden="true">
+    <div className="co-orbit__ring co-orbit__ring--1" />
+    <div className="co-orbit__ring co-orbit__ring--2" />
+    <div className="co-orbit__ring co-orbit__ring--3"><span className="co-orbit__dot co-orbit__dot--small" /></div>
+    <div className="co-orbit__core" />
+    <div className="co-orbit__spin"><span className="co-orbit__planet">G</span></div>
+    <span className="co-block co-block--a" />
+    <span className="co-block co-block--b" />
+  </div>;
+}
 
-/** Yksinkertainen 2D-kuvitus kullekin työympäristölle. */
+
+const BRIDGE_PLANKS = 10;
+
+/** Kaksi rantaa ja silta: yritykset ja tekijät ovat eri puolilla, ja vierittäessä väliin rakentuu
+ *  palikka kerrallaan Get to Work -silta. Kun silta on valmis, sen yli kulkee liikettä molempiin suuntiin. */
+function Bridge() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (reduced()) { setCount(BRIDGE_PLANKS); return; }
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const rect = el.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const p = Math.max(0, Math.min(1, (vh * 0.85 - rect.top) / (vh * 0.5)));
+      setCount(Math.round(p * BRIDGE_PLANKS));
+    };
+    const onScroll = () => { if (!frame) frame = requestAnimationFrame(update); };
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    return () => { cancelAnimationFrame(frame); window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onScroll); };
+  }, []);
+  const full = count >= BRIDGE_PLANKS;
+
+  return <div className="co-bridge-wrap" data-reveal>
+    <div className="co-match-head">
+      <p><span className="co-label">Yritykset</span>Töitä, joihin omat resurssit eivät riitä.</p>
+      <p><span className="co-label">Tekijät</span>Osaamista ja työkapasiteettia, joka voisi olla paremmin käytössä.</p>
+    </div>
+    <div ref={ref} className={`co-bridge${full ? ' is-full' : ''}`} aria-hidden="true">
+      <div className="co-bridge__shore co-bridge__shore--l">
+        <span className="co-bridge__label">Yritykset</span>
+        <span className="co-bridge__icons co-bridge__icons--l">{Array.from({ length: 6 }, (_, i) => <i key={i} />)}</span>
+      </div>
+      <div className="co-bridge__gap">
+        <div className="co-bridge__deck">
+          {Array.from({ length: BRIDGE_PLANKS }, (_, i) => <span key={i} className={`co-bridge__plank${i < count ? ' is-in' : ''}`} />)}
+          <span className="co-bridge__walker co-bridge__walker--a" />
+          <span className="co-bridge__walker co-bridge__walker--b" />
+        </div>
+        <span className="co-bridge__name">Get to Work</span>
+        <div className="co-bridge__water"><span /><span /></div>
+      </div>
+      <div className="co-bridge__shore co-bridge__shore--r">
+        <span className="co-bridge__label">Tekijät</span>
+        <span className="co-bridge__icons co-bridge__icons--r">{Array.from({ length: 5 }, (_, i) => <i key={i} />)}</span>
+      </div>
+    </div>
+    <p className="co-bridge__cap" aria-live="polite">{full ? 'Get to Work yhdistää työt ja tekijät.' : 'Työt ja tekijät eivät löydä toisiaan.'}</p>
+  </div>;
+}
+
+
 function PlaceArt({ i }: { i: number }) {
   if (i === 0) return <svg viewBox="0 0 240 150" aria-hidden="true">
     <path className="a-line" d="M10 140 H230" />
@@ -402,45 +576,6 @@ function PlaceArt({ i }: { i: number }) {
   </svg>;
 }
 
-const NEEDS = [
-  { t: 'Oikeat ihmiset', d: 'oikeaan paikkaan.' },
-  { t: 'Selkeä suunnitelma', d: 'jota on helppo seurata.' },
-  { t: 'Joku, joka huolehtii kokonaisuudesta', d: 'alusta loppuun.' },
-];
-
-function EverydayWork() {
-  const [place, setPlace] = useState(0);
-  return <section id="tavallista-tyota" className="co-section" aria-labelledby="co-every-title">
-    <Chapter id="tavallista-tyota" />
-    <h2 id="co-every-title" className="co-h2" data-reveal>Tavallista työtä.<br /><span className="co-blue-text">Uudella tavalla.</span></h2>
-    <p className="co-lead" data-reveal>Meitä kiinnostavat erityisesti yritykset, jotka pitävät arjen pyörimässä: työympäristöt, joissa asioiden täytyy tapahtua oikeassa maailmassa.</p>
-    <div className="co-places" role="tablist" aria-label="Työympäristöt" data-reveal>
-      {PLACES.map((p, i) => <button key={p.k} type="button" role="tab" aria-selected={place === i}
-        className={`co-places__tab${place === i ? ' is-on' : ''}`} onClick={() => setPlace(i)}>{p.k}</button>)}
-    </div>
-    <div key={place} className="co-place" role="tabpanel">
-      <div className="co-place__art"><PlaceArt i={place} /></div>
-      <div>
-        <p className="co-label">Esimerkkitöitä</p>
-        <ul className="co-place__tasks">
-          {PLACES[place].tasks.map((t, i) => <li key={t} style={d(i + 1)}>{t}</li>)}
-        </ul>
-        <p className="co-muted co-small">…ja lukemattomia muita töitä muissa työympäristöissä.</p>
-      </div>
-    </div>
-    <p className="co-statement" data-reveal>Emme usko, että kaikki ongelmat ratkaistaan rakentamalla lisää ohjelmistoja. <strong>Joskus tarvitaan vain:</strong></p>
-    <ol className="co-roles">
-      {NEEDS.map((r, i) => <li key={r.t} className="co-role" data-reveal style={d(i)}>
-        <span className="co-role__n">0{i + 1}</span>
-        <span className="co-role__t">{r.t}</span>
-        <span className="co-role__d">{r.d}</span>
-      </li>)}
-    </ol>
-    <p className="co-motto" data-reveal><strong>Teknologian tehtävä</strong> on tehdä tästä mahdollisimman yksinkertaista.</p>
-  </section>;
-}
-
-// --- 05. Yksi työ kerrallaan -------------------------------------------------------------------
 
 const STACK_ROWS = [6, 5, 4];
 const STACK: { r: number; c: number }[] = STACK_ROWS.flatMap((n, r) => Array.from({ length: n }, (_, c) => ({ r, c })));
@@ -479,49 +614,3 @@ function JobStack() {
   </div>;
 }
 
-function OneJob() {
-  return <section id="yksi-tyo-kerrallaan" className="co-section" aria-labelledby="co-one-title">
-    <Chapter id="yksi-tyo-kerrallaan" />
-    <h2 id="co-one-title" className="co-h2" data-reveal>Yksi työ <span className="co-blue-text">kerrallaan.</span></h2>
-    <p className="co-lead" data-reveal>Get to Work on vasta rakentumassa. Aloitamme tekemällä yksittäisten töiden tilaamisesta helpompaa.</p>
-    <JobStack />
-    <div className="co-grid">
-      <div className="co-card co-card--glass" data-reveal style={d(1)}>
-        <p className="co-label">Nyt</p>
-        <p className="co-card__big">Yksittäisten töiden tilaamisesta helpompaa.</p>
-        <p className="co-muted">Samalla opimme, miten työtä voidaan suunnitella, organisoida ja toteuttaa paremmin.</p>
-      </div>
-      <div className="co-card co-card--blue" data-reveal style={d(3)}>
-        <p className="co-label">Pitkällä aikavälillä</p>
-        <p className="co-card__big">Alusta, jonka kautta työn hankkii yhtä helposti kuin muutkin palvelut.</p>
-      </div>
-    </div>
-    <p className="co-h3 co-strike co-strike--gap" data-reveal>
-      Ei <s style={d(2)}>turhaa monimutkaisuutta</s>. Ei <s style={d(4)}>loputtomia rekrytointiprosesseja</s>.{' '}
-      <span className="co-pop" style={d(8)}>Tehty työ.</span>
-    </p>
-    <p className="co-lead" data-reveal>Vain selkeä tarve, toimiva ratkaisu ja tehty työ.</p>
-  </section>;
-}
-
-// --- Lopetus ---------------------------------------------------------------------------------
-
-function Closing() {
-  return <section className="co-closing" data-section-dock-hide aria-labelledby="co-close-title">
-    <div className="co-closing__rings" aria-hidden="true"><span /><span /></div>
-    <h2 id="co-close-title" className="co-closing__title" data-reveal>
-      <span>Get to Work.</span>
-      <span lang="en" className="co-blue-text">From prompt to done.</span>
-    </h2>
-    <p className="co-closing__sub" data-reveal>Kerro, mitä pitää saada tehdyksi. Me selvitämme, miten se tehdään, kuka sen tekee ja mitä se maksaa.</p>
-    <div className="co-actions" data-reveal>
-      <a className="co-btn co-btn--primary" href={ORDER_HREF}>Kerro mitä pitää tehdä <span aria-hidden="true">→</span></a>
-      <a className="co-btn" href={BUILDER_HREF}>Haluan mukaan tekijäksi</a>
-    </div>
-    <div className="co-closing__foot" data-reveal>
-      <span>Tehdään työn tekemisestä helpompaa.</span>
-      <span>Yksi työ kerrallaan.</span>
-      <span lang="en">From prompt to done.</span>
-    </div>
-  </section>;
-}
