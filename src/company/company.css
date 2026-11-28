@@ -657,3 +657,12 @@
 /* Korjaus: co-side-in päättyi elementin omaan opacity: 0 -arvoon, jolloin listat jäivät näkymättömiksi. */
 @keyframes co-item-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 .co-side__points li, .co-place__tasks li { animation-name: co-item-in; }
+
+/* --- Uudistus 28.11.2026: kumppanikortit, esimerkkityöt --- */
+.co-uses--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+@media (max-width: 1100px) { .co-uses--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .co-uses--4 { grid-template-columns: 1fr; } }
+.co-uses--4 .co-use__t { margin-top: 0; font-size: clamp(20px, 1.75vw, 26px); overflow-wrap: anywhere; }
+.co-tags { list-style: none; padding: 0; margin-top: 0 !important; display: flex; flex-wrap: wrap; gap: 10px; }
+.co-tags li { padding: 10px 18px; border-radius: 9999px; border: 1px solid var(--line); background: rgb(255 255 255 / 0.05); font-family: var(--font-heading); font-size: 16px; }
+.co-actions--gap { margin-top: 40px !important; }

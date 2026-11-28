@@ -41,49 +41,47 @@ ${list(['Miksi kiire ei lopu?', 'Onko hinnoittelu kohdallaan?', 'Mistä seuraava
   {
     path: '/tietoa',
     title: 'Tietoa yrityksestä · Get to Work',
-    description: 'Get to Work yhdistää työt ja tekijät. Autamme yrityksiä saamaan asioita tehdyksi: kerro, mitä pitäisi saada tehtyä, niin autamme löytämään ja järjestämään siihen sopivat ihmiset ja resurssit.',
-    body: `<p>Get to Work / Yhdistämme työt ja tekijät</p>
+    description: 'Get to Work yhdistää työt ja tekijät. Kerro, mitä pitäisi saada tehtyä, niin yhdistämme sinut oikeisiin tekijöihin henkilöstöpalveluista, kumppaneilta ja työpaikoilta. Prompt to done.',
+    body: `<p>Get to Work / Työt ja tekijät yhteen</p>
 <h1>Mitä pitäisi saada tehtyä?</h1>
-<p>Get to Work auttaa yrityksiä saamaan asioita tehdyksi. Yhdistämme yritysten tarpeet osaaviin ihmisiin ja käytännön ratkaisuihin.</p>
+<p>Kerro tarve. Get to Work löytää tekijät, sopii aikataulun ja hinnan, ja työ tehdään.</p>
 <p><a href="mailto:${EMAIL}?subject=Ty%C3%B6tilaus">Kerro, mitä tarvitset</a></p>
 
-<h2>Paljon tekemätöntä työtä. Valtavasti käyttämätöntä osaamista.</h2>
-<p>Yrityksillä on jatkuvasti töitä, joihin niiden omat resurssit eivät riitä. Samalla ympärillämme on valtavasti ihmisiä, osaamista ja työkapasiteettia, jota voitaisiin hyödyntää paremmin.</p>
-<p>Me tuomme nämä yhteen. Emme myy kaikkea kaikille. Autamme yrityksiä saamaan työt tehdyksi.</p>
+<h2>Työtä on. Tekijöitä on. Ne eivät vain löydä toisiaan.</h2>
+<p>Yrityksillä on jatkuvasti töitä, joihin omat kädet eivät riitä. Samaan aikaan osaamista on käyttämättä: henkilöstöpalveluissa keikkojen välissä ja työpaikoilla, joissa kaikkea työaikaa ei tarvita. Get to Work tuo nämä yhteen.</p>
 
-<h2>Jokainen yritys tarvitsee joskus apukäsiä.</h2>
-<p>Joskus tarvitset ylimääräisen tekijän. Joskus kokonaisen tiimin. Joskus haluat vain, että joku hoitaa tietyn asian puolestasi. Get to Work auttaa löytämään tarpeeseesi sopivan ratkaisun.</p>
+<h2>Yksi alusta. Kaikki tarvittavat tekijät.</h2>
+<p>Get to Work yhdistää yrityksesi tarpeen oikeaan toteuttajaan. Sinun ei tarvitse tietää, tarvitsetko vuokratyöntekijän, alihankkijan vai tiimin.</p>
+<ul>
+<li><strong>Henkilöstöpalvelut.</strong> Vuokratyöntekijät kumppanimme kautta, muutamasta tunnista kuukausiin.</li>
+<li><strong>Erikoistuneet kumppanit.</strong> Yritykset, jotka hoitavat oman alansa työt alusta loppuun.</li>
+<li><strong>Jaettu osaaminen.</strong> Työpaikkojen osaajat, joiden työaikaa on vapaana.</li>
+</ul>
+<p>Esimerkkejä töistä: varasto ja logistiikka, tapahtumat, toimitilat ja muutot, myymälät, siivous ja ylläpito, kiinteistöt.</p>
+
+<h2>Prompt. Plan. Done.</h2>
 <ol>
-<li><strong>Lisää tekijöitä.</strong> Töitä on enemmän kuin omat resurssit riittävät. Autamme löytämään oikeat ihmiset yrityksesi avuksi, muutamasta tunnista useisiin kuukausiin.</li>
-<li><strong>Työ tai projekti tehtäväksi.</strong> Autamme määrittelemään tarvittavat resurssit ja löytämään sopivan toteuttajan tai tiimin.</li>
-<li><strong>Jatkuvaa apua.</strong> Autamme järjestämään jatkuvan ratkaisun toistuviin käytännön tehtäviin.</li>
+<li><strong>Prompt: kerro, mitä tarvitset.</strong> Kuvaile työ, tehtävä tai tilanne viestillä, sähköpostilla tai puhelimessa.</li>
+<li><strong>Plan: saat ehdotuksen.</strong> Työn kuvaus, tekijät, aikataulu ja hinta ennen aloitusta.</li>
+<li><strong>Done: työ tehdään.</strong> Hyväksyt ehdotuksen, ja me järjestämme loput. Sinulla on koko ajan yksi yhteyspiste.</li>
 </ol>
-<p>Yksi palvelu. Lukemattomia käyttötarkoituksia. Nämä ovat kolme esimerkkiä saman palvelun käytöstä, eivät kolme erillistä tuotetta.</p>
-<p>Tyypillisiä työympäristöjä ovat varastot, tuotanto, myymälät, toimitilat, tapahtumat, kiinteistöt ja palveluyritykset. Keskitymme pienten ja keskisuurten yritysten fyysisiin ja käytännönläheisiin töihin, jotka voi määritellä, hinnoitella ja toteuttaa selkeästi. Emme tarjoa juridisia, lääketieteellisiä tai sijoituspalveluita, vaativia luvanvaraisia tai turvallisuuskriittisiä töitä emmekä kokonaisia korkean riskin rakennusurakoita.</p>
+<p>Perinteinen henkilöstöpalvelu kysyy, millaisen työntekijän tarvitset. Get to Work kysyy, mitä pitäisi saada tehtyä.</p>
 
-<h2>Kerro, mitä pitää tehdä. Me järjestämme loput.</h2>
-<p>Perinteinen henkilöstövuokraus kysyy, millaisen työntekijän tarvitset. Get to Work kysyy, mitä pitäisi saada tehtyä.</p>
-<ol>
-<li><strong>Kerro, mitä tarvitset.</strong> Kuvaile työ, tehtävä tai tilanne, johon yrityksesi tarvitsee apua.</li>
-<li><strong>Löydämme ratkaisun.</strong> Get to Work auttaa löytämään sopivat ihmiset, resurssit ja toteutustavan.</li>
-<li><strong>Saadaan homma tehtyä.</strong> Hyväksy ratkaisu, ja me hoidamme loput.</li>
-</ol>
-<p>Saat ehdotuksen, jossa on työn kuvaus, tarvittavat ihmiset ja resurssit, sopiva toteuttaja, aikataulu ja hinta ennen aloitusta. Kun hyväksyt sen, järjestämme työn. Sinun ei tarvitse etsiä, rekrytoida tai koordinoida.</p>
+<h2>Enemmän työtä. Vähemmän tyhjäkäyntiä.</h2>
+<p>Henkilöstöyritys saa lisää keikkoja, erikoistunut yritys uusia asiakkaita, työpaikka tuloa vapaasta työajasta, ja tekijä lisää työtä ilman työpaikan vaihtoa. <a href="mailto:${EMAIL}?subject=Kumppaniksi">Liity kumppaniksi</a></p>
 
-<h2>People powered. AI assisted.</h2>
-<p>Työn tekevät ihmiset. Teknologia auttaa meitä löytämään oikeat tekijät, järjestämään resurssit ja tekemään koko prosessista mahdollisimman yksinkertaisen. Varsinaisen työn tekevät tehtävään sopivat kumppanit ja heidän työntekijänsä.</p>
-<p>Verkostomme on hallinnoitu: se koostuu luotettavista yrityksistä, palveluntarjoajista ja osaavista tekijöistä, joilla on tehtävään sopiva osaaminen sekä tarvittavat luvat ja vakuutukset. Tiedät, kuka työn tekee ja mitä palveluun sisältyy, ja vastuut sovitaan selvästi ennen työn aloitusta.</p>
-
-<h2>Enemmän mahdollisuuksia. Vähemmän käyttämätöntä osaamista.</h2>
-<p>Haluamme, että osaaminen ja työkapasiteetti kiertävät yritysten välillä. Esimerkiksi työntekijä voi tehdä neljä päivää omaa työtään ja viidennen päivän toisen yrityksen avuksi ilman, että hänen tarvitsee ryhtyä freelanceriksi tai vaihtaa työpaikkaa. Osaamisen jakaminen on aina työntekijälle vapaaehtoista ja perustuu selkeisiin sopimuksiin ja vastuisiin.</p>
+<h2>Selvät vastuut. Ihminen päättää.</h2>
+<p>Tekijän työnantaja on aina hänen oma työnantajansa tai henkilöstöpalvelu, ja vastuut sovitaan ennen aloitusta. Kumppaneilla on tehtävään sopiva osaaminen sekä tarvittavat luvat ja vakuutukset. Teknologia auttaa löytämään oikeat tekijät, mutta valinnan tekee aina ihminen.</p>
 
 <h2>Maailma, jossa asiat saadaan tehtyä.</h2>
 <p><strong>Missio:</strong> Tehdä työn ostamisesta, järjestämisestä ja tekemisestä helpompaa.</p>
-<p><strong>Visio:</strong> Yritysten tarpeet ja ihmisten osaaminen löytävät toisensa mahdollisimman helposti.</p>
+<p><strong>Visio:</strong> Yritysten tarpeet ja ihmisten osaaminen löytävät toisensa yhdellä viestillä.</p>
+<p>Osaamisen jakaminen on aina työntekijälle vapaaehtoista ja perustuu selkeisiin sopimuksiin.</p>
 
 <h2>Mitä pitäisi saada tehtyä?</h2>
-<p>Kerro, millaista apua yrityksesi tarvitsee. Autamme löytämään ja järjestämään siihen sopivat ihmiset ja resurssit.</p>
-<p><a href="mailto:${EMAIL}?subject=Ty%C3%B6tilaus">Kerro, mitä tarvitset</a> · <a href="mailto:${EMAIL}?subject=Haluan%20mukaan%20tekij%C3%A4ksi">Haluan mukaan tekijäksi</a></p>`,
+<p>Kerro, millaista apua yrityksesi tarvitsee. Me yhdistämme sinut oikeisiin tekijöihin.</p>
+<p><a href="mailto:${EMAIL}?subject=Ty%C3%B6tilaus">Kerro, mitä tarvitset</a> · <a href="mailto:${EMAIL}?subject=Kumppaniksi">Liity kumppaniksi</a></p>
+<p>Prompt to done.</p>`,
   },
   {
     path: '/kysely',
@@ -173,9 +171,9 @@ ${PAGES.map(p => `  <url><loc>${SITE}${p.path === '/' ? '/' : p.path}</loc><last
 
 writeFileSync(new URL('llms.txt', dist), `# Get to Work
 
-> Get to Work (Gettowork Oy, Espoo) yhdistää työt ja tekijät. Se auttaa yrityksiä saamaan asioita tehdyksi: yritys kertoo, mitä pitäisi saada tehtyä, ja Get to Work auttaa löytämään ja järjestämään siihen sopivat ihmiset, osaamisen ja resurssit.
+> Get to Work (Gettowork Oy, Espoo) yhdistää työt ja tekijät. Yritys kertoo, mitä pitäisi saada tehtyä, ja Get to Work yhdistää sen oikeaan toteuttajaan: henkilöstöpalveluihin, erikoistuneisiin kumppaneihin tai työpaikkojen vapaaseen osaamiseen. Prompt to done.
 
-Get to Work on teknologia-avusteinen, hallinnoitu yritysten välinen työn ja palveluiden alusta. Työn tekevät hyväksytyt kumppanit ja heidän työntekijänsä; teknologia auttaa tarpeen määrittelyssä, tekijöiden löytämisessä ja työn järjestämisessä. Painopiste on pienten ja keskisuurten yritysten fyysisissä ja käytännönläheisissä töissä: varastot, tuotanto, myymälät, toimitilat, tapahtumat ja kiinteistöt.
+Tekijän työnantaja on aina hänen oma työnantajansa tai henkilöstöpalvelu; Get to Work ei itse työllistä. Painopiste on käytännön töissä: varasto ja logistiikka, tapahtumat, toimitilat ja muutot, myymälät, siivous ja ylläpito sekä kiinteistöt.
 
 ## Sivut
 

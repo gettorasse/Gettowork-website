@@ -2,13 +2,13 @@ import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { SectionDock, type DockItem } from './SectionDock.tsx';
 import './company.css';
 
-// "Tietoa yrityksestä" – Get to Work yhdistää tekemättömät työt ja osaavat tekijät.
-// Sisältö perustuu Rasmuksen briefiin "Brand positioning & About page update" (marraskuu 2026). Animaatiot ovat CSS:ää ja SVG:tä;
+// "Tietoa yrityksestä" – Get to Work yhdistää työt ja tekijät: henkilöstöpalvelut, kumppanit ja jaettu osaaminen.
+// Sisältö perustuu Rasmuksen hyväksymään luonnokseen (28.11.2026). Prompt to done. Animaatiot ovat CSS:ää ja SVG:tä;
 // näkyviin tulo IntersectionObserverilla.
 
 const EMAIL = 'rasmus@gettowork.fi';
 const ORDER_HREF = `mailto:${EMAIL}?subject=${encodeURIComponent('Työtilaus')}&body=${encodeURIComponent('Mitä pitää saada tehdyksi:\n\nMissä:\n\nMilloin:\n')}`;
-const BUILDER_HREF = `mailto:${EMAIL}?subject=${encodeURIComponent('Haluan mukaan tekijäksi')}`;
+const PARTNER_HREF = `mailto:${EMAIL}?subject=${encodeURIComponent('Kumppaniksi')}`;
 
 const reduced = () => typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
@@ -47,11 +47,11 @@ const d = (n: number) => ({ '--d': `${n * 90}ms` } as CSSProperties);
 
 // Luvut: jokainen osa-alue alkaa selkeällä väliotsikolla, ja sama luettelo ohjaa alareunan dockia.
 const CHAPTERS = [
-  { id: 'tarkoitus', label: 'Tarkoitus' },
+  { id: 'miksi', label: 'Miksi' },
   { id: 'mita-teemme', label: 'Mitä teemme' },
   { id: 'nain-se-toimii', label: 'Näin se toimii' },
-  { id: 'ihmiset-ja-teknologia', label: 'Ihmiset ja teknologia' },
-  { id: 'parempi-tapa', label: 'Parempi tapa' },
+  { id: 'kumppaneille', label: 'Kumppaneille' },
+  { id: 'luottamus', label: 'Luottamus' },
   { id: 'visio', label: 'Visio' },
 ] as const satisfies readonly DockItem[];
 type ChapterId = (typeof CHAPTERS)[number]['id'];
@@ -82,11 +82,11 @@ export function Company() {
 
   return <main ref={root} lang="fi" className="co">
     <Hero headingRef={headingRef} />
-    <Purpose />
+    <Why />
     <WhatWeDo />
     <HowItWorks />
-    <PeopleTech />
-    <BetterWay />
+    <Partners />
+    <Trust />
     <Vision />
     <Closing />
     <SectionDock items={DOCK_ITEMS} />
@@ -98,131 +98,71 @@ export function Company() {
 function Hero({ headingRef }: { headingRef: React.RefObject<HTMLHeadingElement | null> }) {
   return <section className="co-hero" aria-labelledby="co-hero-title">
     <div className="co-hero__text">
-      <p className="co-eyebrow co-eyebrow--lit is-in">Get to Work <span aria-hidden="true">/</span> Yhdistämme työt ja tekijät</p>
+      <p className="co-eyebrow co-eyebrow--lit is-in">Get to Work <span aria-hidden="true">/</span> Työt ja tekijät yhteen</p>
       <h1 id="co-hero-title" ref={headingRef} tabIndex={-1} className="co-hero__title co-hero__title--two">
         <span className="co-hero__word" style={d(1)}>Mitä pitäisi</span>
         <span className="co-hero__word co-hero__word--own" style={d(4)}>saada tehtyä?</span>
       </h1>
-      <p className="co-hero__lead" style={d(8)}>Get to Work auttaa yrityksiä saamaan asioita tehdyksi. Yhdistämme yritysten tarpeet osaaviin ihmisiin ja käytännön ratkaisuihin.</p>
+      <p className="co-hero__lead" style={d(8)}>Kerro tarve. Get to Work löytää tekijät, sopii aikataulun ja hinnan, ja työ tehdään.</p>
       <div className="co-actions co-hero__actions" style={d(10)}>
         <a className="co-btn co-btn--primary" href={ORDER_HREF}>Kerro, mitä tarvitset <span aria-hidden="true">→</span></a>
       </div>
     </div>
     <Orbit />
-    <a className="co-scroll" href="#tarkoitus" aria-label="Vieritä alas">
+    <a className="co-scroll" href="#miksi" aria-label="Vieritä alas">
       <span aria-hidden="true" />
     </a>
   </section>;
 }
 
-// --- 01. Tarkoitus ----------------------------------------------------------------------
+// --- 01. Miksi --------------------------------------------------------------------------
 
-function Purpose() {
-  return <section id="tarkoitus" className="co-section" aria-labelledby="co-purpose-title">
-    <Chapter id="tarkoitus" />
-    <h2 id="co-purpose-title" className="co-h2" data-reveal>Paljon tekemätöntä työtä.<br /><span className="co-blue-text">Valtavasti käyttämätöntä osaamista.</span></h2>
-    <p className="co-lead" data-reveal>Yrityksillä on jatkuvasti töitä, joihin niiden omat resurssit eivät riitä. Samalla ympärillämme on valtavasti ihmisiä, osaamista ja työkapasiteettia, jota voitaisiin hyödyntää paremmin.</p>
+function Why() {
+  return <section id="miksi" className="co-section" aria-labelledby="co-why-title">
+    <Chapter id="miksi" />
+    <h2 id="co-why-title" className="co-h2" data-reveal>Työtä on. Tekijöitä on.<br /><span className="co-blue-text">Ne eivät vain löydä toisiaan.</span></h2>
+    <p className="co-lead" data-reveal>Yrityksillä on jatkuvasti töitä, joihin omat kädet eivät riitä. Samaan aikaan osaamista on käyttämättä: henkilöstöpalveluissa keikkojen välissä ja työpaikoilla, joissa kaikkea työaikaa ei tarvita.</p>
     <Bridge />
-    <p className="co-statement" data-reveal><strong>Me tuomme nämä yhteen.</strong> Emme myy kaikkea kaikille. Autamme yrityksiä saamaan työt tehdyksi.</p>
+    <p className="co-statement" data-reveal><strong>Get to Work tuo nämä yhteen.</strong></p>
   </section>;
 }
 
 // --- 02. Mitä teemme --------------------------------------------------------------------
 
-const USES = [
-  { t: 'Lisää tekijöitä.', d: 'Töitä on enemmän kuin omat resurssit riittävät. Autamme löytämään oikeat ihmiset yrityksesi avuksi.', tag: 'Muutamasta tunnista useisiin kuukausiin' },
-  { t: 'Työ tai projekti tehtäväksi.', d: 'Konkreettinen tehtävä, johon ei ole tarpeeksi aikaa, ihmisiä tai osaamista. Autamme määrittelemään resurssit ja löytämään sopivan toteuttajan tai tiimin.', tag: 'Rajattu kokonaisuus' },
-  { t: 'Jatkuvaa apua.', d: 'Toistuvat käytännön tehtävät, jotka on järkevää hoitaa ulkopuolisilla resursseilla. Autamme järjestämään jatkuvan ratkaisun.', tag: 'Toistuva, sovittu apu' },
+const SOURCES = [
+  { t: 'Henkilöstöpalvelut.', d: 'Vuokratyöntekijät kumppanimme kautta, kun tarvitset lisää käsiä.', tag: 'Muutamasta tunnista kuukausiin' },
+  { t: 'Erikoistuneet kumppanit.', d: 'Yritykset, jotka hoitavat oman alansa työt alusta loppuun.', tag: 'Työ valmiina' },
+  { t: 'Jaettu osaaminen.', d: 'Työpaikkojen osaajat, joiden työaikaa on vapaana.', tag: 'Osaaminen käyttöön' },
 ];
-
-const SITUATIONS = [
-  'Kiireinen kausi, eikä oma väki riitä.',
-  'Varasto pitäisi järjestää, mutta kenelläkään ei ole aikaa.',
-  'Myymälä tarvitsee ylimääräisiä tekijöitä.',
-  'Toimitilat pitäisi tyhjentää tai järjestellä uudelleen.',
-  'Tapahtumaan tarvitaan avustavaa henkilökuntaa.',
-  'Tavarat pitäisi pakata ja siirtää.',
-  'Toistuva käytännön työ haluttaisiin ulkoistaa.',
-  'Projektiin tarvitaan hetkeksi lisää ihmisiä.',
-];
-
-const PLACES = [
-  { k: 'Varastot', tasks: ['Purku ja keräily', 'Inventointi', 'Pakkaaminen ja siirrot'] },
-  { k: 'Tuotanto', tasks: ['Avustavat työt', 'Pakkaaminen', 'Järjestely ja siivous'] },
-  { k: 'Myymälät', tasks: ['Hyllytys', 'Inventointi', 'Kampanjan valmistelu'] },
-  { k: 'Toimitilat', tasks: ['Siivous ja ylläpito', 'Tyhjennys ja muutto', 'Kalusteiden kokoaminen'] },
-];
+const JOBS = ['Varasto ja logistiikka', 'Tapahtumat', 'Toimitilat ja muutot', 'Myymälät', 'Siivous ja ylläpito', 'Kiinteistöt'];
 
 function WhatWeDo() {
-  const [place, setPlace] = useState(0);
   return <section id="mita-teemme" className="co-section" aria-labelledby="co-what-title">
     <Chapter id="mita-teemme" />
-    <h2 id="co-what-title" className="co-h2" data-reveal>Jokainen yritys tarvitsee<br /><span className="co-blue-text">joskus apukäsiä.</span></h2>
-    <p className="co-lead" data-reveal>Joskus tarvitset ylimääräisen tekijän. Joskus kokonaisen tiimin. Joskus haluat vain, että joku hoitaa tietyn asian puolestasi. Get to Work auttaa löytämään tarpeeseesi sopivan ratkaisun.</p>
-
+    <h2 id="co-what-title" className="co-h2" data-reveal>Yksi alusta.<br /><span className="co-blue-text">Kaikki tarvittavat tekijät.</span></h2>
+    <p className="co-lead" data-reveal>Get to Work yhdistää yrityksesi tarpeen oikeaan toteuttajaan. Sinun ei tarvitse tietää, tarvitsetko vuokratyöntekijän, alihankkijan vai tiimin. Riittää, että kerrot, mitä pitäisi saada tehtyä.</p>
     <ol className="co-uses">
-      {USES.map((u, i) => <li key={u.t} className="co-use" data-reveal style={d(i * 2)}>
+      {SOURCES.map((u, i) => <li key={u.t} className="co-use" data-reveal style={d(i * 2)}>
         <span className="co-use__n">0{i + 1}</span>
         <span className="co-use__t">{u.t}</span>
         <span className="co-use__d">{u.d}</span>
         <span className="co-use__tag">{u.tag}</span>
       </li>)}
     </ol>
-    <p className="co-motto" data-reveal><strong>Yksi palvelu. Lukemattomia käyttötarkoituksia.</strong> Nämä ovat kolme esimerkkiä saman palvelun käytöstä, eivät kolme erillistä tuotetta.</p>
-
-    <h3 className="co-h3" data-reveal>Kuulostaako tutulta?</h3>
-    <ul className="co-situations">
-      {SITUATIONS.map((s, i) => <li key={s} data-reveal style={d(i % 4)}>{s}</li>)}
+    <p className="co-label co-label--gap" data-reveal>Esimerkkejä töistä</p>
+    <ul className="co-tags" data-reveal>
+      {JOBS.map(j => <li key={j}>{j}</li>)}
     </ul>
-    <p className="co-h3 co-strike" data-reveal>
-      Ei <s style={d(2)}>rekrytointia joka kerta</s>. Ei <s style={d(4)}>monta palveluntarjoajaa</s>.{' '}
-      <span className="co-pop" style={d(8)}>Yksi paikka.</span>
-    </p>
-
-    <p className="co-label co-label--gap" data-reveal>Tyypillisiä työympäristöjä</p>
-    <div className="co-places co-places--tight" role="tablist" aria-label="Työympäristöt" data-reveal>
-      {PLACES.map((p, i) => <button key={p.k} type="button" role="tab" aria-selected={place === i}
-        className={`co-places__tab${place === i ? ' is-on' : ''}`} onClick={() => setPlace(i)}>{p.k}</button>)}
-    </div>
-    <div key={place} className="co-place" role="tabpanel">
-      <div className="co-place__art"><PlaceArt i={place} /></div>
-      <div>
-        <p className="co-label">Esimerkkitöitä</p>
-        <ul className="co-place__tasks">
-          {PLACES[place].tasks.map((t, i) => <li key={t} style={d(i + 1)}>{t}</li>)}
-        </ul>
-        <p className="co-muted co-small">…sekä tapahtumat, kiinteistöt, palveluyritykset ja muut työympäristöt.</p>
-      </div>
-    </div>
-
-    <div className="co-grid">
-      <div className="co-card co-card--glass" data-reveal style={d(1)}>
-        <p className="co-label">Keskitymme</p>
-        <ul className="co-checks co-checks--sm">
-          {['Pienten ja keskisuurten yritysten arkeen', 'Fyysisiin ja käytännönläheisiin töihin', 'Töihin, jotka voi määritellä, hinnoitella ja toteuttaa selkeästi'].map((t, i) => <li key={t} style={d(i + 1)}><Check />{t}</li>)}
-        </ul>
-      </div>
-      <div className="co-card co-card--glass" data-reveal style={d(3)}>
-        <p className="co-label">Emme tarjoa</p>
-        <ul className="co-checks co-checks--no co-checks--sm">
-          {['Juridisia, lääketieteellisiä tai sijoituspalveluita', 'Vaativia luvanvaraisia tai turvallisuuskriittisiä töitä', 'Kokonaisia korkean riskin rakennusurakoita'].map((t, i) => <li key={t} style={d(i + 1)}><Cross />{t}</li>)}
-        </ul>
-        <p className="co-muted co-small co-card__foot">Näilläkin aloilla voimme auttaa rajatuissa avustavissa tehtävissä.</p>
-      </div>
-    </div>
+    <p className="co-motto" data-reveal><strong>Yksi yhteyspiste.</strong> Lukemattomia tapoja saada työt tehtyä.</p>
   </section>;
 }
 
-const Cross = () => <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7 7 17" /></svg>;
-
 // --- 03. Näin se toimii -----------------------------------------------------------------
 
-const PROPOSAL = ['Työn kuvaus', 'Tarvittavat ihmiset ja resurssit', 'Sopiva toteuttaja', 'Aikataulu', 'Hinta ennen aloitusta'];
-
 const STEPS = [
-  { t: 'Kerro, mitä tarvitset.', d: 'Kuvaile työ, tehtävä tai tilanne, johon yrityksesi tarvitsee apua.' },
-  { t: 'Löydämme ratkaisun.', d: 'Get to Work auttaa löytämään sopivat ihmiset, resurssit ja toteutustavan.' },
-  { t: 'Saadaan homma tehtyä.', d: 'Hyväksy ratkaisu, ja me hoidamme loput. Tiedät koko ajan, missä mennään.' },
+  { t: 'Prompt: kerro, mitä tarvitset.', d: 'Kuvaile työ, tehtävä tai tilanne viestillä, sähköpostilla tai puhelimessa.' },
+  { t: 'Plan: saat ehdotuksen.', d: 'Työn kuvaus, tekijät, aikataulu ja hinta ennen aloitusta.' },
+  { t: 'Done: työ tehdään.', d: 'Hyväksyt ehdotuksen, ja me järjestämme loput. Sinulla on koko ajan yksi yhteyspiste.' },
 ];
 
 const PROMPTS = [
@@ -274,7 +214,7 @@ function PromptDemo() {
   // näkyviin tulon is-in-luokan, ja koko esitys katoaisi vaiheen vaihtuessa.
   return <div data-reveal><div ref={ref} className={`co-prompt is-stage-${stage}`}>
     <ol className="co-prompt__stages" aria-hidden="true">
-      {['Kerro.', 'Ratkaisu.', 'Tehty.'].map((k, i) => <li key={k} className={stage >= i ? 'is-on' : ''}>{k}</li>)}
+      {['Prompt.', 'Plan.', 'Done.'].map((k, i) => <li key={k} lang="en" className={stage >= i ? 'is-on' : ''}>{k}</li>)}
     </ol>
     <div className="co-prompt__box">
       <p className="co-label">Mitä pitäisi saada tehtyä?</p>
@@ -293,23 +233,12 @@ function PromptDemo() {
   </div></div>;
 }
 
+
 function HowItWorks() {
   return <section id="nain-se-toimii" className="co-section" aria-labelledby="co-how-title">
     <Chapter id="nain-se-toimii" />
-    <h2 id="co-how-title" className="co-h2" data-reveal>Kerro, mitä pitää tehdä.<br /><span className="co-blue-text">Me järjestämme loput.</span></h2>
-
-    <div className="co-grid co-compare">
-      <div className="co-card co-card--glass" data-reveal style={d(1)}>
-        <p className="co-label">Perinteinen henkilöstövuokraus kysyy</p>
-        <p className="co-card__big co-muted">Millaisen työntekijän tarvitset?</p>
-      </div>
-      <div className="co-card co-card--blue" data-reveal style={d(3)}>
-        <p className="co-label">Get to Work kysyy</p>
-        <p className="co-card__big">Mitä pitäisi saada tehtyä?</p>
-      </div>
-    </div>
-    <p className="co-lead" data-reveal>Sinun ei tarvitse tietää valmiiksi, millaisen työntekijän, tiimin tai palvelun tarvitset. Riittää, että kerrot, mitä pitäisi saada tehtyä. Me autamme löytämään ja järjestämään siihen sopivan ratkaisun.</p>
-
+    <h2 id="co-how-title" className="co-h2" lang="en" data-reveal>Prompt. Plan.<br /><span className="co-blue-text">Done.</span></h2>
+    <p className="co-lead" data-reveal>Sinun ei tarvitse tehdä tarjouspyyntöä tai etsiä toimittajaa. Kerro tarve omin sanoin, niin hoidamme loput.</p>
     <ol className="co-roles">
       {STEPS.map((r, i) => <li key={r.t} className="co-role" data-reveal style={d(i)}>
         <span className="co-role__n">0{i + 1}</span>
@@ -317,66 +246,70 @@ function HowItWorks() {
         <span className="co-role__d">{r.d}</span>
       </li>)}
     </ol>
-
-    <PromptDemo />
-
-    <div className="co-grid">
+    <div className="co-grid co-compare">
       <div className="co-card co-card--glass" data-reveal style={d(1)}>
-        <p className="co-label">Saat ehdotuksen</p>
-        <ul className="co-checks co-checks--sm">
-          {PROPOSAL.map((t, i) => <li key={t} style={d(i + 1)}><Check />{t}</li>)}
-        </ul>
+        <p className="co-label">Perinteinen henkilöstöpalvelu kysyy</p>
+        <p className="co-card__big co-muted">Millaisen työntekijän tarvitset?</p>
       </div>
       <div className="co-card co-card--blue" data-reveal style={d(3)}>
-        <p className="co-label">Hyväksyt, me hoidamme</p>
-        <p className="co-card__big">Sinun ei tarvitse etsiä, rekrytoida tai koordinoida.</p>
-        <p>Kun ehdotus sopii, järjestämme oikeat tekijät ja resurssit paikalle. Sinulla on koko ajan yksi yhteyspiste.</p>
+        <p className="co-label">Get to Work kysyy</p>
+        <p className="co-card__big">Mitä pitäisi saada tehtyä?</p>
       </div>
+    </div>
+    <PromptDemo />
+  </section>;
+}
+
+// --- 04. Kumppaneille ja tekijöille -----------------------------------------------------
+
+const PARTNERS = [
+  { t: 'Henkilöstöyritys', d: 'Lisää keikkoja ja paremmin täyttyvät vuorot.' },
+  { t: 'Erikoistunut yritys', d: 'Uusia asiakkaita ilman omaa myyntiä.' },
+  { t: 'Työpaikka', d: 'Vapaa työaika muuttuu tuloksi.' },
+  { t: 'Tekijä', d: 'Lisää työtä ilman työpaikan vaihtoa. Työsuhde ja turva pysyvät.' },
+];
+
+function Partners() {
+  return <section id="kumppaneille" className="co-section" aria-labelledby="co-partners-title">
+    <Chapter id="kumppaneille" />
+    <h2 id="co-partners-title" className="co-h2" data-reveal>Enemmän työtä.<br /><span className="co-blue-text">Vähemmän tyhjäkäyntiä.</span></h2>
+    <p className="co-lead" data-reveal>Get to Work tuo valmiiksi määritellyt työt niille, joilla on osaamista ja aikaa.</p>
+    <ul className="co-uses co-uses--4">
+      {PARTNERS.map((p, i) => <li key={p.t} className="co-use" data-reveal style={d(i)}>
+        <span className="co-use__t">{p.t}</span>
+        <span className="co-use__d">{p.d}</span>
+      </li>)}
+    </ul>
+    <div className="co-actions co-actions--gap" data-reveal>
+      <a className="co-btn co-btn--primary" href={PARTNER_HREF}>Liity kumppaniksi <span aria-hidden="true">→</span></a>
     </div>
   </section>;
 }
 
-// --- 04. Ihmiset ja teknologia ----------------------------------------------------------
+// --- 05. Luottamus ------------------------------------------------------------------------------
 
 const TRUST = [
-  'Kumppaneilla on tehtävään sopiva osaaminen sekä tarvittavat luvat ja vakuutukset',
-  'Tiedät, kuka työn tekee ja mitä palveluun sisältyy',
-  'Vastuut sovitaan selvästi ennen työn aloitusta',
+  'Tekijän työnantaja on aina hänen oma työnantajansa tai henkilöstöpalvelu. Vastuut sovitaan ennen aloitusta.',
+  'Kumppaneilla on tehtävään sopiva osaaminen sekä tarvittavat luvat ja vakuutukset.',
+  'Tiedät, kuka työn tekee, mitä siihen sisältyy ja mitä se maksaa.',
+  'Teknologia auttaa löytämään oikeat tekijät, mutta valinnan tekee aina ihminen.',
 ];
 
-function PeopleTech() {
-  return <section id="ihmiset-ja-teknologia" className="co-section" aria-labelledby="co-pt-title">
-    <Chapter id="ihmiset-ja-teknologia" />
-    <h2 id="co-pt-title" className="co-h2" lang="en" data-reveal>People powered.<br /><span className="co-blue-text">AI assisted.</span></h2>
-    <p className="co-lead" data-reveal>Työn tekevät ihmiset. Teknologia auttaa meitä löytämään oikeat tekijät, järjestämään resurssit ja tekemään koko prosessista mahdollisimman yksinkertaisen.</p>
-
-    <div className="co-grid">
-      <div className="co-card co-card--glass" data-reveal style={d(1)}>
-        <p className="co-label">Ihmiset</p>
-        <p className="co-card__big">Tekevät työn.</p>
-        <p className="co-muted">Varsinaisen työn tekevät tehtävään sopivat kumppanit ja heidän työntekijänsä. Meidän ei tarvitse omistaa kaikkea työvoimaa tai kalustoa, vaan hyödynnämme hyväksyttyjen kumppaneiden olemassa olevia resursseja.</p>
-      </div>
-      <div className="co-card co-card--blue" data-reveal style={d(3)}>
-        <p className="co-label">Teknologia</p>
-        <p className="co-card__big">Pyörittää koneistoa taustalla.</p>
-        <p>Teknologia ei ole tuotteemme vaan työkalumme. Sen avulla järjestämme työn nopeammin, luotettavammin ja pienemmällä hallinnolla.</p>
-      </div>
-    </div>
-
-    <p className="co-motto" data-reveal><strong>Sinulle tämä näkyy yksinkertaisena palveluna:</strong> kerrot tarpeen, me hoidamme loput.</p>
-
-    <h3 className="co-h3 co-h3--big" data-reveal>Hallinnoitu verkosto. <span className="co-blue-text">Ei avoin ilmoitustaulu.</span></h3>
-    <p className="co-lead" data-reveal>Verkostomme koostuu luotettavista yrityksistä, palveluntarjoajista ja osaavista tekijöistä. Hyväksymme kumppanit, varmistamme osaamisen, käsittelemme palautteen ja seuraamme työn laatua.</p>
+function Trust() {
+  return <section id="luottamus" className="co-section" aria-labelledby="co-trust-title">
+    <Chapter id="luottamus" />
+    <h2 id="co-trust-title" className="co-h2" data-reveal>Selvät vastuut.<br /><span className="co-blue-text">Ihminen päättää.</span></h2>
+    <p className="co-lead" data-reveal>Työn ostamisen pitää olla turvallista ja ennustettavaa.</p>
     <div className="co-card co-card--glass co-trust" data-reveal>
       <ul className="co-checks">
         {TRUST.map((t, i) => <li key={t} style={d(i + 1)}><Check />{t}</li>)}
       </ul>
-      <p className="co-muted co-card__foot">Teemme työn ostamisesta turvallisempaa, selkeämpää ja ennustettavampaa.</p>
     </div>
+    <p className="co-motto" lang="en" data-reveal><strong>People powered.</strong> AI assisted.</p>
   </section>;
 }
 
-// --- 05. Parempi tapa tehdä töitä ---------------------------------------------------------
+// --- 06. Visio ---------------------------------------------------------------------------------
 
 /** Kuvitus: neljä päivää omassa yrityksessä, viides toisen yrityksen avuksi. */
 function ShareWeek() {
@@ -389,40 +322,19 @@ function ShareWeek() {
   </div>;
 }
 
-const SHARE_POINTS = [
-  'Työntekijä saa lisää mahdollisuuksia, eikä hänen tarvitse ryhtyä freelanceriksi tai vaihtaa työpaikkaa',
-  'Yritys hyödyntää olemassa olevaa osaamistaan paremmin',
-  'Toinen yritys saa juuri tarvitsemansa avun',
-];
-
-function BetterWay() {
-  return <section id="parempi-tapa" className="co-section" aria-labelledby="co-better-title">
-    <Chapter id="parempi-tapa" />
-    <h2 id="co-better-title" className="co-h2" data-reveal>Enemmän mahdollisuuksia.<br /><span className="co-blue-text">Vähemmän käyttämätöntä osaamista.</span></h2>
-    <p className="co-lead" data-reveal>Monilla yrityksillä on hyviä työntekijöitä, joiden koko työkapasiteettia ne eivät aina tarvitse. Samaan aikaan toisilla yrityksillä on pulaa juuri samoista resursseista.</p>
-
-    <div className="co-side" data-reveal>
-      <div>
-        <p className="co-label">Osaaminen kiertämään</p>
-        <p className="co-side__big">Neljä päivää omassa työssä. Viides päivä toisen yrityksen avuksi.</p>
-        <ul className="co-checks co-side__points">
-          {SHARE_POINTS.map((t, i) => <li key={t} style={d(i + 1)}><Check />{t}</li>)}
-        </ul>
-      </div>
-      <ShareWeek />
-    </div>
-    <p className="co-source">Osaamisen jakaminen on aina työntekijälle vapaaehtoista ja perustuu selkeisiin sopimuksiin ja vastuisiin.</p>
-    <p className="co-statement" data-reveal><strong>Haluamme rakentaa työelämää, jossa olemassa oleva osaaminen pääsee paremmin käyttöön.</strong></p>
-  </section>;
-}
-
-// --- 06. Visio ---------------------------------------------------------------------------------
 
 function Vision() {
   return <section id="visio" className="co-section" aria-labelledby="co-vision-title">
     <Chapter id="visio" />
     <h2 id="co-vision-title" className="co-h2" data-reveal>Maailma, jossa asiat<br /><span className="co-blue-text">saadaan tehtyä.</span></h2>
-    <p className="co-lead" data-reveal>Haluamme rakentaa tulevaisuutta, jossa yrityksillä on helpompi pääsy tarvitsemiinsa resursseihin ja ihmisillä enemmän mahdollisuuksia hyödyntää osaamistaan.</p>
+    <p className="co-lead" data-reveal>Haluamme, että osaaminen liikkuu sinne, missä sitä tarvitaan. Yrityksillä on helpompi pääsy tekijöihin, ja ihmisillä on enemmän mahdollisuuksia käyttää osaamistaan.</p>
+    <div className="co-side" data-reveal>
+      <div>
+        <p className="co-label">Jaettu osaaminen</p>
+        <p className="co-side__big">Neljä päivää omassa työssä. Viides päivä toisen yrityksen avuksi.</p>
+      </div>
+      <ShareWeek />
+    </div>
     <div className="co-grid">
       <div className="co-card co-card--glass" data-reveal style={d(1)}>
         <p className="co-label">Missio</p>
@@ -430,10 +342,10 @@ function Vision() {
       </div>
       <div className="co-card co-card--blue" data-reveal style={d(3)}>
         <p className="co-label">Visio</p>
-        <p className="co-card__big">Yritysten tarpeet ja ihmisten osaaminen löytävät toisensa mahdollisimman helposti.</p>
+        <p className="co-card__big">Yritysten tarpeet ja ihmisten osaaminen löytävät toisensa yhdellä viestillä.</p>
       </div>
     </div>
-    <p className="co-statement" data-reveal>Haluamme auttaa yrityksiä kasvamaan, uudistumaan ja saamaan asioita aikaan <strong>ilman, että resurssien puute on jatkuva este.</strong></p>
+    <p className="co-source">Osaamisen jakaminen on aina työntekijälle vapaaehtoista ja perustuu selkeisiin sopimuksiin.</p>
   </section>;
 }
 
@@ -446,14 +358,14 @@ function Closing() {
       <span>Mitä pitäisi</span>
       <span className="co-blue-text">saada tehtyä?</span>
     </h2>
-    <p className="co-closing__sub" data-reveal>Kerro, millaista apua yrityksesi tarvitsee. Autamme löytämään ja järjestämään siihen sopivat ihmiset ja resurssit.</p>
+    <p className="co-closing__sub" data-reveal>Kerro, millaista apua yrityksesi tarvitsee. Me yhdistämme sinut oikeisiin tekijöihin.</p>
     <div className="co-actions" data-reveal>
       <a className="co-btn co-btn--primary" href={ORDER_HREF}>Kerro, mitä tarvitset <span aria-hidden="true">→</span></a>
-      <a className="co-btn" href={BUILDER_HREF}>Haluan mukaan tekijäksi</a>
+      <a className="co-btn" href={PARTNER_HREF}>Liity kumppaniksi</a>
     </div>
     <div className="co-closing__foot" data-reveal>
-      <span>Yhdistämme työt ja tekijät.</span>
-      <span>Yksi palvelu. Lukemattomia käyttötarkoituksia.</span>
+      <span>Työt ja tekijät yhteen.</span>
+      <span lang="en">Prompt to done.</span>
       <span>Get to Work.</span>
     </div>
   </section>;
