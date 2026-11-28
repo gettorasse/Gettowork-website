@@ -44,7 +44,7 @@ ${list(['Miksi kiire ei lopu?', 'Onko hinnoittelu kohdallaan?', 'Mistä seuraava
     description: 'Get to Work yhdistää työt ja tekijät. Selitä tarpeesi, Get to Work saa sen tehtyä: oikeat tekijät henkilöstöpalveluista, kumppaneilta ja työpaikoilta yhdellä työmääräyksellä. Prompt to done.',
     body: `<p>Get to Work / Selitä tarpeesi, me saamme sen tehtyä</p>
 <h1>Mitä pitäisi saada tehtyä?</h1>
-<p>Selitä tarpeesi omin sanoin. Get to Work saa sen tehtyä: oikeat tekijät, aikataulu ja hinta yhdellä työmääräyksellä.</p>
+<p>Selitä tarpeesi omin sanoin. Get to Work tekee siitä työmääräyksen, vahvistetut yritykset tekevät tarjoukset, ja työ tehdään.</p>
 <p><a href="mailto:${EMAIL}?subject=Ty%C3%B6tilaus">Kerro, mitä tarvitset</a></p>
 
 <h2>Työtä on. Tekijöitä on. Ne eivät vain löydä toisiaan.</h2>
@@ -62,17 +62,17 @@ ${list(['Miksi kiire ei lopu?', 'Onko hinnoittelu kohdallaan?', 'Mistä seuraava
 
 <h2>Prompt. Plan. Done.</h2>
 <ol>
-<li><strong>Prompt: selitä tarpeesi.</strong> Kuvaile työ omin sanoin viestillä, sähköpostilla tai puhelimessa.</li>
-<li><strong>Plan: saat työmääräyksen.</strong> Työn kuvaus, tarvittavat taidot, tekijät, aikataulu ja hinta yhdellä sivulla ennen aloitusta.</li>
-<li><strong>Done: työ tehdään ja kuitataan.</strong> Työ kuitataan valmiiksi kuvin ja sinun hyväksynnälläsi. Sinulla on koko ajan yksi yhteyspiste.</li>
+<li><strong>Prompt: selitä tarpeesi.</strong> Kuvaile työ omin sanoin viestillä, sähköpostilla tai puhelimessa. Tarpeen kertominen on maksutonta.</li>
+<li><strong>Plan: saat tarjoukset.</strong> Teemme tarpeestasi tarkan työmääräyksen, ja vahvistetut yritykset tekevät siihen vertailukelpoiset tarjoukset.</li>
+<li><strong>Done: valitse, ja työ tehdään.</strong> Työ kuitataan kuvin, ja maksat vasta, kun olet hyväksynyt sen.</li>
 </ol>
 <p>Perinteinen henkilöstöpalvelu kysyy, millaisen työntekijän tarvitset. Get to Work kysyy, mitä pitäisi saada tehtyä.</p>
 
 <h2>Enemmän työtä. Vähemmän tyhjäkäyntiä.</h2>
-<p>Henkilöstöyritys saa lisää keikkoja, erikoistunut yritys uusia asiakkaita, työpaikka tuloa vapaasta työajasta, ja tekijä lisää työtä ilman työpaikan vaihtoa. Käytännön töiden lisäksi etsimme myös myynnin ja projektien osaajia vaativampiin tehtäviin. <a href="mailto:${EMAIL}?subject=Kumppaniksi">Liity kumppaniksi</a></p>
+<p>Kumppanit tekevät tarjouksia valmiiksi määriteltyihin työmääräyksiin. Liittyminen on maksutonta, ja palkkio peritään vain toteutuneista töistä. Henkilöstöyritys saa lisää keikkoja, erikoistunut yritys uusia asiakkaita, työpaikka tuloa vapaasta työajasta, ja tekijä lisää työtä ilman työpaikan vaihtoa. Käytännön töiden lisäksi etsimme myös myynnin ja projektien osaajia vaativampiin tehtäviin. <a href="mailto:${EMAIL}?subject=Kumppaniksi">Liity kumppaniksi</a></p>
 
 <h2>Selvät vastuut. Ihminen päättää.</h2>
-<p>Tekijän työnantaja on aina hänen oma työnantajansa tai henkilöstöpalvelu, ja vastuut sovitaan ennen aloitusta. Kumppaneilla on tehtävään sopiva osaaminen sekä tarvittavat luvat ja vakuutukset. Hinta sovitaan ennen aloitusta, ja jokainen työ kuitataan valmiiksi kuvin ja hyväksynnälläsi. Teknologia auttaa löytämään oikeat tekijät, mutta valinnan tekee aina ihminen.</p>
+<p>Tekijän työnantaja on aina hänen oma työnantajansa tai henkilöstöpalvelu, ja vastuut sovitaan ennen aloitusta. Kumppaneilla on tehtävään sopiva osaaminen sekä tarvittavat luvat ja vakuutukset. Hinta sovitaan ennen aloitusta, jokainen työ kuitataan kuvin, ja maksat vasta, kun olet hyväksynyt työn. Teknologia auttaa löytämään oikeat tekijät, mutta valinnan tekee aina ihminen.</p>
 
 <h2>Maailma, jossa asiat saadaan tehtyä.</h2>
 <p><strong>Missio:</strong> Tehdä työn ostamisesta, järjestämisestä ja tekemisestä helpompaa.</p>

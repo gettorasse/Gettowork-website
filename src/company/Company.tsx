@@ -103,7 +103,7 @@ function Hero({ headingRef }: { headingRef: React.RefObject<HTMLHeadingElement |
         <span className="co-hero__word" style={d(1)}>Mitä pitäisi</span>
         <span className="co-hero__word co-hero__word--own" style={d(4)}>saada tehtyä?</span>
       </h1>
-      <p className="co-hero__lead" style={d(8)}>Selitä tarpeesi omin sanoin. Get to Work saa sen tehtyä: oikeat tekijät, aikataulu ja hinta yhdellä työmääräyksellä.</p>
+      <p className="co-hero__lead" style={d(8)}>Selitä tarpeesi omin sanoin. Get to Work tekee siitä työmääräyksen, vahvistetut yritykset tekevät tarjoukset, ja työ tehdään.</p>
       <div className="co-actions co-hero__actions" style={d(10)}>
         <a className="co-btn co-btn--primary" href={ORDER_HREF}>Kerro, mitä tarvitset <span aria-hidden="true">→</span></a>
       </div>
@@ -161,23 +161,23 @@ function WhatWeDo() {
 // --- 03. Näin se toimii -----------------------------------------------------------------
 
 const STEPS = [
-  { t: 'Prompt: selitä tarpeesi.', d: 'Kuvaile työ omin sanoin viestillä, sähköpostilla tai puhelimessa.' },
-  { t: 'Plan: saat työmääräyksen.', d: 'Työn kuvaus, tarvittavat taidot, tekijät, aikataulu ja hinta yhdellä sivulla ennen aloitusta.' },
-  { t: 'Done: työ tehdään ja kuitataan.', d: 'Työ kuitataan valmiiksi kuvin ja sinun hyväksynnälläsi. Sinulla on koko ajan yksi yhteyspiste.' },
+  { t: 'Prompt: selitä tarpeesi.', d: 'Kuvaile työ omin sanoin viestillä, sähköpostilla tai puhelimessa. Tarpeen kertominen on maksutonta.' },
+  { t: 'Plan: saat tarjoukset.', d: 'Teemme tarpeestasi tarkan työmääräyksen, ja vahvistetut yritykset tekevät siihen vertailukelpoiset tarjoukset.' },
+  { t: 'Done: valitse, ja työ tehdään.', d: 'Valitset tarjouksen, ja työ tehdään. Se kuitataan kuvin, ja maksat vasta, kun olet hyväksynyt työn.' },
 ];
 
 const PROMPTS = [
   {
     chip: 'Varasto', prompt: 'Varasto pitäisi järjestää ja inventoida ennen joulusesonkia.',
-    plan: [['Työ', 'Järjestely ja inventointi, ohjeet valmiina'], ['Tekijät', '3 tekijää ja vastuuhenkilö'], ['Aikataulu', 'Kaksi päivää ensi viikolla'], ['Hinta', 'Arvio ennen aloitusta']],
+    plan: [['Työ', 'Järjestely ja inventointi, ohjeet valmiina'], ['Tekijät', '3 tekijää ja vastuuhenkilö'], ['Aikataulu', 'Kaksi päivää ensi viikolla'], ['Tarjoukset', '3 vertailukelpoista tarjousta']],
   },
   {
     chip: 'Tapahtuma', prompt: 'Messuosastolle tarvitaan kaksi avustajaa kolmeksi päiväksi.',
-    plan: [['Työ', 'Rakennus, opastus ja purku'], ['Tekijät', '2 avustajaa'], ['Aikataulu', 'Messujen ajan'], ['Hinta', 'Arvio ennen aloitusta']],
+    plan: [['Työ', 'Rakennus, opastus ja purku'], ['Tekijät', '2 avustajaa'], ['Aikataulu', 'Messujen ajan'], ['Tarjoukset', '3 vertailukelpoista tarjousta']],
   },
   {
     chip: 'Toimitila', prompt: 'Toimisto pitää tyhjentää ja siivota muuton jälkeen.',
-    plan: [['Työ', 'Tyhjennys, kierrätys ja loppusiivous'], ['Tekijät', 'Muuttotiimi ja siivooja'], ['Aikataulu', 'Muuttoa seuraavana päivänä'], ['Hinta', 'Arvio ennen aloitusta']],
+    plan: [['Työ', 'Tyhjennys, kierrätys ja loppusiivous'], ['Tekijät', 'Muuttotiimi ja siivooja'], ['Aikataulu', 'Muuttoa seuraavana päivänä'], ['Tarjoukset', '3 vertailukelpoista tarjousta']],
   },
 ] as const;
 
@@ -247,6 +247,7 @@ function HowItWorks() {
         <span className="co-role__d">{r.d}</span>
       </li>)}
     </ol>
+    <p className="co-motto" data-reveal><strong lang="en">Prompt to done.</strong> Muualla kirjoitat ilmoituksen ja vertailet sekalaisia tarjouksia. Get to Workissa tarpeesi muuttuu ensin tarkaksi työmääräykseksi, joten tarjoukset ovat vertailukelpoisia.</p>
     <div className="co-grid co-compare">
       <div className="co-card co-card--glass" data-reveal style={d(1)}>
         <p className="co-label">Perinteinen henkilöstöpalvelu kysyy</p>
@@ -274,7 +275,7 @@ function Partners() {
   return <section id="kumppaneille" className="co-section" aria-labelledby="co-partners-title">
     <Chapter id="kumppaneille" />
     <h2 id="co-partners-title" className="co-h2" data-reveal>Enemmän työtä.<br /><span className="co-blue-text">Vähemmän tyhjäkäyntiä.</span></h2>
-    <p className="co-lead" data-reveal>Get to Work tuo valmiiksi määritellyt työt niille, joilla on osaamista ja aikaa.</p>
+    <p className="co-lead" data-reveal>Tee tarjouksia valmiiksi määriteltyihin työmääräyksiin. Liittyminen on maksutonta, ja palkkio peritään vain toteutuneista töistä.</p>
     <ul className="co-uses co-uses--4">
       {PARTNERS.map((p, i) => <li key={p.t} className="co-use" data-reveal style={d(i)}>
         <span className="co-use__t">{p.t}</span>
@@ -294,7 +295,8 @@ const TRUST = [
   'Tekijän työnantaja on aina hänen oma työnantajansa tai henkilöstöpalvelu. Vastuut sovitaan ennen aloitusta.',
   'Kumppaneilla on tehtävään sopiva osaaminen sekä tarvittavat luvat ja vakuutukset.',
   'Tiedät, kuka työn tekee, mitä siihen sisältyy ja mitä se maksaa. Hinta sovitaan ennen aloitusta.',
-  'Jokainen työ kuitataan valmiiksi kuvin ja sinun hyväksynnälläsi, ja palautteesi vaikuttaa siihen, kuka saa seuraavat työt.',
+  'Jokainen työ kuitataan valmiiksi kuvin, ja maksat vasta, kun olet hyväksynyt sen.',
+  'Arvioit jokaisen työn, ja arviot vaikuttavat siihen, kuka saa seuraavat työt.',
   'Teknologia auttaa löytämään oikeat tekijät, mutta valinnan tekee aina ihminen.',
 ];
 
