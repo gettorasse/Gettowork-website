@@ -51,7 +51,8 @@ function App() {
   };
 
   const view = rs.assessment.view;
-  const dim = route !== 'home' || view === 'result';
+  // Vaalealla Tietoa-sivulla on oma pohja, joten taustan himmennyksiä ei tarvita.
+  const dim = (route !== 'home' && route !== 'company') || view === 'result';
   const question = route === 'home' && view === 'question';
   // Etusivulla pidempi video pyörii; testissä lyhyt video seuraa kursoria (puhelimessa pysähtyy).
   const videoMode = route === 'home' && view === 'intro' ? 'loop' : 'scrub';
@@ -61,7 +62,7 @@ function App() {
     {/* Kaikki sivun sisältö yhdessä kääreessä: valikko avautuu sen alta (UnderlayNav). */}
     <div data-main className="underlay-main">
     {/* Tausta pysyy samana koko ajan: etusivu, kysymykset ja tulos vaihtuvat sen päällä. */}
-    <BackgroundVideo character={character} mode={videoMode} paused={videoPaused} />
+    <BackgroundVideo character={character} mode={videoMode} paused={videoPaused || route === 'company'} />
     <div className={`stage-dim${dim ? ' is-on' : ''}${question ? ' is-soft' : ''}`} aria-hidden="true" />
     <div className={`stage-floor${question ? ' is-on' : ''}`} aria-hidden="true" />
     <div className={`stage-top${dim ? ' is-on' : ''}${question ? ' is-soft' : ''}`} aria-hidden="true" />

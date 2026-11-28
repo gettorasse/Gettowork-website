@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { SectionDock, type DockItem } from './SectionDock.tsx';
 import './company.css';
+import './company-light.css';
 
 // "Tietoa yrityksestä" – Get to Work yhdistää työt ja tekijät: henkilöstöpalvelut, kumppanit ja jaettu osaaminen.
 // Sisältö perustuu Rasmuksen hyväksymään luonnokseen (28.11.2026). Prompt to done. Animaatiot ovat CSS:ää ja SVG:tä;
@@ -80,7 +81,7 @@ export function Company() {
   useReveal(root);
   useEffect(() => { headingRef.current?.focus({ preventScroll: true }); }, []);
 
-  return <main ref={root} lang="fi" className="co">
+  return <main ref={root} lang="fi" className="co co--light">
     <Hero headingRef={headingRef} />
     <Why />
     <WhatWeDo />

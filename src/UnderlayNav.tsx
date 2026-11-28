@@ -107,7 +107,9 @@ export function UnderlayNav({ route }: { route: Route }) {
       .to(toggleBars, { y: 0, rotation: 0, duration: 0.25, ease: 'power3.in' }, '<')
       .set(overlayEl, { visibility: 'hidden', pointerEvents: 'none' })
       // Siivotaan siirrot pois, jotta sivun kiinteät elementit toimivat normaalisti.
-      .set(targets, { clearProps: 'transform' });
+      .set(targets, { clearProps: 'transform' })
+      // Painikkeen väri palaa CSS:n hallintaan (vaalealla sivulla valikko on tumma).
+      .set(toggleBtn, { clearProps: 'color' });
 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) tl.timeScale(4);
     tlRef.current = tl;
@@ -177,7 +179,7 @@ export function UnderlayNav({ route }: { route: Route }) {
   const toHome = go(HOME_PATH, { rs: { view: 'intro', step: 0 } });
   const closeAfter = () => setState(false);
 
-  return <div className="underlay-nav" lang="fi">
+  return <div className={`underlay-nav${route === 'company' ? ' underlay-nav--light' : ''}`} lang="fi">
     <header className="underlay-nav__header">
       <div className="underlay-nav__bar">
         <div className="underlay-nav__container">

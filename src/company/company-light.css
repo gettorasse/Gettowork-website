@@ -1,0 +1,59 @@
+/* Vaalea Tietoa-sivu (Airtasker-henkinen): valkoinen pohja, laivastonsininen teksti,
+   sininen #1480ff korostuksena, vaaleansiniset kortit. Ohittaa company.css:n tumman teeman. */
+.co.co--light {
+  --navy-2: #f2f6fc;
+  --line: rgb(8 14 48 / 0.12);
+  --muted: rgb(8 14 48 / 0.66);
+  --blue-soft: #1470e6;
+  --tint: #f3f7fd;
+  --glow: 0 10px 28px rgb(20 128 255 / 0.28);
+  background:
+    radial-gradient(60vw 50vw at 90% 0%, rgb(20 128 255 / 0.1), transparent 60%),
+    radial-gradient(50vw 50vw at 0% 60%, rgb(125 187 255 / 0.12), transparent 60%),
+    #fff;
+  color: var(--navy);
+}
+.co--light a:focus-visible, .co--light button:focus-visible { outline-color: var(--navy); }
+.co--light .co-blue-text, .co--light .co-hero__word--own, .co--light .co-use__n { text-shadow: none; }
+.co--light .co-eyebrow, .co--light .co-label, .co--light .co-motto strong, .co--light .co-prompt__k, .co--light .co-use__tag { color: var(--blue); }
+.co--light .co-use__tag { border-color: rgb(20 128 255 / 0.35); background: #fff; }
+.co--light .co-source { color: rgb(8 14 48 / 0.5); }
+.co--light .co-card--glass { background: var(--tint); border-color: transparent; -webkit-backdrop-filter: none; backdrop-filter: none; }
+.co--light .co-card--glass .co-muted { color: var(--muted); }
+.co--light .co-hero__lead { color: var(--navy); }
+.co--light .co-orbit__planet { background: var(--navy); color: #fff; }
+.co--light .co-block--b { background: var(--navy); box-shadow: none; }
+.co--light .co-scroll { border-color: rgb(8 14 48 / 0.35); }
+.co--light .co-scroll span { background: var(--navy); }
+.co--light .co-role::before { background: rgb(8 14 48 / 0.18); }
+.co--light .co-role:hover .co-role__t { color: #fff; }
+.co--light .co-checks svg { background: var(--blue); stroke: #fff; }
+.co--light .co-motto { background: var(--tint); border-color: transparent; }
+.co--light .co-btn { border-color: rgb(8 14 48 / 0.35); color: var(--navy); }
+.co--light .co-btn:hover { border-color: var(--navy); background: rgb(8 14 48 / 0.04); }
+.co--light .co-btn--primary { color: #fff; border-color: var(--blue); }
+.co--light .co-btn--primary:hover { background: var(--navy); border-color: var(--navy); color: #fff; }
+.co--light .co-statement strong, .co--light .co-chapter__t { color: var(--navy); }
+.co--light .co-bridge__shore { background: var(--tint); border-color: var(--line); }
+.co--light .co-bridge__icons--l i, .co--light .co-bridge__icons--r i { background: rgb(8 14 48 / 0.07); border-color: rgb(8 14 48 / 0.18); }
+.co--light .co-bridge.is-full .co-bridge__icons i { background: rgb(20 128 255 / 0.35); border-color: var(--blue); }
+.co--light .co-bridge__walker { background: var(--navy); }
+.co--light .co-bridge__water span { background: repeating-linear-gradient(90deg, rgb(20 128 255 / 0.3) 0 26px, transparent 26px 44px); }
+.co--light .co-prompt { background: var(--tint); border-color: transparent; }
+.co--light .co-prompt__box { border: 1px solid var(--line); box-shadow: 0 8px 24px rgb(8 14 48 / 0.06); }
+.co--light .co-prompt__card { background: #fff; }
+.co--light .co-chip { border-color: rgb(8 14 48 / 0.25); color: var(--navy); }
+.co--light .co-chip:hover { border-color: var(--navy); background: rgb(8 14 48 / 0.04); }
+.co--light .co-chip.is-on { background: var(--navy); border-color: var(--navy); color: #fff; }
+.co--light .co-side { background: var(--tint); border-color: transparent; }
+.co--light .co-use { background: var(--tint); border-color: transparent; }
+.co--light .co-use:hover { background: #e8f2ff; border-color: rgb(20 128 255 / 0.5); }
+.co--light .co-tags li { background: #fff; border-color: var(--line); }
+.co--light .co-share__bar { background: #fff; border-color: var(--line); }
+.co--light .co-share__bar span { color: rgb(8 14 48 / 0.7); }
+.co--light .co-share__day.is-other .co-share__bar span { color: #fff; }
+.co--light .section-dock__pill { box-shadow: 0 8px 24px rgb(8 14 48 / 0.14); border: 1px solid var(--line); }
+
+/* Vaalealla sivulla ylävalikon logo ja valikkopainike tummina. */
+.underlay-nav--light .underlay-nav__header, .underlay-nav--light .underlay-nav__toggle { color: #080e30; }
+.underlay-nav--light .underlay-nav__logo-img { filter: brightness(0) saturate(100%) invert(6%) sepia(38%) saturate(4683%) hue-rotate(226deg) brightness(92%) contrast(105%); }
