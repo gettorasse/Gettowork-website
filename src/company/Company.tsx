@@ -217,10 +217,12 @@ const Cross = () => <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10
 
 // --- 03. Näin se toimii -----------------------------------------------------------------
 
+const PROPOSAL = ['Työn kuvaus', 'Tarvittavat ihmiset ja resurssit', 'Sopiva toteuttaja', 'Aikataulu', 'Hinta ennen aloitusta'];
+
 const STEPS = [
   { t: 'Kerro, mitä tarvitset.', d: 'Kuvaile työ, tehtävä tai tilanne, johon yrityksesi tarvitsee apua.' },
   { t: 'Löydämme ratkaisun.', d: 'Get to Work auttaa löytämään sopivat ihmiset, resurssit ja toteutustavan.' },
-  { t: 'Saadaan homma tehtyä.', d: 'Hyväksy ratkaisu ja seuraa työn etenemistä.' },
+  { t: 'Saadaan homma tehtyä.', d: 'Hyväksy ratkaisu, ja me hoidamme loput. Tiedät koko ajan, missä mennään.' },
 ];
 
 const PROMPTS = [
@@ -287,7 +289,7 @@ function PromptDemo() {
     <div className="co-prompt__chips" role="group" aria-label="Esimerkkitarpeet">
       {PROMPTS.map((p, i) => <button key={p.chip} type="button" className={`co-chip${i === ex ? ' is-on' : ''}`} aria-pressed={i === ex} onClick={() => choose(i)}>{p.chip}</button>)}
     </div>
-    <p className="co-source">Esimerkki tavoitellusta asiakaskokemuksesta. Jokainen ehdotus ja hinta tehdään tarpeen mukaan.</p>
+    <p className="co-source">Esimerkki. Jokainen ehdotus ja hinta tehdään tarpeen mukaan.</p>
   </div></div>;
 }
 
@@ -320,14 +322,15 @@ function HowItWorks() {
 
     <div className="co-grid">
       <div className="co-card co-card--glass" data-reveal style={d(1)}>
-        <p className="co-label">Nyt</p>
-        <p className="co-card__big">Kerrot tarpeen sähköpostilla tai puhelimessa.</p>
-        <p className="co-muted">Selvitämme tarpeen kanssasi ja teemme ehdotuksen: työn kuvaus, tekijät, aikataulu ja hinta-arvio. Kun hyväksyt sen, järjestämme työn.</p>
+        <p className="co-label">Saat ehdotuksen</p>
+        <ul className="co-checks co-checks--sm">
+          {PROPOSAL.map((t, i) => <li key={t} style={d(i + 1)}><Check />{t}</li>)}
+        </ul>
       </div>
       <div className="co-card co-card--blue" data-reveal style={d(3)}>
-        <p className="co-label">Mihin olemme menossa</p>
-        <p className="co-card__big">Kerrot tarpeen tekstillä tai puheella.</p>
-        <p>Tekoäly auttaa ymmärtämään tarpeen, kysyy tarkentavia kysymyksiä ja muodostaa ehdotuksen. Tilauksen voi hyväksyä ja työn etenemistä seurata alustalla. Rakennamme tätä parhaillaan.</p>
+        <p className="co-label">Hyväksyt, me hoidamme</p>
+        <p className="co-card__big">Sinun ei tarvitse etsiä, rekrytoida tai koordinoida.</p>
+        <p>Kun ehdotus sopii, järjestämme oikeat tekijät ja resurssit paikalle. Sinulla on koko ajan yksi yhteyspiste.</p>
       </div>
     </div>
   </section>;
@@ -348,7 +351,7 @@ const MACHINE = [
 ];
 
 const TRUST = [
-  'Edellytämme kumppaneilta tehtävään sopivaa osaamista sekä tarvittavia lupia ja vakuutuksia',
+  'Kumppaneilla on tehtävään sopiva osaaminen sekä tarvittavat luvat ja vakuutukset',
   'Tiedät, kuka työn tekee ja mitä palveluun sisältyy',
   'Vastuut sovitaan selvästi ennen työn aloitusta',
 ];
@@ -368,23 +371,23 @@ function PeopleTech() {
       <div className="co-card co-card--blue" data-reveal style={d(3)}>
         <p className="co-label">Teknologia</p>
         <p className="co-card__big">Pyörittää koneistoa taustalla.</p>
-        <p>Teknologia ei ole tuotteemme vaan työkalumme. Sen avulla työtä voidaan järjestää nopeammin, luotettavammin ja pienemmällä hallinnolla.</p>
+        <p>Teknologia ei ole tuotteemme vaan työkalumme. Sen avulla järjestämme työn nopeammin, luotettavammin ja pienemmällä hallinnolla.</p>
       </div>
     </div>
 
-    <p className="co-label co-label--gap" data-reveal>Rakennamme järjestelmää, joka auttaa meitä</p>
+    <p className="co-label co-label--gap" data-reveal>Teknologia auttaa meitä</p>
     <ol className="co-machine">
       {MACHINE.map((t, i) => <li key={t} data-reveal style={d(i % 3)}><span>0{i + 1}</span>{t}</li>)}
     </ol>
     <p className="co-motto" data-reveal><strong>Asiakkaalle</strong> tämä kaikki näkyy yksinkertaisena ja helppona palveluna.</p>
 
     <h3 className="co-h3 co-h3--big" data-reveal>Hallinnoitu verkosto. <span className="co-blue-text">Ei avoin ilmoitustaulu.</span></h3>
-    <p className="co-lead" data-reveal>Rakennamme verkostoa luotettavista yrityksistä, palveluntarjoajista ja osaavista tekijöistä. Kehitämme omat toimintamallit kumppaneiden hyväksymiseen, osaamisen varmentamiseen, palautteen käsittelyyn ja työn laadun seurantaan.</p>
+    <p className="co-lead" data-reveal>Verkostomme koostuu luotettavista yrityksistä, palveluntarjoajista ja osaavista tekijöistä. Hyväksymme kumppanit, varmistamme osaamisen, käsittelemme palautteen ja seuraamme työn laatua.</p>
     <div className="co-card co-card--glass co-trust" data-reveal>
       <ul className="co-checks">
         {TRUST.map((t, i) => <li key={t} style={d(i + 1)}><Check />{t}</li>)}
       </ul>
-      <p className="co-muted co-card__foot">Tavoitteemme on tehdä työn ostamisesta turvallisempaa, selkeämpää ja ennustettavampaa.</p>
+      <p className="co-muted co-card__foot">Teemme työn ostamisesta turvallisempaa, selkeämpää ja ennustettavampaa.</p>
     </div>
   </section>;
 }
@@ -416,7 +419,7 @@ function BetterWay() {
 
     <div className="co-side" data-reveal>
       <div>
-        <p className="co-label">Pitkän aikavälin visio</p>
+        <p className="co-label">Osaaminen kiertämään</p>
         <p className="co-side__big">Neljä päivää omassa työssä. Viides päivä toisen yrityksen avuksi.</p>
         <ul className="co-checks co-side__points">
           {SHARE_POINTS.map((t, i) => <li key={t} style={d(i + 1)}><Check />{t}</li>)}
@@ -424,7 +427,7 @@ function BetterWay() {
       </div>
       <ShareWeek />
     </div>
-    <p className="co-source">Tällainen osaamisen jakaminen perustuu aina työntekijän vapaaehtoisuuteen, asianmukaisiin sopimuksiin ja selkeästi sovittuihin vastuisiin.</p>
+    <p className="co-source">Osaamisen jakaminen on aina työntekijälle vapaaehtoista ja perustuu selkeisiin sopimuksiin ja vastuisiin.</p>
     <p className="co-statement" data-reveal><strong>Haluamme rakentaa työelämää, jossa olemassa oleva osaaminen pääsee paremmin käyttöön.</strong></p>
   </section>;
 }
@@ -447,8 +450,6 @@ function Vision() {
       </div>
     </div>
     <p className="co-statement" data-reveal>Haluamme auttaa yrityksiä kasvamaan, uudistumaan ja saamaan asioita aikaan <strong>ilman, että resurssien puute on jatkuva este.</strong></p>
-    <p className="co-lead co-lead--gap" data-reveal>Get to Work on vasta rakentumassa. Aloitamme yksi työ kerrallaan ja opimme samalla, miten työtä voidaan järjestää paremmin.</p>
-    <JobStack />
   </section>;
 }
 
@@ -575,42 +576,3 @@ function PlaceArt({ i }: { i: number }) {
     <path className="a-line" d="M108 140 V118 H132 V140" />
   </svg>;
 }
-
-
-const STACK_ROWS = [6, 5, 4];
-const STACK: { r: number; c: number }[] = STACK_ROWS.flatMap((n, r) => Array.from({ length: n }, (_, c) => ({ r, c })));
-
-/** Työpalikat putoavat vierityksen mukaan yksi kerrallaan ja rakentavat alustan. */
-function JobStack() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [count, setCount] = useState(0);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    if (reduced()) { setCount(STACK.length); return; }
-    let frame = 0;
-    const update = () => {
-      frame = 0;
-      const rect = el.getBoundingClientRect();
-      const vh = window.innerHeight;
-      const p = Math.max(0, Math.min(1, (vh * 0.92 - rect.top) / (vh * 0.62)));
-      setCount(Math.round(p * STACK.length));
-    };
-    const onScroll = () => { if (!frame) frame = requestAnimationFrame(update); };
-    update();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
-    return () => { cancelAnimationFrame(frame); window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onScroll); };
-  }, []);
-  const w = 100 / STACK_ROWS[0];
-  const full = count >= STACK.length;
-  return <div ref={ref} className={`co-stack${full ? ' is-full' : ''}`} aria-hidden="true">
-    <div className="co-stack__area">
-      {STACK.map(({ r, c }, i) => <span key={i} className={`co-stack__block${i < count ? ' is-in' : ''}${i === 0 ? ' is-first' : ''}`}
-        style={{ left: `${r * w / 2 + c * w}%`, width: `${w}%`, bottom: `${r * 33.3}%` }}>{i === 0 ? '1 työ' : ''}</span>)}
-    </div>
-    <div className="co-stack__base">Alusta</div>
-    <div className="co-stack__labels"><span>Nyt: yksi työ kerrallaan</span><span>Tavoite: alusta</span></div>
-  </div>;
-}
-

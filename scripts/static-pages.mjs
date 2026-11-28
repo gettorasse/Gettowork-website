@@ -66,21 +66,20 @@ ${list(['Miksi kiire ei lopu?', 'Onko hinnoittelu kohdallaan?', 'Mistä seuraava
 <ol>
 <li><strong>Kerro, mitä tarvitset.</strong> Kuvaile työ, tehtävä tai tilanne, johon yrityksesi tarvitsee apua.</li>
 <li><strong>Löydämme ratkaisun.</strong> Get to Work auttaa löytämään sopivat ihmiset, resurssit ja toteutustavan.</li>
-<li><strong>Saadaan homma tehtyä.</strong> Hyväksy ratkaisu ja seuraa työn etenemistä.</li>
+<li><strong>Saadaan homma tehtyä.</strong> Hyväksy ratkaisu, ja me hoidamme loput.</li>
 </ol>
-<p>Nyt kerrot tarpeen sähköpostilla tai puhelimessa, ja teemme ehdotuksen: työn kuvaus, tekijät, aikataulu ja hinta-arvio. Tavoitteena on, että tarpeen voi kertoa tekstillä tai puheella, tekoäly auttaa muodostamaan ehdotuksen ja työn etenemistä voi seurata alustalla. Rakennamme tätä parhaillaan.</p>
+<p>Saat ehdotuksen, jossa on työn kuvaus, tarvittavat ihmiset ja resurssit, sopiva toteuttaja, aikataulu ja hinta ennen aloitusta. Kun hyväksyt sen, järjestämme työn. Sinun ei tarvitse etsiä, rekrytoida tai koordinoida.</p>
 
 <h2>People powered. AI assisted.</h2>
 <p>Työn tekevät ihmiset. Teknologia auttaa meitä löytämään oikeat tekijät, järjestämään resurssit ja tekemään koko prosessista mahdollisimman yksinkertaisen. Varsinaisen työn tekevät tehtävään sopivat kumppanit ja heidän työntekijänsä.</p>
-<p>Rakennamme hallinnoitua verkostoa luotettavista yrityksistä, palveluntarjoajista ja osaavista tekijöistä. Edellytämme kumppaneilta tehtävään sopivaa osaamista sekä tarvittavia lupia ja vakuutuksia. Tiedät, kuka työn tekee ja mitä palveluun sisältyy, ja vastuut sovitaan selvästi ennen työn aloitusta.</p>
+<p>Verkostomme on hallinnoitu: se koostuu luotettavista yrityksistä, palveluntarjoajista ja osaavista tekijöistä, joilla on tehtävään sopiva osaaminen sekä tarvittavat luvat ja vakuutukset. Tiedät, kuka työn tekee ja mitä palveluun sisältyy, ja vastuut sovitaan selvästi ennen työn aloitusta.</p>
 
 <h2>Enemmän mahdollisuuksia. Vähemmän käyttämätöntä osaamista.</h2>
-<p>Pitkän aikavälin visiomme on mahdollistaa osaamisen ja työkapasiteetin jakaminen yritysten välillä. Esimerkiksi työntekijä voi tehdä neljä päivää omaa työtään ja viidennen päivän toisen yrityksen avuksi ilman, että hänen tarvitsee ryhtyä freelanceriksi tai vaihtaa työpaikkaa. Tällainen toiminta perustuu aina vapaaehtoisuuteen, asianmukaisiin sopimuksiin ja selkeästi sovittuihin vastuisiin.</p>
+<p>Haluamme, että osaaminen ja työkapasiteetti kiertävät yritysten välillä. Esimerkiksi työntekijä voi tehdä neljä päivää omaa työtään ja viidennen päivän toisen yrityksen avuksi ilman, että hänen tarvitsee ryhtyä freelanceriksi tai vaihtaa työpaikkaa. Osaamisen jakaminen on aina työntekijälle vapaaehtoista ja perustuu selkeisiin sopimuksiin ja vastuisiin.</p>
 
 <h2>Maailma, jossa asiat saadaan tehtyä.</h2>
 <p><strong>Missio:</strong> Tehdä työn ostamisesta, järjestämisestä ja tekemisestä helpompaa.</p>
 <p><strong>Visio:</strong> Yritysten tarpeet ja ihmisten osaaminen löytävät toisensa mahdollisimman helposti.</p>
-<p>Get to Work on vasta rakentumassa. Aloitamme yksi työ kerrallaan.</p>
 
 <h2>Mitä pitäisi saada tehtyä?</h2>
 <p>Kerro, millaista apua yrityksesi tarvitsee. Autamme löytämään ja järjestämään siihen sopivat ihmiset ja resurssit.</p>
