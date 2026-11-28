@@ -20,6 +20,7 @@ const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&
 const list = items => `<ul>${items.map(i => `<li>${i}</li>`).join('')}</ul>`;
 const nav = `<nav aria-label="Sivut"><ul>
 <li><a href="/">Yrittäjätesti</a></li>
+<li><a href="/beta">Let's get to work (beta)</a></li>
 <li><a href="/tietoa">Tietoa yrityksestä</a></li>
 <li><a href="/kysely">Tietoa testistä</a></li>
 <li><a href="/tietosuoja">Tietosuojaseloste</a></li>
@@ -84,6 +85,15 @@ ${list(['Miksi kiire ei lopu?', 'Onko hinnoittelu kohdallaan?', 'Mistä seuraava
 <h2>Mitä pitäisi saada tehtyä?</h2>
 <p>Kerro, millaista apua yrityksesi tarvitsee. Autamme löytämään ja järjestämään siihen sopivat ihmiset ja resurssit.</p>
 <p><a href="mailto:${EMAIL}?subject=Ty%C3%B6tilaus">Kerro, mitä tarvitset</a> · <a href="mailto:${EMAIL}?subject=Haluan%20mukaan%20tekij%C3%A4ksi">Haluan mukaan tekijäksi</a></p>`,
+  },
+  {
+    path: '/beta',
+    title: "Let's get to work (beta) · Get to Work",
+    description: 'Beta-esikatselu Get to Workin prompt-sovelluksesta: kerro, mitä pitäisi saada tehtyä, ja näe, miten siitä rakentuu projekti, tiimi ja hinta-arvio.',
+    body: `<p>BETA</p>
+<h1>Mitä pitäisi saada tehtyä?</h1>
+<p>Kerro tarve omin sanoin. Näet, miten siitä rakentuu projekti: työvaiheet, tekijät ja hinta-arvio.</p>
+<p>Beta-esikatselu: keskustelu on esimerkki, eikä mitään lähetetä. Voit kertoa tarpeesi suoraan: <a href="mailto:${EMAIL}">${EMAIL}</a>.</p>`,
   },
   {
     path: '/kysely',

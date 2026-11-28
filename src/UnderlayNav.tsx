@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { COMPANY_PATH, HOME_PATH, PRIVACY_PATH, interceptClick, type Route } from './router.ts';
+import { BETA_PATH, COMPANY_PATH, HOME_PATH, PRIVACY_PATH, interceptClick, type Route } from './router.ts';
 import './UnderlayNav.css';
 
 // Osmo Supply "Fixed Underlay Navigation" Reactiin sovitettuna. Valikko on kiinteästi
@@ -107,7 +107,9 @@ export function UnderlayNav({ route }: { route: Route }) {
       .to(toggleBars, { y: 0, rotation: 0, duration: 0.25, ease: 'power3.in' }, '<')
       .set(overlayEl, { visibility: 'hidden', pointerEvents: 'none' })
       // Siivotaan siirrot pois, jotta sivun kiinteät elementit toimivat normaalisti.
-      .set(targets, { clearProps: 'transform' });
+      .set(targets, { clearProps: 'transform' })
+      // Painikkeen väri palaa CSS:n hallintaan (beta-sivulla valikko on tumma vaalealla pohjalla).
+      .set(toggleBtn, { clearProps: 'color' });
 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) tl.timeScale(4);
     tlRef.current = tl;
@@ -177,7 +179,7 @@ export function UnderlayNav({ route }: { route: Route }) {
   const toHome = go(HOME_PATH, { rs: { view: 'intro', step: 0 } });
   const closeAfter = () => setState(false);
 
-  return <div className="underlay-nav" lang="fi">
+  return <div className={`underlay-nav${route === 'beta' ? ' underlay-nav--light' : ''}`} lang="fi">
     <header className="underlay-nav__header">
       <div className="underlay-nav__bar">
         <div className="underlay-nav__container">
@@ -205,6 +207,10 @@ export function UnderlayNav({ route }: { route: Route }) {
           <li data-reveal-l>
             <a href={HOME_PATH} onClick={toHome} aria-current={route === 'home' ? 'page' : undefined}
               className={`underlay-nav__link-large${route === 'home' ? ' w--current' : ''}`}><span className="underlay-nav__link-label">Tee testi</span></a>
+          </li>
+          <li data-reveal-l>
+            <a href={BETA_PATH} onClick={go(BETA_PATH)} aria-current={route === 'beta' ? 'page' : undefined}
+              className={`underlay-nav__link-large${route === 'beta' ? ' w--current' : ''}`}><span className="underlay-nav__link-label" lang="en">Let's get to work</span></a>
           </li>
           <li data-reveal-l>
             <a href={COMPANY_PATH} onClick={go(COMPANY_PATH)} aria-current={route === 'company' ? 'page' : undefined}

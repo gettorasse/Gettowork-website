@@ -11,6 +11,7 @@ import { HOME_PATH, isLegacyPath, routeFromPath, type Route } from './router.ts'
 import { About } from './restart-score/About.tsx';
 import { Privacy } from './restart-score/Privacy.tsx';
 import { Company } from './company/Company.tsx';
+import { Beta } from './beta/Beta.tsx';
 import { RestartScore } from './restart-score/RestartScore.tsx';
 import { useRestartScore } from './restart-score/useRestartScore.ts';
 
@@ -39,7 +40,7 @@ function App() {
 
   useEffect(() => {
     // Samat otsikot kuin scripts/static-pages.mjs:n tekstiversioissa.
-    document.title = route === 'about' ? 'Tietoa testistä · Get to Work' : route === 'privacy' ? 'Tietosuojaseloste · Get to Work' : route === 'company' ? 'Tietoa yrityksestä · Get to Work' : 'Yrittäjätesti: Pyöritätkö sinä yritystä vai pyörittääkö se sinua? · Get to Work';
+    document.title = route === 'about' ? 'Tietoa testistä · Get to Work' : route === 'privacy' ? 'Tietosuojaseloste · Get to Work' : route === 'company' ? 'Tietoa yrityksestä · Get to Work' : route === 'beta' ? "Let's get to work (beta) · Get to Work" : 'Yrittäjätesti: Pyöritätkö sinä yritystä vai pyörittääkö se sinua? · Get to Work';
     window.scrollTo(0, 0);
   }, [route]);
 
@@ -51,7 +52,8 @@ function App() {
   };
 
   const view = rs.assessment.view;
-  const dim = route !== 'home' || view === 'result';
+  // Beta-sivulla on oma valkoinen pohja, joten taustan himmennyksiä ei tarvita.
+  const dim = (route !== 'home' && route !== 'beta') || view === 'result';
   const question = route === 'home' && view === 'question';
   // Etusivulla pidempi video pyörii; testissä lyhyt video seuraa kursoria (puhelimessa pysähtyy).
   const videoMode = route === 'home' && view === 'intro' ? 'loop' : 'scrub';
@@ -61,7 +63,7 @@ function App() {
     {/* Kaikki sivun sisältö yhdessä kääreessä: valikko avautuu sen alta (UnderlayNav). */}
     <div data-main className="underlay-main">
     {/* Tausta pysyy samana koko ajan: etusivu, kysymykset ja tulos vaihtuvat sen päällä. */}
-    <BackgroundVideo character={character} mode={videoMode} paused={videoPaused} />
+    <BackgroundVideo character={character} mode={videoMode} paused={videoPaused || route === 'beta'} />
     <div className={`stage-dim${dim ? ' is-on' : ''}${question ? ' is-soft' : ''}`} aria-hidden="true" />
     <div className={`stage-floor${question ? ' is-on' : ''}`} aria-hidden="true" />
     <div className={`stage-top${dim ? ' is-on' : ''}${question ? ' is-soft' : ''}`} aria-hidden="true" />
@@ -69,7 +71,7 @@ function App() {
       <VideoToggle paused={videoPaused} onToggle={toggleVideo} visible={videoMode === 'loop'} />
       <CharacterSwitch value={character} onChange={chooseCharacter} visible={route === 'home' && view === 'intro'} />
     </div>
-    {route === 'about' ? <About onStart={startFromAbout} /> : route === 'privacy' ? <Privacy /> : route === 'company' ? <Company /> : <RestartScore rs={rs} />}
+    {route === 'about' ? <About onStart={startFromAbout} /> : route === 'privacy' ? <Privacy /> : route === 'company' ? <Company /> : route === 'beta' ? <Beta /> : <RestartScore rs={rs} />}
     </div>
     <CookieBanner />
   </>;
