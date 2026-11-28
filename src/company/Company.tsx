@@ -98,12 +98,12 @@ export function Company() {
 function Hero({ headingRef }: { headingRef: React.RefObject<HTMLHeadingElement | null> }) {
   return <section className="co-hero" aria-labelledby="co-hero-title">
     <div className="co-hero__text">
-      <p className="co-eyebrow co-eyebrow--lit is-in">Get to Work <span aria-hidden="true">/</span> Työt ja tekijät yhteen</p>
+      <p className="co-eyebrow co-eyebrow--lit is-in">Get to Work <span aria-hidden="true">/</span> Selitä tarpeesi, me saamme sen tehtyä</p>
       <h1 id="co-hero-title" ref={headingRef} tabIndex={-1} className="co-hero__title co-hero__title--two">
         <span className="co-hero__word" style={d(1)}>Mitä pitäisi</span>
         <span className="co-hero__word co-hero__word--own" style={d(4)}>saada tehtyä?</span>
       </h1>
-      <p className="co-hero__lead" style={d(8)}>Kerro tarve. Get to Work löytää tekijät, sopii aikataulun ja hinnan, ja työ tehdään.</p>
+      <p className="co-hero__lead" style={d(8)}>Selitä tarpeesi omin sanoin. Get to Work saa sen tehtyä: oikeat tekijät, aikataulu ja hinta yhdellä työmääräyksellä.</p>
       <div className="co-actions co-hero__actions" style={d(10)}>
         <a className="co-btn co-btn--primary" href={ORDER_HREF}>Kerro, mitä tarvitset <span aria-hidden="true">→</span></a>
       </div>
@@ -121,7 +121,7 @@ function Why() {
   return <section id="miksi" className="co-section" aria-labelledby="co-why-title">
     <Chapter id="miksi" />
     <h2 id="co-why-title" className="co-h2" data-reveal>Työtä on. Tekijöitä on.<br /><span className="co-blue-text">Ne eivät vain löydä toisiaan.</span></h2>
-    <p className="co-lead" data-reveal>Yrityksillä on jatkuvasti töitä, joihin omat kädet eivät riitä. Samaan aikaan osaamista on käyttämättä: henkilöstöpalveluissa keikkojen välissä ja työpaikoilla, joissa kaikkea työaikaa ei tarvita.</p>
+    <p className="co-lead" data-reveal>Etenkin pienillä ja keskisuurilla palveluyrityksillä on jatkuvasti töitä, joihin omat kädet eivät riitä. Samaan aikaan osaamista on käyttämättä: henkilöstöpalveluissa keikkojen välissä ja työpaikoilla, joissa kaikkea työaikaa ei tarvita.</p>
     <Bridge />
     <p className="co-statement" data-reveal><strong>Get to Work tuo nämä yhteen.</strong></p>
   </section>;
@@ -141,6 +141,7 @@ function WhatWeDo() {
     <Chapter id="mita-teemme" />
     <h2 id="co-what-title" className="co-h2" data-reveal>Yksi alusta.<br /><span className="co-blue-text">Kaikki tarvittavat tekijät.</span></h2>
     <p className="co-lead" data-reveal>Get to Work yhdistää yrityksesi tarpeen oikeaan toteuttajaan. Sinun ei tarvitse tietää, tarvitsetko vuokratyöntekijän, alihankkijan vai tiimin. Riittää, että kerrot, mitä pitäisi saada tehtyä.</p>
+    <p className="co-lead" data-reveal><strong>Emme ole keikka-alusta.</strong> Tekijät tulevat aina työnantajilta ja henkilöstöpalveluista, joten heidän työsuhteensa ja turvansa pysyvät.</p>
     <ol className="co-uses">
       {SOURCES.map((u, i) => <li key={u.t} className="co-use" data-reveal style={d(i * 2)}>
         <span className="co-use__n">0{i + 1}</span>
@@ -160,9 +161,9 @@ function WhatWeDo() {
 // --- 03. Näin se toimii -----------------------------------------------------------------
 
 const STEPS = [
-  { t: 'Prompt: kerro, mitä tarvitset.', d: 'Kuvaile työ, tehtävä tai tilanne viestillä, sähköpostilla tai puhelimessa.' },
-  { t: 'Plan: saat ehdotuksen.', d: 'Työn kuvaus, tekijät, aikataulu ja hinta ennen aloitusta.' },
-  { t: 'Done: työ tehdään.', d: 'Hyväksyt ehdotuksen, ja me järjestämme loput. Sinulla on koko ajan yksi yhteyspiste.' },
+  { t: 'Prompt: selitä tarpeesi.', d: 'Kuvaile työ omin sanoin viestillä, sähköpostilla tai puhelimessa.' },
+  { t: 'Plan: saat työmääräyksen.', d: 'Työn kuvaus, tarvittavat taidot, tekijät, aikataulu ja hinta yhdellä sivulla ennen aloitusta.' },
+  { t: 'Done: työ tehdään ja kuitataan.', d: 'Työ kuitataan valmiiksi kuvin ja sinun hyväksynnälläsi. Sinulla on koko ajan yksi yhteyspiste.' },
 ];
 
 const PROMPTS = [
@@ -238,7 +239,7 @@ function HowItWorks() {
   return <section id="nain-se-toimii" className="co-section" aria-labelledby="co-how-title">
     <Chapter id="nain-se-toimii" />
     <h2 id="co-how-title" className="co-h2" lang="en" data-reveal>Prompt. Plan.<br /><span className="co-blue-text">Done.</span></h2>
-    <p className="co-lead" data-reveal>Sinun ei tarvitse tehdä tarjouspyyntöä tai etsiä toimittajaa. Kerro tarve omin sanoin, niin hoidamme loput.</p>
+    <p className="co-lead" data-reveal>Ostat valmiin työn, et tunteja. Sinun ei tarvitse tehdä tarjouspyyntöä tai etsiä toimittajaa: selitä tarve, niin hoidamme loput.</p>
     <ol className="co-roles">
       {STEPS.map((r, i) => <li key={r.t} className="co-role" data-reveal style={d(i)}>
         <span className="co-role__n">0{i + 1}</span>
@@ -292,7 +293,8 @@ function Partners() {
 const TRUST = [
   'Tekijän työnantaja on aina hänen oma työnantajansa tai henkilöstöpalvelu. Vastuut sovitaan ennen aloitusta.',
   'Kumppaneilla on tehtävään sopiva osaaminen sekä tarvittavat luvat ja vakuutukset.',
-  'Tiedät, kuka työn tekee, mitä siihen sisältyy ja mitä se maksaa.',
+  'Tiedät, kuka työn tekee, mitä siihen sisältyy ja mitä se maksaa. Hinta sovitaan ennen aloitusta.',
+  'Jokainen työ kuitataan valmiiksi kuvin ja sinun hyväksynnälläsi, ja palautteesi vaikuttaa siihen, kuka saa seuraavat työt.',
   'Teknologia auttaa löytämään oikeat tekijät, mutta valinnan tekee aina ihminen.',
 ];
 
@@ -359,13 +361,13 @@ function Closing() {
       <span>Mitä pitäisi</span>
       <span className="co-blue-text">saada tehtyä?</span>
     </h2>
-    <p className="co-closing__sub" data-reveal>Kerro, millaista apua yrityksesi tarvitsee. Me yhdistämme sinut oikeisiin tekijöihin.</p>
+    <p className="co-closing__sub" data-reveal>Selitä tarpeesi. Get to Work saa sen tehtyä.</p>
     <div className="co-actions" data-reveal>
       <a className="co-btn co-btn--primary" href={ORDER_HREF}>Kerro, mitä tarvitset <span aria-hidden="true">→</span></a>
       <a className="co-btn" href={PARTNER_HREF}>Liity kumppaniksi</a>
     </div>
     <div className="co-closing__foot" data-reveal>
-      <span>Työt ja tekijät yhteen.</span>
+      <span>Selitä tarpeesi.</span>
       <span lang="en">Prompt to done.</span>
       <span>Get to Work.</span>
     </div>

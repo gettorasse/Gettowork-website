@@ -41,17 +41,18 @@ ${list(['Miksi kiire ei lopu?', 'Onko hinnoittelu kohdallaan?', 'Mistä seuraava
   {
     path: '/tietoa',
     title: 'Tietoa yrityksestä · Get to Work',
-    description: 'Get to Work yhdistää työt ja tekijät. Kerro, mitä pitäisi saada tehtyä, niin yhdistämme sinut oikeisiin tekijöihin henkilöstöpalveluista, kumppaneilta ja työpaikoilta. Prompt to done.',
-    body: `<p>Get to Work / Työt ja tekijät yhteen</p>
+    description: 'Get to Work yhdistää työt ja tekijät. Selitä tarpeesi, Get to Work saa sen tehtyä: oikeat tekijät henkilöstöpalveluista, kumppaneilta ja työpaikoilta yhdellä työmääräyksellä. Prompt to done.',
+    body: `<p>Get to Work / Selitä tarpeesi, me saamme sen tehtyä</p>
 <h1>Mitä pitäisi saada tehtyä?</h1>
-<p>Kerro tarve. Get to Work löytää tekijät, sopii aikataulun ja hinnan, ja työ tehdään.</p>
+<p>Selitä tarpeesi omin sanoin. Get to Work saa sen tehtyä: oikeat tekijät, aikataulu ja hinta yhdellä työmääräyksellä.</p>
 <p><a href="mailto:${EMAIL}?subject=Ty%C3%B6tilaus">Kerro, mitä tarvitset</a></p>
 
 <h2>Työtä on. Tekijöitä on. Ne eivät vain löydä toisiaan.</h2>
-<p>Yrityksillä on jatkuvasti töitä, joihin omat kädet eivät riitä. Samaan aikaan osaamista on käyttämättä: henkilöstöpalveluissa keikkojen välissä ja työpaikoilla, joissa kaikkea työaikaa ei tarvita. Get to Work tuo nämä yhteen.</p>
+<p>Etenkin pienillä ja keskisuurilla palveluyrityksillä on jatkuvasti töitä, joihin omat kädet eivät riitä. Samaan aikaan osaamista on käyttämättä: henkilöstöpalveluissa keikkojen välissä ja työpaikoilla, joissa kaikkea työaikaa ei tarvita. Get to Work tuo nämä yhteen.</p>
 
 <h2>Yksi alusta. Kaikki tarvittavat tekijät.</h2>
 <p>Get to Work yhdistää yrityksesi tarpeen oikeaan toteuttajaan. Sinun ei tarvitse tietää, tarvitsetko vuokratyöntekijän, alihankkijan vai tiimin.</p>
+<p>Emme ole keikka-alusta: tekijät tulevat aina työnantajilta ja henkilöstöpalveluista, joten heidän työsuhteensa ja turvansa pysyvät.</p>
 <ul>
 <li><strong>Henkilöstöpalvelut.</strong> Vuokratyöntekijät kumppanimme kautta, muutamasta tunnista kuukausiin.</li>
 <li><strong>Erikoistuneet kumppanit.</strong> Yritykset, jotka hoitavat oman alansa työt alusta loppuun.</li>
@@ -61,9 +62,9 @@ ${list(['Miksi kiire ei lopu?', 'Onko hinnoittelu kohdallaan?', 'Mistä seuraava
 
 <h2>Prompt. Plan. Done.</h2>
 <ol>
-<li><strong>Prompt: kerro, mitä tarvitset.</strong> Kuvaile työ, tehtävä tai tilanne viestillä, sähköpostilla tai puhelimessa.</li>
-<li><strong>Plan: saat ehdotuksen.</strong> Työn kuvaus, tekijät, aikataulu ja hinta ennen aloitusta.</li>
-<li><strong>Done: työ tehdään.</strong> Hyväksyt ehdotuksen, ja me järjestämme loput. Sinulla on koko ajan yksi yhteyspiste.</li>
+<li><strong>Prompt: selitä tarpeesi.</strong> Kuvaile työ omin sanoin viestillä, sähköpostilla tai puhelimessa.</li>
+<li><strong>Plan: saat työmääräyksen.</strong> Työn kuvaus, tarvittavat taidot, tekijät, aikataulu ja hinta yhdellä sivulla ennen aloitusta.</li>
+<li><strong>Done: työ tehdään ja kuitataan.</strong> Työ kuitataan valmiiksi kuvin ja sinun hyväksynnälläsi. Sinulla on koko ajan yksi yhteyspiste.</li>
 </ol>
 <p>Perinteinen henkilöstöpalvelu kysyy, millaisen työntekijän tarvitset. Get to Work kysyy, mitä pitäisi saada tehtyä.</p>
 
@@ -71,7 +72,7 @@ ${list(['Miksi kiire ei lopu?', 'Onko hinnoittelu kohdallaan?', 'Mistä seuraava
 <p>Henkilöstöyritys saa lisää keikkoja, erikoistunut yritys uusia asiakkaita, työpaikka tuloa vapaasta työajasta, ja tekijä lisää työtä ilman työpaikan vaihtoa. Käytännön töiden lisäksi etsimme myös myynnin ja projektien osaajia vaativampiin tehtäviin. <a href="mailto:${EMAIL}?subject=Kumppaniksi">Liity kumppaniksi</a></p>
 
 <h2>Selvät vastuut. Ihminen päättää.</h2>
-<p>Tekijän työnantaja on aina hänen oma työnantajansa tai henkilöstöpalvelu, ja vastuut sovitaan ennen aloitusta. Kumppaneilla on tehtävään sopiva osaaminen sekä tarvittavat luvat ja vakuutukset. Teknologia auttaa löytämään oikeat tekijät, mutta valinnan tekee aina ihminen.</p>
+<p>Tekijän työnantaja on aina hänen oma työnantajansa tai henkilöstöpalvelu, ja vastuut sovitaan ennen aloitusta. Kumppaneilla on tehtävään sopiva osaaminen sekä tarvittavat luvat ja vakuutukset. Hinta sovitaan ennen aloitusta, ja jokainen työ kuitataan valmiiksi kuvin ja hyväksynnälläsi. Teknologia auttaa löytämään oikeat tekijät, mutta valinnan tekee aina ihminen.</p>
 
 <h2>Maailma, jossa asiat saadaan tehtyä.</h2>
 <p><strong>Missio:</strong> Tehdä työn ostamisesta, järjestämisestä ja tekemisestä helpompaa.</p>
@@ -79,7 +80,7 @@ ${list(['Miksi kiire ei lopu?', 'Onko hinnoittelu kohdallaan?', 'Mistä seuraava
 <p>Osaamisen jakaminen on aina työntekijälle vapaaehtoista ja perustuu selkeisiin sopimuksiin.</p>
 
 <h2>Mitä pitäisi saada tehtyä?</h2>
-<p>Kerro, millaista apua yrityksesi tarvitsee. Me yhdistämme sinut oikeisiin tekijöihin.</p>
+<p>Selitä tarpeesi. Get to Work saa sen tehtyä.</p>
 <p><a href="mailto:${EMAIL}?subject=Ty%C3%B6tilaus">Kerro, mitä tarvitset</a> · <a href="mailto:${EMAIL}?subject=Kumppaniksi">Liity kumppaniksi</a></p>
 <p>Prompt to done.</p>`,
   },
