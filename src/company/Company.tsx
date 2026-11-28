@@ -338,18 +338,6 @@ function HowItWorks() {
 
 // --- 04. Ihmiset ja teknologia ----------------------------------------------------------
 
-const MACHINE = [
-  'Ymmärtämään asiakkaan todellisen tarpeen',
-  'Määrittelemään työn ja tarvittavat resurssit',
-  'Löytämään sopivat tekijät ja kumppanit',
-  'Varmistamaan osaamisen ja saatavuuden',
-  'Muodostamaan hinnoittelun',
-  'Organisoimaan työn ja ohjeistamaan tekijät',
-  'Seuraamaan työn etenemistä',
-  'Hallitsemaan poikkeamat',
-  'Kehittämään laatua ja tehokkuutta',
-];
-
 const TRUST = [
   'Kumppaneilla on tehtävään sopiva osaaminen sekä tarvittavat luvat ja vakuutukset',
   'Tiedät, kuka työn tekee ja mitä palveluun sisältyy',
@@ -375,11 +363,7 @@ function PeopleTech() {
       </div>
     </div>
 
-    <p className="co-label co-label--gap" data-reveal>Teknologia auttaa meitä</p>
-    <ol className="co-machine">
-      {MACHINE.map((t, i) => <li key={t} data-reveal style={d(i % 3)}><span>0{i + 1}</span>{t}</li>)}
-    </ol>
-    <p className="co-motto" data-reveal><strong>Asiakkaalle</strong> tämä kaikki näkyy yksinkertaisena ja helppona palveluna.</p>
+    <p className="co-motto" data-reveal><strong>Sinulle tämä näkyy yksinkertaisena palveluna:</strong> kerrot tarpeen, me hoidamme loput.</p>
 
     <h3 className="co-h3 co-h3--big" data-reveal>Hallinnoitu verkosto. <span className="co-blue-text">Ei avoin ilmoitustaulu.</span></h3>
     <p className="co-lead" data-reveal>Verkostomme koostuu luotettavista yrityksistä, palveluntarjoajista ja osaavista tekijöistä. Hyväksymme kumppanit, varmistamme osaamisen, käsittelemme palautteen ja seuraamme työn laatua.</p>
